@@ -588,21 +588,20 @@ html {
     display: flex;
     justify-content: center;
     gap: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
-.footer-links a {
-    color: white;
+.footer-link {
     text-decoration: none;
-    padding: 0.8rem 1.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 25px;
-    transition: all 0.3s ease;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease;
 }
 
-.footer-links a:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+.footer-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Scroll Animations */
