@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paolo Paci - Software Engineer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* Animazioni */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Header Hero */
+        .hero {
+            background: linear-gradient(-45deg, #1a237e, #283593, #303f9f, #3949ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-header {
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero .subtitle {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        /* Presentation Letter */
+        .presentation-letter {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 3rem 0;
+            text-align: left;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .letter-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .letter-date {
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.8;
+            text-align: right;
+        }
+
+        .letter-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            opacity: 0.95;
+        }
+
+        .letter-text strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .letter-signature {
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            text-align: right;
+            font-style: italic;
+        }
+
+        .letter-signature strong {
+            font-weight: 700;
+        }
+
+        .hero .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.9s both;
+            margin-bottom: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Availability Notice */
+        .availability-notice {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+
+        .notice-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .notice-item:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Navigation */
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 0.5rem 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            background: #f8f9ff;
+            z-index: 2;
+            /* Aggiunto margin-top per evitare sovrapposizioni */
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #333;
+            position: relative;
+            /* Aggiunto padding-top per maggiore spaziatura */
+            padding-top: 2rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        /* Profile Section */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .profile-image {
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .profile-content h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .profile-content p {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+            /* Aggiunto padding-bottom per evitare il taglio */
+            padding-bottom: 2rem;
+        }
+
+        .skill-category {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            /* Aggiunto margin-bottom per garantire spazio sotto ogni card */
+            margin-bottom: 1rem;
+            /* Assicuriamo che la card sia completamente visibile */
+            position: relative;
+            z-index: 1;
+        }
+
+        .skill-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            color: white;
+        }
+
+        .skill-list {
+            list-style: none;
+            /* Aggiunto margin-bottom per evitare il taglio dell'ultimo elemento */
+            margin-bottom: 1rem;
+        }
+
+        .skill-list li:last-child {
+            /* Rimuoviamo il padding-bottom dall'ultimo elemento della lista */
+            padding-bottom: 0;
+        }
+
+        .skill-progress-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .skill-progress {
+            flex: 1;
+            height: 8px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-progress-bar {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 1s ease-out;
+        }
+
+        .skill-percentage {
+            font-size: 0.85rem;
+            color: #667eea;
+            font-weight: 600;
+            min-width: 45px;
+            text-align: right;
+        }
+
+        /* Experience Section */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            /* Aggiunto padding-bottom per evitare il taglio */
+            padding-bottom: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            /* Modificato bottom per estendere la linea */
+            bottom: -2rem;
+            width: 2px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-left: 2rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            /* Aggiunto z-index per evitare problemi di sovrapposizione */
+            z-index: 1;
+        }
+
+        .timeline-item:last-child {
+            /* Rimosso margin-bottom dall'ultimo elemento */
+            margin-bottom: 0;
+        }
+
+        /* Sezione Experience - Container fix */
+        #experience {
+            /* Aggiunto padding-bottom per dare più spazio */
+            padding-bottom: 6rem;
+            /* Aggiunto margin-bottom per separare dalla sezione successiva */
+            margin-bottom: 2rem;
+            /* Aggiunto overflow visible per evitare il taglio */
+            overflow: visible;
+        }
+
+        .timeline-date {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: #f8f9ff;
+            border-radius: 20px;
+            color: #1a237e;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline-date::before {
+            content: '';
+            position: absolute;
+            left: 0.75rem;
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-date::before {
+            transform: rotate(2deg) scale(1.1);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.3);
+        }
+
+        .timeline-company {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-role {
+            font-size: 1.1rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .timeline-description {
+            color: #666;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        /* Education Section */
+        .education-card {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(240, 147, 251, 0.3);
+        }
+
+        .education-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .education-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a237e;
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Scroll Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease;
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s ease;
+        }
+
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: auto;
+                padding: 4rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .presentation-letter {
+                padding: 2rem 1.5rem;
+                margin: 2rem 0;
+            }
+
+            .letter-text {
+                font-size: 1rem;
+                text-align: left;
+            }
+
+            .hero .contact-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .availability-notice {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .notice-item {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .profile-avatar {
+                width: 200px;
+                height: 200px;
+                font-size: 3rem;
+            }
+
+            .section {
+                padding: 3rem 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .timeline {
+                padding-left: 1rem;
+            }
+
+            .timeline-item {
+                margin-left: 1rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .mobile-menu span {
+            width: 30px;
+            height: 2px;
+            background: #333;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .mobile-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .mobile-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                padding: 1rem;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                transform: translateY(-150%);
+                transition: transform 0.3s ease-in-out;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(10px);
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                display: flex;
+            }
+
+            /* Improved Typography for Mobile */
+            .hero h1 {
+                font-size: 2.2rem;
+                letter-spacing: 1px;
+            }
+
+            .hero .subtitle {
+                font-size: 1.1rem;
+                line-height: 1.4;
+            }
+
+            .letter-text {
+                font-size: 0.95rem;
+                line-height: 1.6;
+                margin-bottom: 1.2rem;
+            }
+
+            /* Better Card Layout for Mobile */
+            .skill-category {
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .timeline-item {
+                padding: 1.5rem;
+                margin-left: 1rem;
+            }
+
+            .timeline-description {
+                font-size: 0.95rem;
+            }
+
+            /* Improved Spacing */
+            .section {
+                padding: 3rem 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            /* Better Contact Info Layout */
+            .contact-info {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+
+            .contact-item {
+                font-size: 0.9rem;
+                padding: 0.6rem 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <strong>Paolo Paci</strong>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#presentation">Presentazione</a></li>
+                <li><a href="#profile">Profilo</a></li>
+                <li><a href="#skills">Competenze</a></li>
+                <li><a href="#experience">Esperienza</a></li>
+                <li><a href="#education">Formazione</a></li>
+                <li><a href="#contact">Contatti</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-header">
+                <h1>Paolo Paci</h1>
+                <p class="subtitle">Software Engineer & .NET Specialist</p>
+            </div>
+
+            <!-- Presentation Letter -->
+            <div class="presentation-letter" id="presentation">
+                <div class="letter-content">
+                    <p class="letter-date">Pesaro, Giugno 2025</p>
+                    <p class="letter-text">
+                        Con la presente desidero sottoporre alla Vostra cortese attenzione il mio curriculum vitae,
+                        candidandomi per opportunità professionali in linea con le mie competenze ed esperienze.
+                    </p>
+                    <p class="letter-text">
+                        Nel corso di <strong>oltre dieci anni di attività</strong> nel settore dello sviluppo software,
+                        ho maturato una solida esperienza nella progettazione e realizzazione di <strong>soluzioni
+                            complesse</strong>.
+                        Ho iniziato la mia carriera con Delphi, per poi focalizzarmi sull'ambiente Microsoft,
+                        in particolare sulle tecnologie <strong>.NET e .NET Core</strong>, sviluppando applicazioni e
+                        servizi in
+                        <strong>C#, ASP.NET Core MVC/Razor, Web API e Microservices</strong>.
+                    </p>
+                    <p class="letter-text">
+                        Negli ultimi anni ho ampliato le mie conoscenze nell'ambito dello sviluppo frontend,
+                        approfondendo l'utilizzo di <strong>Angular, TypeScript e RxJS</strong>, con particolare
+                        attenzione
+                        all'integrazione tra frontend e backend in soluzioni RESTful. Recentemente, ho esteso le mie
+                        competenze all'<strong>intelligenza artificiale</strong>, in particolare nell'utilizzo delle
+                        API di OpenAI e nell'integrazione di modelli come ChatGPT all'interno di applicazioni
+                        Enterprise.
+                    </p>
+                    <p class="letter-text">
+                        Sono una persona <strong>equilibrata</strong>, abituata a lavorare sia in autonomia sia in team,
+                        con ottime capacità comunicative e relazionali. Mi contraddistinguono la
+                        <strong>proattività</strong>,
+                        l'attitudine al problem solving e una naturale curiosità verso l'innovazione e la
+                        sperimentazione
+                        di nuove tecnologie.
+                    </p>
+                    <p class="letter-signature">
+                        Distinti Saluti<br>
+                        <strong>Ing. Paolo PACI</strong>
+                    </p>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📍</span>
+                    <span>Pesaro, Italia</span>
+                </div>
+                <div class="contact-item">
+                    <span>📞</span>
+                    <span>328 3834012</span>
+                </div>
+                <div class="contact-item">
+                    <span>✉️</span>
+                    <span>paolopci@yahoo.it</span>
+                </div>
+                <div class="contact-item">
+                    <span>🎂</span>
+                    <span>10 gennaio 1965</span>
+                </div>
+            </div>
+
+            <div class="availability-notice">
+                <div class="notice-item">
+                    <span>🏠</span>
+                    <span>Disponibile per collaborazioni Full Remote/Ibrido</span>
+                </div>
+                <div class="notice-item">
+                    <span>💼</span>
+                    <span>Incentivi assunzione per over 50 senza RdC</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section class="section parallax-section" id="profile">
+        <h2 class="section-title fade-in-up">Profilo Professionale</h2>
+        <div class="profile-grid">
+            <div class="profile-image slide-in-left">
+                <div class="profile-avatar">
+                    <img src="d:\@@ -- NON Cancellare -- @@\__  C V __\Paolo Paci Img.jpg" alt="Paolo Paci">
+                </div>
+            </div>
+            <div class="profile-content slide-in-right">
+                <h3>Ingegnere Elettronico & Software Developer</h3>
+                <p>
+                    Con oltre 10 anni di esperienza nello sviluppo software, sono specializzato nell'ecosistema
+                    Microsoft
+                    con particolare competenza in <strong>.NET Core, C#, ASP.NET</strong> e architetture moderne come
+                    <strong>microservizi e API RESTful</strong>.
+                </p>
+                <br>
+                <p>
+                    La mia esperienza spazia dal backend al frontend (Angular, TypeScript) fino alle più recenti
+                    tecnologie di <strong>intelligenza artificiale</strong>, con particolare focus sull'integrazione
+                    di modelli OpenAI in applicazioni enterprise.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section parallax-section" id="skills">
+        <h2 class="section-title fade-in-up">Competenze Tecniche</h2>
+        <div class="skills-grid">
+            <div class="skill-category fade-in-up">
+                <h4>
+                    <div class="skill-icon">⚡</div>Backend Development
+                </h4>
+                <ul class="skill-list">
+                    <li>
+                        C# & .NET Core 6/8
+                        <div class="skill-progress-container">
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 95%"></div>
+                            </div>
+                            <span class="skill-percentage">95%</span>
+                        </div>
+                    </li>
+                    <li>
+                        ASP.NET Core MVC/API
+                        <div class="skill-progress-container">
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 90%"></div>
+                            </div>
+                            <span class="skill-percentage">90%</span>
+                        </div>
+                    </li>
+                    <li>
+                        Entity Framework 6/7/8
+                        <div class="skill-progress-container">
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 85%"></div>
+                            </div>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                    </li>
+                    <li>
+                        LINQ & AutoMapper
+                        <div class="skill-progress-container">
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 90%"></div>
+                            </div>
+                            <span class="skill-percentage">90%</span>
+                        </div>
+                    </li>
+                    <li>
+                        Microservizi & Web API
+                        <div class="skill-progress-container">
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 88%"></div>
+                            </div>
+                            <span class="skill-percentage">88%</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="skill-category fade-in-up">
+                <h4>
+                    <div class="skill-icon">🎨</div>Frontend Development
+                </h4>
+                <ul class="skill-list">
+                    <li>
+                        Angular (v18+)
+                        <div class="skill-progress-container">
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 85%"></div>
+                            </div>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                    </li>
+                    <li>
+                        TypeScript & JavaScript
+                        <div class="skill-progress-container">
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 88%"></div>
+                            </div>
+                            <span class="skill-percentage">88%</span>
+                        </div>
+                    </li>
+                    <li>
+                        RxJS 7
+                        <div class="skill-progress-container">
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 80%"></div>
+                            </div>
+                            <span class="skill-percentage">80%</span>
+                        </div>
+                    </li>
+                    <li>
+                        HTML5 & CSS3
+                        <div class="skill-progress-container">
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 90%"></div>
+                            </div>
+                            <span class="skill-percentage">90%</span>
+                        </div>
+                    </li>
+                    <li>
+                        Bootstrap 5
+                        <div class="skill-progress-container">
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 85%"></div>
+                            </div>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="skill-category fade-in-up">
+                <h4>
+                    <div class="skill-icon">🗄️</div>Database & Cloud
+                </h4>
+                <ul class="skill-list">
+                    <li>MS SQL Server (T-SQL)</li>
+                    <li>MySQL & PostgreSQL</li>
+                    <li>MongoDB</li>
+                    <li>Azure (livello base)</li>
+                    <li>Docker</li>
+                </ul>
+            </div>
+            <div class="skill-category fade-in-up">
+                <h4>
+                    <div class="skill-icon">🔧</div>Testing & DevOps
+                </h4>
+                <ul class="skill-list">
+                    <li>xUnit (unit testing)</li>
+                    <li>Cypress (e2e testing)</li>
+                    <li>Git & SVN</li>
+                    <li>Postman & Swagger</li>
+                    <li>Serilog & Seq</li>
+                </ul>
+            </div>
+            <div class="skill-category fade-in-up">
+                <h4>
+                    <div class="skill-icon">🔒</div>Sicurezza & Auth
+                </h4>
+                <ul class="skill-list">
+                    <li>JWT Authentication</li>
+                    <li>ASP.NET Core Identity</li>
+                    <li>CORS Configuration</li>
+                    <li>OAuth & SPID</li>
+                    <li>Firma Digitale</li>
+                </ul>
+            </div>
+            <div class="skill-category fade-in-up">
+                <h4>
+                    <div class="skill-icon">🤖</div>AI & Innovation
+                </h4>
+                <ul class="skill-list">
+                    <li>OpenAI API Integration</li>
+                    <li>ChatGPT per Enterprise</li>
+                    <li>GitHub Copilot</li>
+                    <li>Claude AI</li>
+                    <li>RabbitMQ & MassTransit</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="section parallax-section" id="experience">
+        <h2 class="section-title fade-in-up">Esperienza Professionale</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">Nov 2024 - Feb 2025</div>
+                <div class="timeline-company">QbitSoft (Telecom S.p.A.)</div>
+                <div class="timeline-role">Software Developer - Full Remote</div>
+                <div class="timeline-description">
+                    Sviluppo software per Telecom S.p.A. con focus su Web API RESTful,
+                    Microservizi, JWT authentication, implementazione di nuove funzionalità e bug fixing
+                    utilizzando C# e ASP.NET Core.
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">Mar 2021 - Dic 2023</div>
+                <div class="timeline-company">Gruppo Global Sistemi (Aruba S.p.A.)</div>
+                <div class="timeline-role">Software Developer - Full Remote</div>
+                <div class="timeline-description">
+                    Sviluppo software in ambito PEC, SPID, Firma Digitale, Marche Temporali e
+                    Fatturazione Elettronica. Utilizzo di ASP.NET Core 6/8, Angular (v17),
+                    Cypress per testing, integrazione RESTful e Microservizi.
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">Giu 2020 - Dic 2020</div>
+                <div class="timeline-company">LaserSoft S.r.l.</div>
+                <div class="timeline-role">Software Developer</div>
+                <div class="timeline-description">
+                    Sviluppo e manutenzione di applicativi aziendali utilizzando ASP.NET MVC,
+                    con focus sulla creazione di soluzioni software personalizzate per le esigenze del business.
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">Mag 2018 - Mar 2020</div>
+                <div class="timeline-company">Attività Autonoma</div>
+                <div class="timeline-role">Freelance Developer</div>
+                <div class="timeline-description">
+                    Programmazione Web con ASP.NET Core MVC, sviluppo di RESTful API e Microservizi.
+                    Studio autonomo avanzato di tecnologie Microsoft e Frontend development.
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">Apr 2004 - Lug 2009</div>
+                <div class="timeline-company">Combymatica S.r.l.</div>
+                <div class="timeline-role">Sistemista Programmatore</div>
+                <div class="timeline-description">
+                    Controllo e manutenzione di linee HDSL, ADSL, ISDN e rete Ethernet aziendale;
+                    riparazione hardware; sviluppo software in C# 3 & 4, ASP.NET MVC, LINQ to SQL,
+                    WPF, Entity Framework.
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">1991 - 2004</div>
+                <div class="timeline-company">Software House - Diverse Aziende</div>
+                <div class="timeline-role">Sistemista Programmatore & Assistenza Hardware</div>
+                <div class="timeline-description">
+                    Progettazione e sviluppo di applicazioni OOP in Delphi con pattern consolidati.
+                    Modellazione e ottimizzazione database su Paradox e SQL Server.
+                    Realizzazione di soluzioni verticali per uffici acquisti e procedure giudiziarie civili.
+                    Implementazione middleware per messaggistica aziendale (SMS, Telex, Fax, Email).
+                    Gestione assistenza hardware, diagnostica e deployment client-server.
+                    Focus su software su commessa per logistica refrigerata e assistenza continuativa.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="section parallax-section" id="education">
+        <h2 class="section-title fade-in-up">Formazione</h2>
+        <div class="education-card fade-in-up">
+            <h4>🎓 Laurea in Ingegneria Elettronica</h4>
+            <p><strong>Università di Bologna</strong> - 20 novembre 1991</p>
+            <p>Votazione: 89/100</p>
+            <p>Tesi: "Libreria software per il controllo in tempo reale in ambiente Matlab/Simulink"</p>
+            <p>Supervisori: Prof. Claudio Melchiorri, Prof. Lorenzo Marconi</p>
+            <p>Attività sperimentale di 4 mesi presso il Laboratorio di Automatica e Robotica (L.A.R.)</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-links">
+            <a href="https://github.com/paolopci" target="_blank">🔗 GitHub</a>
+            <a href="https://www.linkedin.com/in/paolo-paci-a89b7438/" target="_blank">💼 LinkedIn</a>
+            <a href="mailto:paolopci@yahoo.it">✉️ Email</a>
+        </div>
+        <p>&copy; 2025 Paolo Paci - Software Engineer & .NET Specialist</p>
+        <p><em>Disponibile per nuove collaborazioni in modalità Full Remote/Ibrido</em></p>
+    </footer>
+
+    <script>
+        // Smooth scrolling enhancement
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Enhanced navbar scroll effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', function () {
+            const navbar = document.getElementById('navbar');
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                navbar.classList.add('scrolled');
+            } else if (currentScroll < lastScroll && currentScroll < 100) {
+                navbar.classList.remove('scrolled');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Subtle parallax effect
+        const parallaxSections = document.querySelectorAll('.section');
+        window.addEventListener('scroll', () => {
+            requestAnimationFrame(() => {
+                parallaxSections.forEach(section => {
+                    const distance = window.pageYOffset - section.offsetTop;
+                    const speed = 0.15;
+                    if (Math.abs(distance) < window.innerHeight) {
+                        section.style.transform = `translateY(${distance * speed}px)`;
+                    }
+                });
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '-50px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    if (entry.target.classList.contains('parallax-section')) {
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements with animation classes
+        document.querySelectorAll('.fade-in-up, .slide-in-left, .slide-in-right, .parallax-section').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Initialize smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
+
+        // Mobile Menu Toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-container')) {
+                mobileMenu.classList.remove('active');
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Prevent body scroll when mobile menu is open
+        mobileMenu.addEventListener('click', () => {
+            document.body.style.overflow =
+                document.body.style.overflow === 'hidden' ? 'visible' : 'hidden';
+        });
+    </script>
+</body>
+
+</html>
