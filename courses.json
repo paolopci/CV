@@ -1,0 +1,62 @@
+{
+    "courses": [
+        {
+            "id": "js-advanced",
+            "platform": "Udemy",
+            "platformIcon": "📚",
+            "title": "JavaScript Moderno & Pattern Avanzati",
+            "date": "Marzo 2025",
+            "duration": "40 ore",
+            "students": "28.5K studenti",
+            "level": "Advanced",
+            "description": "Corso completo su ES2024+, Promises, async/await, pattern di programmazione funzionale e ottimizzazione delle performance in applicazioni JavaScript enterprise.",
+            "tags": [
+                "ES2024+",
+                "Functional JS",
+                "Design Patterns",
+                "Performance"
+            ]
+        },
+        {
+            "id": "dotnet-architecture",
+            "platform": "Pluralsight",
+            "platformIcon": "💻",
+            "title": "Enterprise Architecture con .NET Core 8",
+            "date": "Gennaio 2025",
+            "duration": "32 ore",
+            "audience": "Enterprise",
+            "description": "Architetture enterprise-ready con .NET 8, CQRS, Event Sourcing, microservizi e best practices per applicazioni scalabili in ambiente cloud.",
+            "tags": [
+                ".NET 8",
+                "Microservices",
+                "CQRS",
+                "Azure"
+            ]
+        },
+        {
+            "id": "angular-master",
+            "platform": "Angular University",
+            "platformIcon": "🔷",
+            "title": "Angular 17 Master Class",
+            "date": "Novembre 2024",
+            "duration": "28 ore",
+            "level": "Advanced",
+            "description": "Deep dive in Angular 17: Signals, Server Components, performance optimization, state management avanzato e testing di applicazioni enterprise.",
+            "tags": [
+                "Angular 17",
+                "Signals",
+                "SSR",
+                "NgRx"
+            ]
+        }
+    ],
+    "metadata": {
+        "lastUpdate": "2025-06-11",
+        "totalCourses": 3,
+        "categories": [
+            "Frontend",
+            "Backend",
+            "Architecture"
+        ]
+    }
+}
