@@ -836,6 +836,90 @@
                 padding: 0.6rem 1rem;
             }
         }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .course-platform {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .course-date {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .course-title {
+            font-size: 1.25rem;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .course-details {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .course-description {
+            color: #4a5568;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .course-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .course-tags span {
+            background: #ebf4ff;
+            color: #4c51bf;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-card {
+                padding: 1.25rem;
+            }
+        }
     </style>
 </head>
 
@@ -1206,34 +1290,70 @@
     <!-- Certifications Section -->
     <section class="section parallax-section" id="certifications">
         <h2 class="section-title fade-in-up">📜 Certificazioni & Corsi</h2>
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-date">2025</div>
-                <div class="timeline-company">Microsoft</div>
-                <div class="timeline-role">Azure Developer Associate (AZ-204)</div>
-                <div class="timeline-description">
-                    Certificazione Microsoft per lo sviluppo di soluzioni cloud su Azure,
-                    inclusi servizi web, storage, sicurezza e monitoring.
+        <div class="courses-grid">
+            <div class="course-card fade-in-up">
+                <div class="course-header">
+                    <span class="course-platform">📚 Udemy</span>
+                    <span class="course-date">Marzo 2025</span>
+                </div>
+                <h3 class="course-title">JavaScript Moderno & Pattern Avanzati</h3>
+                <div class="course-details">
+                    <span>⏱️ 40 ore</span>
+                    <span>👨‍🎓 28.5K studenti</span>
+                </div>
+                <p class="course-description">
+                    Corso completo su ES2024+, Promises, async/await, pattern di programmazione funzionale
+                    e ottimizzazione delle performance in applicazioni JavaScript enterprise.
+                </p>
+                <div class="course-tags">
+                    <span>ES2024+</span>
+                    <span>Functional JS</span>
+                    <span>Design Patterns</span>
+                    <span>Performance</span>
                 </div>
             </div>
 
-            <div class="timeline-item">
-                <div class="timeline-date">2024</div>
-                <div class="timeline-company">Udemy</div>
-                <div class="timeline-role">Microservices Architecture with .NET Core</div>
-                <div class="timeline-description">
-                    Corso avanzato sulla progettazione e implementazione di architetture a microservizi
-                    utilizzando .NET Core, Docker e pattern di design enterprise.
+            <div class="course-card fade-in-up">
+                <div class="course-header">
+                    <span class="course-platform">💻 Pluralsight</span>
+                    <span class="course-date">Gennaio 2025</span>
+                </div>
+                <h3 class="course-title">Enterprise Architecture con .NET Core 8</h3>
+                <div class="course-details">
+                    <span>⏱️ 32 ore</span>
+                    <span>🏢 Enterprise</span>
+                </div>
+                <p class="course-description">
+                    Architetture enterprise-ready con .NET 8, CQRS, Event Sourcing,
+                    microservizi e best practices per applicazioni scalabili in ambiente cloud.
+                </p>
+                <div class="course-tags">
+                    <span>.NET 8</span>
+                    <span>Microservices</span>
+                    <span>CQRS</span>
+                    <span>Azure</span>
                 </div>
             </div>
 
-            <div class="timeline-item">
-                <div class="timeline-date">2023</div>
-                <div class="timeline-company">Pluralsight</div>
-                <div class="timeline-role">Angular Advanced Masterclass</div>
-                <div class="timeline-description">
-                    Approfondimento su pattern avanzati Angular, RxJS, state management
-                    e ottimizzazione delle performance nelle applicazioni enterprise.
+            <div class="course-card fade-in-up">
+                <div class="course-header">
+                    <span class="course-platform">🔷 Angular University</span>
+                    <span class="course-date">Novembre 2024</span>
+                </div>
+                <h3 class="course-title">Angular 17 Master Class</h3>
+                <div class="course-details">
+                    <span>⏱️ 28 ore</span>
+                    <span>🎓 Advanced</span>
+                </div>
+                <p class="course-description">
+                    Deep dive in Angular 17: Signals, Server Components, performance optimization,
+                    state management avanzato e testing di applicazioni enterprise.
+                </p>
+                <div class="course-tags">
+                    <span>Angular 17</span>
+                    <span>Signals</span>
+                    <span>SSR</span>
+                    <span>NgRx</span>
                 </div>
             </div>
         </div>
