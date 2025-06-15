@@ -375,72 +375,9 @@
     <!-- Certifications Section -->
     <section class="section parallax-section" id="certifications">
         <h2 class="section-title fade-in-up">📜 Certificazioni & Corsi</h2>
-        <div class="courses-grid">
-            <div class="course-card fade-in-up">
-                <div class="course-header">
-                    <span class="course-platform">📚 Udemy</span>
-                    <span class="course-date">Marzo 2025</span>
-                </div>
-                <h3 class="course-title">JavaScript Moderno & Pattern Avanzati</h3>
-                <div class="course-details">
-                    <span>⏱️ 40 ore</span>
-                    <span>👨‍🎓 28.5K studenti</span>
-                </div>
-                <p class="course-description">
-                    Corso completo su ES2024+, Promises, async/await, pattern di programmazione funzionale
-                    e ottimizzazione delle performance in applicazioni JavaScript enterprise.
-                </p>
-                <div class="course-tags">
-                    <span>ES2024+</span>
-                    <span>Functional JS</span>
-                    <span>Design Patterns</span>
-                    <span>Performance</span>
-                </div>
-            </div>
-
-            <div class="course-card fade-in-up">
-                <div class="course-header">
-                    <span class="course-platform">💻 Pluralsight</span>
-                    <span class="course-date">Gennaio 2025</span>
-                </div>
-                <h3 class="course-title">Enterprise Architecture con .NET Core 8</h3>
-                <div class="course-details">
-                    <span>⏱️ 32 ore</span>
-                    <span>🏢 Enterprise</span>
-                </div>
-                <p class="course-description">
-                    Architetture enterprise-ready con .NET 8, CQRS, Event Sourcing,
-                    microservizi e best practices per applicazioni scalabili in ambiente cloud.
-                </p>
-                <div class="course-tags">
-                    <span>.NET 8</span>
-                    <span>Microservices</span>
-                    <span>CQRS</span>
-                    <span>Azure</span>
-                </div>
-            </div>
-
-            <div class="course-card fade-in-up">
-                <div class="course-header">
-                    <span class="course-platform">🔷 Angular University</span>
-                    <span class="course-date">Novembre 2024</span>
-                </div>
-                <h3 class="course-title">Angular 17 Master Class</h3>
-                <div class="course-details">
-                    <span>⏱️ 28 ore</span>
-                    <span>🎓 Advanced</span>
-                </div>
-                <p class="course-description">
-                    Deep dive in Angular 17: Signals, Server Components, performance optimization,
-                    state management avanzato e testing di applicazioni enterprise.
-                </p>
-                <div class="course-tags">
-                    <span>Angular 17</span>
-                    <span>Signals</span>
-                    <span>SSR</span>
-                    <span>NgRx</span>
-                </div>
-            </div>
+        <div class="courses-grid" id="coursesGrid">
+            <!-- I corsi verranno caricati dinamicamente da courses.json -->
+            <div class="loading">Caricamento corsi...</div>
         </div>
     </section>
 
@@ -478,6 +415,64 @@
     </footer>
 
     <script>
+        // Function to load and display courses
+        async function loadCourses() {
+            try {
+                const response = await fetch('courses.json');
+                const data = await response.json();
+                const coursesGrid = document.getElementById('coursesGrid');
+
+                // Clear loading message
+                coursesGrid.innerHTML = '';
+
+                // Generate course cards
+                data.courses.forEach(course => {
+                    const courseCard = document.createElement('div');
+                    courseCard.className = 'course-card fade-in-up';
+
+                    // Build course details HTML
+                    const courseDetails = [];
+                    if (course.duration) courseDetails.push(`⏱️ ${course.duration}`);
+                    if (course.students) courseDetails.push(`👨‍🎓 ${course.students}`);
+                    if (course.level) courseDetails.push(`🎓 ${course.level}`);
+                    if (course.audience) courseDetails.push(`🏢 ${course.audience}`);
+
+                    // Build tags HTML
+                    const tagsHtml = course.tags ?
+                        course.tags.map(tag => `<span>${tag}</span>`).join('') : '';
+
+                    courseCard.innerHTML = `
+                        <div class="course-header">
+                            <span class="course-platform">${course.platformIcon} ${course.platform}</span>
+                            <span class="course-date">${course.date}</span>
+                        </div>
+                        <h3 class="course-title">${course.title}</h3>
+                        <div class="course-details">
+                            ${courseDetails.join('<span></span>')}
+                        </div>
+                        <p class="course-description">
+                            ${course.description}
+                        </p>
+                        <div class="course-tags">
+                            ${tagsHtml}
+                        </div>
+                    `;
+
+                    coursesGrid.appendChild(courseCard);
+                });
+
+                // Re-observe new elements for animations
+                document.querySelectorAll('.course-card.fade-in-up').forEach(el => {
+                    observer.observe(el);
+                });
+
+            } catch (error) {
+                console.error('Errore nel caricamento dei corsi:', error);
+                document.getElementById('coursesGrid').innerHTML =
+                    '<div class="error">Errore nel caricamento dei corsi</div>';
+            }
+        }
+
         // Smooth scrolling enhancement
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -579,6 +574,9 @@
             document.body.style.overflow =
                 document.body.style.overflow === 'hidden' ? 'visible' : 'hidden';
         });
+
+        // Load courses when page is ready
+        document.addEventListener('DOMContentLoaded', loadCourses);
     </script>
 </body>
 
