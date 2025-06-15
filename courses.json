@@ -48,15 +48,92 @@
                 "SSR",
                 "NgRx"
             ]
+        },
+        {
+            "id": "dotnet-microservices-complete",
+            "platform": "Udemy",
+            "platformIcon": "📚",
+            "title": ".NET Core Microservices - The Complete Guide (.NET 6 MVC)",
+            "date": "Giugno 2025",
+            "duration": "35 ore",
+            "students": "15.2K studenti",
+            "level": "Intermediate",
+            "description": "Guida completa per costruire microservizi con .NET 6 e .NET Core MVC. Include architettura microservizi, Entity Framework Core, .NET Identity, Azure Service Bus e deployment con Docker.",
+            "tags": [
+                ".NET 6",
+                "Microservices",
+                "MVC",
+                "Entity Framework",
+                "Docker",
+                "Azure"
+            ]
+        },
+        {
+            "id": "python-mega-course",
+            "platform": "Udemy",
+            "platformicon": "🐍",
+            "title": "The Python Mega Course: Learn Python in 60 Days, Build 20 Apps",
+            "date": "Marzo 2025",
+            "duration": "51.5 ore",
+            "students": "345.2K studenti",
+            "level": "Beginner to Advanced",
+            "description": "Learn Python from zero to advanced by building real programs to gain the skills needed to land an entry-level job. Include machine learning, web development, automation, and GUI applications.",
+            "tags": [
+                "Python",
+                "Programming",
+                "Web Development",
+                "Machine Learning",
+                "Automation",
+                "GUI Applications"
+            ]
+        },
+        {
+            "id": "docker-zero-to-hero",
+            "platform": "Dometrain",
+            "platformicon": "🐳",
+            "title": "From Zero to Hero: Docker for Developers",
+            "date": "2025",
+            "duration": "3+ ore",
+            "students": "N/A",
+            "level": "Beginner to Advanced",
+            "description": "Docker is one of the most essential tools that every developer needs to know. Learn everything from installation to mastering Docker usage, publishing images, and integrating it into your developer workflow.",
+            "tags": [
+                "Docker",
+                "Containers",
+                "DevOps",
+                "Kubernetes",
+                "CI/CD",
+                "Development Tools"
+            ]
+        },
+        {
+            "id": "blazor-deep-dive-net8",
+            "platform": "Udemy",
+            "platformicon": "🔥",
+            "title": "Blazor Deep Dive - From Beginner to Advanced in .NET 8",
+            "date": "2025",
+            "duration": "N/A",
+            "students": "N/A",
+            "level": "Beginner to Advanced",
+            "description": "A comprehensive journey with Blazor in .NET 8. Starting with fundamentals, this course supports beginners every step of the way and includes practical projects to solidify understanding and give practical experience in Blazor development.",
+            "tags": [
+                "Blazor",
+                ".NET 8",
+                "C#",
+                "Web Development",
+                "Frontend",
+                "ASP.NET Core"
+            ]
         }
     ],
     "metadata": {
-        "lastUpdate": "2025-06-11",
-        "totalCourses": 3,
+        "lastUpdate": "2025-06-15",
+        "totalCourses": 4,
         "categories": [
             "Frontend",
             "Backend",
-            "Architecture"
+            "Architecture",
+            "Microservices"
         ]
     }
 }
