@@ -611,6 +611,37 @@
             }
         });
 
+        // Dark Mode Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.createElement('button');
+            toggleButton.className = 'toggle-theme';
+            toggleButton.textContent = '🌓 Dark Mode';
+
+            toggleButton.addEventListener('click', () => {
+                document.body.classList.toggle('dark-theme');
+            });
+
+            document.body.appendChild(toggleButton);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.createElement('button');
+            toggleButton.className = 'toggle-theme';
+            toggleButton.textContent = '🌓 Dark Mode';
+
+            // Leggi preferenza salvata
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+
+            toggleButton.addEventListener('click', () => {
+                document.body.classList.toggle('dark-theme');
+                const isDark = document.body.classList.contains('dark-theme');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+
+            document.body.appendChild(toggleButton);
+        });
 
 
 
