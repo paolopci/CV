@@ -414,6 +414,15 @@
         <p><em>Disponibile per nuove collaborazioni in modalità Full Remote/Ibrido</em></p>
     </footer>
 
+    <!-- Modal per Dettagli Corso -->
+    <div id="courseModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <span class="modal-close" id="closeModal">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+
     <script>
         // Function to load and display courses
         async function loadCourses() {
@@ -429,34 +438,45 @@
                 data.courses.forEach(course => {
                     const courseCard = document.createElement('div');
                     courseCard.className = 'course-card fade-in-up';
+                    courseCard.style.cursor = 'pointer';
 
-                    // Build course details HTML
                     const courseDetails = [];
                     if (course.duration) courseDetails.push(`⏱️ ${course.duration}`);
                     if (course.students) courseDetails.push(`👨‍🎓 ${course.students}`);
                     if (course.level) courseDetails.push(`🎓 ${course.level}`);
                     if (course.audience) courseDetails.push(`🏢 ${course.audience}`);
 
-                    // Build tags HTML
                     const tagsHtml = course.tags ?
                         course.tags.map(tag => `<span>${tag}</span>`).join('') : '';
 
                     courseCard.innerHTML = `
-                        <div class="course-header">
-                            <span class="course-platform">${course.platformIcon} ${course.platform}</span>
-                            <span class="course-date">${course.date}</span>
-                        </div>
-                        <h3 class="course-title">${course.title}</h3>
-                        <div class="course-details">
-                            ${courseDetails.join('<span></span>')}
-                        </div>
-                        <p class="course-description">
-                            ${course.description}
-                        </p>
-                        <div class="course-tags">
-                            ${tagsHtml}
-                        </div>
-                    `;
+        <div class="course-header">
+            <span class="course-platform">${course.platformIcon || course.platformicon} ${course.platform}</span>
+            <span class="course-date">${course.date}</span>
+        </div>
+        <h3 class="course-title">${course.title}</h3>
+        <div class="course-details">
+            ${courseDetails.join('<span></span>')}
+        </div>
+        <p class="course-description">${course.description}</p>
+        <div class="course-tags">${tagsHtml}</div>
+    `;
+
+                    // Evento per apertura modal
+                    courseCard.addEventListener('click', () => {
+                        const modalBody = document.getElementById('modalBody');
+                        modalBody.innerHTML = `
+            <h2>${course.title}</h2>
+            <p><strong>Piattaforma:</strong> ${course.platform}</p>
+            <p><strong>Durata:</strong> ${course.duration || 'N/D'}</p>
+            <p><strong>Livello:</strong> ${course.level || 'N/D'}</p>
+            <p><strong>Studenti:</strong> ${course.students || 'N/D'}</p>
+            <p><strong>Data:</strong> ${course.date}</p>
+            <p style="margin-top: 1rem;">${course.description}</p>
+            <p><strong>Tags:</strong> ${tagsHtml}</p>
+        `;
+                        document.getElementById('courseModal').style.display = 'flex';
+                    });
 
                     coursesGrid.appendChild(courseCard);
                 });
@@ -577,7 +597,56 @@
 
         // Load courses when page is ready
         document.addEventListener('DOMContentLoaded', loadCourses);
+
+
+        // Chiudi modal al click sulla "X"
+        document.getElementById('closeModal').addEventListener('click', () => {
+            document.getElementById('courseModal').style.display = 'none';
+        });
+
+        // Chiudi modal cliccando fuori dal contenuto
+        document.getElementById('courseModal').addEventListener('click', (e) => {
+            if (e.target.id === 'courseModal') {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Dark Mode Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.createElement('button');
+            toggleButton.className = 'toggle-theme';
+            toggleButton.textContent = '🌓 Dark Mode';
+
+            toggleButton.addEventListener('click', () => {
+                document.body.classList.toggle('dark-theme');
+            });
+
+            document.body.appendChild(toggleButton);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleButton = document.createElement('button');
+            toggleButton.className = 'toggle-theme';
+            toggleButton.textContent = '🌓 Dark Mode';
+
+            // Leggi preferenza salvata
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+
+            toggleButton.addEventListener('click', () => {
+                document.body.classList.toggle('dark-theme');
+                const isDark = document.body.classList.contains('dark-theme');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+
+            document.body.appendChild(toggleButton);
+        });
+
+
+
     </script>
+
 </body>
 
 </html>

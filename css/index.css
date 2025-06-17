@@ -594,14 +594,7 @@ html {
 }
 
 /* Education Section */
-.education-card {
-    background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
-    color: white;
-    padding: 2rem;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 15px 40px rgba(240, 147, 251, 0.3);
-}
+
 
 .education-card h4 {
     font-size: 1.5rem;
@@ -947,4 +940,173 @@ html {
     .course-card {
         padding: 1.25rem;
     }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 700px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: fadeInUp 0.4s ease;
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    font-size: 2rem;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: #000;
+}
+
+body {
+    background-color: #ffffff;
+    color: #111;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Tema scuro */
+body.dark-theme {
+    background-color: #121212;
+    color: #f1f1f1;
+}
+
+body.dark-theme header,
+body.dark-theme footer,
+body.dark-theme .card,
+body.dark-theme .timeline-item,
+body.dark-theme .modal-content {
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+    border-color: #333;
+}
+
+body.dark-theme a {
+    color: #89c4f4;
+}
+
+body.dark-theme .accordion-header:hover {
+    background-color: #2c2c2c;
+}
+
+/* Toggle switch stile base */
+.toggle-theme {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10000;
+    background: #ddd;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.toggle-theme:hover {
+    background: #bbb;
+}
+
+/* FIX: Elementi bianchi che devono adattarsi alla dark mode */
+body.dark-theme .section,
+body.dark-theme .skill-category,
+body.dark-theme .course-card,
+body.dark-theme .timeline-date,
+body.dark-theme .education-card,
+body.dark-theme .presentation-letter,
+body.dark-theme .notice-item,
+body.dark-theme .contact-item {
+    background-color: #1f1f1f !important;
+    color: #f1f1f1;
+    border-color: #333;
+}
+
+/* FIX: Colori dei testi specifici */
+body.dark-theme .timeline-company,
+body.dark-theme .timeline-description,
+body.dark-theme .profile-content p,
+body.dark-theme .course-description,
+body.dark-theme .course-date,
+body.dark-theme .course-details,
+body.dark-theme .skill-percentage {
+    color: #ccc;
+}
+
+body.dark-theme .timeline-role,
+body.dark-theme .course-platform {
+    color: #89c4f4;
+}
+
+/* FIX: Colori dei tag dei corsi */
+body.dark-theme .course-tags span {
+    background-color: #333;
+    color: #f1f1f1;
+}
+
+/* FIX: Navigation */
+body.dark-theme .nav,
+body.dark-theme .nav.scrolled {
+    background-color: rgba(32, 32, 32, 0.9);
+    border-bottom: 1px solid #444;
+}
+
+body.dark-theme .nav-links a {
+    color: #ddd;
+}
+
+body.dark-theme .nav-links a:hover {
+    color: #89c4f4;
+}
+
+/* FIX: Sezioni parallax e sezioni generali */
+body.dark-theme .parallax-section {
+    background-color: #181818;
+}
+
+body.dark-theme .section-title {
+    color: #ffffff !important;
+}
+
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme h4 {
+    color: #f1f1f1;
+}
+
+/* Light Mode: Education Card */
+.education-card {
+    background: #ffffff;
+    color: #111;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(240, 147, 251, 0.3);
+}
+
+/* Dark Mode override */
+body.dark-theme .education-card {
+    background: #1e1e1e;
+    color: #f1f1f1;
 }
