@@ -1110,3 +1110,10 @@ body.dark-theme .education-card {
     background: #1e1e1e;
     color: #f1f1f1;
 }
+
+/* Dark mode fix: hover sulle skill-category */
+body.dark-theme .skill-category:hover {
+    background: linear-gradient(to bottom right, #2a2a2a, #1f1f1f) !important;
+    box-shadow: 0 20px 40px rgba(255, 255, 255, 0.08);
+    border-color: #444;
+}
