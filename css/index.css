@@ -1275,3 +1275,14 @@ body.dark-theme .timeline-item[open] .timeline-description {
         padding-right: 1rem;
     }
 }
+
+/* 🔧 Dark theme hamburger menu contrast fix */
+body.dark-theme .nav-links {
+    background-color: #111827 !important; /* colore scuro coerente con il tema */
+}
+body.dark-theme .nav-links a {
+    color: #ffffff !important; /* testo bianco */
+}
+body.dark-theme .nav-links a:hover {
+    color: #60a5fa !important; /* azzurro chiaro in hover */
+}
