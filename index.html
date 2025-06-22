@@ -19,7 +19,11 @@
 <li><a href="#experience">Carriera</a></li>
 <li><a href="#education">Formazione</a></li>
 <li><a href="#contact">Contatti</a></li>
-<li><a class="cv-download-link" download="cv-paolo-paci.pdf" href="cv-paolo-paci.pdf" target="_blank">📄 CV</a></li></ul>
+<li><a class="cv-download-link" download="cv-paolo-paci.pdf" href="cv-paolo-paci.pdf" target="_blank">📄 CV</a></li>
+<li>
+  <a href="javascript:void(0);" id="themeToggleIcon" title="Cambia tema">🌙</a>
+</li>
+</ul>
 <div class="mobile-menu">
 <span></span>
 <span></span>
@@ -159,6 +163,10 @@
                         Microservizi &amp; Web API
                         
 <span class="badge-level esperto">Esperto</span></li>
+
+<li>
+  <a href="javascript:void(0);" id="themeToggleIcon" title="Cambia tema">🌙</a>
+</li>
 </ul>
 </div>
 <div class="skill-category fade-in-up">
@@ -186,6 +194,10 @@
                         Bootstrap 5
                         
 <span class="badge-level esperto">Esperto</span></li>
+
+<li>
+  <a href="javascript:void(0);" id="themeToggleIcon" title="Cambia tema">🌙</a>
+</li>
 </ul>
 </div>
 <div class="skill-category fade-in-up">
@@ -198,6 +210,10 @@
 <li>MongoDB</li>
 <li>Azure (livello base)</li>
 <li>Docker</li>
+
+<li>
+  <a href="javascript:void(0);" id="themeToggleIcon" title="Cambia tema">🌙</a>
+</li>
 </ul>
 </div>
 <div class="skill-category fade-in-up">
@@ -210,6 +226,10 @@
 <li>Git &amp; SVN<span class="badge-level esperto">Esperto</span></li>
 <li>Postman &amp; Swagger<span class="badge-level esperto">Esperto</span></li>
 <li>Serilog &amp; Seq</li>
+
+<li>
+  <a href="javascript:void(0);" id="themeToggleIcon" title="Cambia tema">🌙</a>
+</li>
 </ul>
 </div>
 <div class="skill-category fade-in-up">
@@ -222,6 +242,10 @@
 <li>CORS Configuration<span class="badge-level esperto">Esperto</span></li>
 <li>OAuth &amp; SPID</li>
 <li>Firma Digitale</li>
+
+<li>
+  <a href="javascript:void(0);" id="themeToggleIcon" title="Cambia tema">🌙</a>
+</li>
 </ul>
 </div>
 <div class="skill-category fade-in-up">
@@ -234,6 +258,10 @@
 <li>GitHub Copilot</li>
 <li>Claude AI</li>
 <li>RabbitMQ &amp; MassTransit</li>
+
+<li>
+  <a href="javascript:void(0);" id="themeToggleIcon" title="Cambia tema">🌙</a>
+</li>
 </ul>
 </div>
 </div>
@@ -559,5 +587,22 @@
             document.body.appendChild(toggleButton);
         });
     </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const icon = document.getElementById('themeToggleIcon');
+    const updateIcon = () => {
+      icon.textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌙';
+    };
+    updateIcon();
+    icon.addEventListener('click', () => {
+      document.body.classList.toggle('dark-theme');
+      const isDark = document.body.classList.contains('dark-theme');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateIcon();
+    });
+  });
+</script>
+
 </body>
 </html>
