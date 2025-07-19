@@ -1286,3 +1286,57 @@ body.dark-theme .nav-links a {
 body.dark-theme .nav-links a:hover {
     color: #60a5fa !important; /* azzurro chiaro in hover */
 }
+
+/* ===== NUOVE REGOLE PER LE 5 MIGLIORIE ===== */
+
+/* 1. Pulsante hero */
+.btn-hero {
+  display: inline-block;
+  margin: 1.2rem 0 0;
+  padding: .9rem 2.2rem;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #fff;
+  background: linear-gradient(45deg,#667eea,#764ba2);
+  border-radius: 30px;
+  box-shadow: 0 6px 20px rgba(102,126,234,.35);
+  transition: transform .3s ease, box-shadow .3s ease;
+  text-decoration: none;
+}
+.btn-hero:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102,126,234,.45);
+}
+
+/* 2. Mini-summary box */
+.summary-box {
+  margin: 1.5rem auto 0;
+  max-width: 600px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,.9);
+}
+
+/* 3. Loghi certificazioni (se vuoi usarli nelle card) */
+.cert-logo {
+  height: 24px;
+  vertical-align: middle;
+  margin-left: .5rem;
+}
+
+/* 4. Typewriter effect */
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid #fff;
+  animation: typing 3.5s steps(40,end), blink-caret .75s step-end infinite;
+}
+@keyframes typing {
+  from { width: 0 }
+  to   { width: 100% }
+}
+@keyframes blink-caret {
+  50% { border-color: transparent }
+}
+
+/* 5. Dark-mode fixes sono già presenti nel tuo CSS originale */
