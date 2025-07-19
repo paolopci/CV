@@ -1292,7 +1292,7 @@ body.dark-theme .nav-links a:hover {
 /* 1. Pulsante hero */
 .btn-hero {
   display: inline-block;
-  margin: 1.2rem 0 0;
+  
   padding: .9rem 2.2rem;
   font-weight: 600;
   font-size: 1.05rem;
@@ -1303,6 +1303,7 @@ body.dark-theme .nav-links a:hover {
   transition: transform .3s ease, box-shadow .3s ease;
   text-decoration: none;
 }
+    margin: 0.5rem;
 .btn-hero:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(102,126,234,.45);
@@ -1340,3 +1341,23 @@ body.dark-theme .nav-links a:hover {
 }
 
 /* 5. Dark-mode fixes sono già presenti nel tuo CSS originale */
+
+
+/* CTA button container */
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+}
+
