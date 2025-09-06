@@ -627,9 +627,10 @@
 
         const today = new Date();
         const mese = monthsIt[today.getMonth()];
+        const giorno = today.getDate();
         const anno = today.getFullYear();
 
-        document.getElementById("dynamic-date").textContent = `Pesaro, ${mese} ${anno}`;
+        document.getElementById("dynamic-date").textContent = `Pesaro, ${giorno} ${mese} ${anno}`;
     </script>
 </body>
 
