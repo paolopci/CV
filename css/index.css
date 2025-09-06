@@ -4,6 +4,20 @@
     box-sizing: border-box;
 }
 
+/* Accessibility helpers */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    border: 0;
+    white-space: nowrap;
+}
+
 body,
 html {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -1360,4 +1374,3 @@ body.dark-theme .nav-links a:hover {
 }
 
 }
-
