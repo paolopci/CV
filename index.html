@@ -451,15 +451,19 @@
             lastScroll = currentScroll;
         });
 
-        // Subtle parallax effect
-        const parallaxSections = document.querySelectorAll('.section');
+        // Effetto parallax leggero (senza spingere le sezioni verso il basso)
+        const parallaxSections = Array.from(document.querySelectorAll('.parallax-section'))
+            .filter(s => !['certifications', 'education', 'contact'].includes(s.id));
         window.addEventListener('scroll', () => {
             requestAnimationFrame(() => {
                 parallaxSections.forEach(section => {
                     const distance = window.pageYOffset - section.offsetTop;
                     const speed = 0.15;
-                    if (Math.abs(distance) < window.innerHeight) {
-                        section.style.transform = `translateY(${distance * speed}px)`;
+                    // Consenti solo offset negativo (verso l'alto), per non tagliare l'ultima sezione
+                    const raw = distance * speed;
+                    const offset = Math.max(-60, Math.min(0, raw));
+                    if (Math.abs(distance) < window.innerHeight * 1.5) {
+                        section.style.transform = `translateY(${offset}px)`;
                     }
                 });
             });

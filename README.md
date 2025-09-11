@@ -28,11 +28,11 @@
 - Accessibility: ensure headings are hierarchical and images have meaningful `alt` text.
 
 ## Commit & Pull Request Guidelines
-- Commit style observed: short, action‑oriented messages (often Italian), no conventional prefix. Examples: `fix pulsante doppio LinkedIn`, `add firma in html per email`, `add miglioramento seo`.
+- Commit style observed: short, action-oriented messages (often Italian), no conventional prefix. Examples: `fix pulsante doppio LinkedIn`, `add firma in html per email`, `add miglioramento seo`.
 - Prefer present tense and a clear subject; group related changes per commit.
 - Branching: open a feature branch from `main`; keep diffs focused.
 - PRs must include: concise description, screenshots/GIFs for UI changes, rationale for data/SEO edits, and references to issues (if any).
-- Before requesting review: run local server, test on mobile viewport, spell‑check visible text.
+- Before requesting review: run local server, test on mobile viewport, spell-check visible text.
 
 ## Security & Maintenance Tips
 - Do not commit secrets or tokens; this is a public static site.
