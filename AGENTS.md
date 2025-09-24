@@ -1,3 +1,11 @@
+**Checklist Rapida**
+- Avvia server: `python -m http.server 8080` e apri `http://localhost:8080`.
+- Test rapido: anchor, modale corsi, toggle tema, menu mobile, scroll fluido.
+- Dati: se modifichi `courses.json`, ricarica e controlla la console (JSON valido).
+- A11y: titoli coerenti, `alt` significativi, live region `#a11y-status`, focus trap del modale.
+- SEO/dati strutturati: verifica `url`/`sameAs` nel JSON-LD; non rinominare asset pubblici.
+- Commit: messaggi brevi in IT; cambi mirati; evita nuovi toolchain/framework.
+
 **Purpose & Scope**
 - Istruzioni operative per agenti e contributor che lavorano in questo repository.
 - Ambito: l'intero repository radicato nella cartella corrente.
@@ -75,13 +83,15 @@
   - Verificare i link `sameAs` (LinkedIn, GitHub).
 
 **Hosting (GitHub Pages)**
-- Opzione consigliata: abilitare GitHub Pages dal branch `main`, directory root.
-- URL tipico del progetto: `https://paolopci.github.io/CV/` (coerente con il JSON-LD).
-- Checklist deploy:
-  - Build non necessaria (sito statico).
-  - Verifica percorsi relativi degli asset.
-  - Testa sezioni dinamiche (fetch `courses.json`).
-  - Controlla console per CORS/404.
+-
+**Checklist Deploy Pages**
+- Abilita Pages: branch `main`, directory root `/`.
+- Aggiorna `index.html` JSON-LD `url` a `https://paolopci.github.io/CV/`.
+- Verifica asset e fetch `courses.json` (niente 404/CORS in console).
+- Prova link interni/esterni e download `cv-paolo-paci.pdf`.
+
+ - Opzione consigliata: abilitare GitHub Pages dal branch `main`, directory root.
+ - URL tipico del progetto: `https://paolopci.github.io/CV/` (coerente con il JSON-LD).
 
 **Do Not**
 - Aggiungere toolchain/build system o framework senza richiesta esplicita.
