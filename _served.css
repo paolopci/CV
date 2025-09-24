@@ -1228,9 +1228,7 @@ body.dark-theme .timeline-item[open] .timeline-description {
         font-size: 1rem;
         padding: 0 1rem;
     }
-}
-
-/* ðŸ”§ Dark theme hamburger menu contrast fix */
+/* ð??§ Dark theme hamburger menu contrast fix */
 body.dark-theme .nav-links {
     background-color: #111827 !important; /* colore scuro coerente con il tema */
 }
@@ -1314,3 +1312,4 @@ body.dark-theme .nav-links a:hover {
   vertical-align: middle;
   margin-right: 8px;
 }
+
