@@ -1,4 +1,4 @@
-* {
+﻿* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -547,7 +547,7 @@ html {
 
 /* Sezione Experience - Container fix */
 #experience {
-    /* Aggiunto padding-bottom per dare più spazio */
+    /* Aggiunto padding-bottom per dare piÃ¹ spazio */
     padding-bottom: 6rem;
     /* Aggiunto margin-bottom per separare dalla sezione successiva */
     margin-bottom: 2rem;
@@ -1166,7 +1166,7 @@ body.dark-theme .skill-category:hover {
 
 
 
-/* Dark mode: miglioramento leggibilità timeline interattiva */
+/* Dark mode: miglioramento leggibilitÃ  timeline interattiva */
 body.dark-theme .timeline-item {
     background-color: #1e1e1e;
     color: #f1f1f1;
@@ -1183,7 +1183,7 @@ body.dark-theme .timeline-description {
 
 
 
-/* Dark mode: testo più leggibile quando <details> è aperto */
+/* Dark mode: testo piÃ¹ leggibile quando <details> Ã¨ aperto */
 body.dark-theme .timeline-item[open] {
     background-color: #f1f1f1;
     color: #111 !important;
@@ -1290,7 +1290,7 @@ body.dark-theme .timeline-item[open] .timeline-description {
     }
 }
 
-/* 🔧 Dark theme hamburger menu contrast fix */
+/* ðŸ”§ Dark theme hamburger menu contrast fix */
 body.dark-theme .nav-links {
     background-color: #111827 !important; /* colore scuro coerente con il tema */
 }
@@ -1354,7 +1354,7 @@ body.dark-theme .nav-links a:hover {
   50% { border-color: transparent }
 }
 
-/* 5. Dark-mode fixes sono già presenti nel tuo CSS originale */
+/* 5. Dark-mode fixes sono giÃ  presenti nel tuo CSS originale */
 
 
 /* CTA button container */
@@ -1374,3 +1374,16 @@ body.dark-theme .nav-links a:hover {
 }
 
 }
+
+
+/* Sezione Certifications - margine di sicurezza per non tagliare l'ultima card */
+#certifications {
+    padding-bottom: 1.5rem; /* ulteriore riduzione controllata */
+    overflow: visible;
+}
+
+/* Riduci il padding interno in fondo alla griglia solo in questa sezione */
+#certifications .courses-grid {
+    padding-bottom: 0;
+}
+
