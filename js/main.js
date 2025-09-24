@@ -248,12 +248,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const updateIcon = () => {
         const isDark = document.body.classList.contains('dark-theme');
-        // Preserve existing behavior; icons come from HTML content
+        // Show sun in dark mode (to switch to light), moon in light mode (to switch to dark)
+        icon.textContent = isDark ? '🌞' : '🌙';
         icon.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+        icon.setAttribute('title', isDark ? 'Passa al tema chiaro' : 'Passa al tema scuro');
     };
-    const applyTheme = (makeDark) => {
+    const applyTheme = (makeDark, persist = true) => {
         document.body.classList.toggle('dark-theme', makeDark);
-        localStorage.setItem('theme', makeDark ? 'dark' : 'light');
+        if (persist) {
+            localStorage.setItem('theme', makeDark ? 'dark' : 'light');
+        }
         updateIcon();
         announce(makeDark ? 'Tema scuro attivato' : 'Tema chiaro attivato');
     };
@@ -268,8 +272,26 @@ document.addEventListener('DOMContentLoaded', () => {
             applyTheme(!isDark);
         }
     });
+    // Preferenza salvata o tema di sistema come default
     const saved = localStorage.getItem('theme');
-    applyTheme(saved === 'dark');
+    const mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+    if (saved === 'dark' || saved === 'light') {
+        applyTheme(saved === 'dark', false);
+    } else if (mq && typeof mq.matches === 'boolean') {
+        applyTheme(mq.matches, false);
+        // Aggiorna automaticamente al cambio del sistema se non c'è preferenza utente
+        try {
+            const onSystemChange = (e) => {
+                if (!localStorage.getItem('theme')) {
+                    applyTheme(e.matches, false);
+                }
+            };
+            if (mq.addEventListener) mq.addEventListener('change', onSystemChange);
+            else if (mq.addListener) mq.addListener(onSystemChange);
+        } catch (_) { /* no-op */ }
+    } else {
+        applyTheme(false, false); // fallback: light
+    }
 });
 
 // Dynamic Italian date in the presentation letter
@@ -282,4 +304,3 @@ const dynamicDateEl = document.getElementById('dynamic-date');
 if (dynamicDateEl) {
     dynamicDateEl.textContent = `Pesaro, ${giorno} ${mese} ${anno}`;
 }
-
