@@ -1,41 +1,90 @@
-# Repository Guidelines
+**Purpose & Scope**
+- Istruzioni operative per agenti e contributor che lavorano in questo repository.
+- Ambito: l'intero repository radicato nella cartella corrente.
+- Precedenza: eventuali `AGENTS.md` annidati hanno precedenza nella propria sottostruttura. Le istruzioni dirette di utente/sviluppatore hanno sempre priorità.
 
-## Project Structure & Module Organization
-- `index.html`: Main entry point for the CV site.
-- `css/`: Stylesheets (primary file: `index.css`).
-- `images/`: Image assets (e.g., profile photo).
-- `courses.json`: Dynamic data for courses/training; keep schema stable.
-- `favicon.ico`: Site icon.
-- `cv-paolo-paci.pdf`: Downloadable CV.
-- `firma.html`, `firma_paolopci.html`, `firma_email/`: Email signature templates.
+**Project Overview**
+- Sito statico del CV di Paolo Paci (lingua: Italiano).
+- Solo client-side; nessun backend né segreti.
+- Pubblicabile su qualunque hosting statico (es. GitHub Pages) o via semplice server HTTP locale.
 
-## Build, Test, and Development Commands
-- Serve locally: `python -m http.server 8080` then open `http://localhost:8080`.
-- Quick HTML check: use the W3C validator (upload or URL).
-- Optional lint (if Node is available): `npx html-validate .` and `npx stylelint "css/**/*.css"`.
+**Structure**
+- `index.html`: entry point del sito (include JSON-LD `Person`, navbar ad anchor, sezione corsi dinamica, tema chiaro/scuro, miglioramenti a11y).
+- `css/index.css`: stili globali, animazioni, tema scuro (`.dark-theme`), helper `.sr-only`.
+- `images/`: asset immagine (foto profilo, loghi, ecc.).
+- `courses.json`: sorgente dati per la sezione “Certificazioni & Corsi”.
+- `cv-paolo-paci.pdf`: CV scaricabile; mantenere il nome file stabile.
+- `favicon.ico`: icona del sito.
+- `firma.html`, `firma_paolopci.html`, `firma_email/`: modelli di firma email.
 
-## Coding Style & Naming Conventions
-- Indentation: 4 spaces for HTML/CSS; wrap lines at ~100 chars.
-- HTML: semantic tags (`header`, `main`, `section`), lowercase attributes, double quotes.
-- CSS: hyphenated, lowercase class names (e.g., `hero-header`, `presentation-letter`); avoid inline styles.
-- Assets: optimize images (≤200KB when possible); use relative paths.
-- JSON (`courses.json`): valid UTF-8, double quotes, stable keys; trailing commas not allowed.
+**Run & Validate**
+- Server locale: `python -m http.server 8080` e apri `http://localhost:8080`.
+- Validazione HTML: W3C validator (upload o URL pubblico).
+- Lint opzionale (se Node disponibile): `npx html-validate .` e `npx stylelint "css/**/*.css"`.
+- Test rapido: navigazione tra anchor, apertura/chiusura modale corsi, toggle tema, scorrimento fluido, comportamento mobile del menu.
 
-## Testing Guidelines
-- Manual checks: load in Chrome/Firefox, verify mobile/desktop responsiveness and hover/animation behavior.
-- Links: verify external links and PDF download work.
-- Data: after changing `courses.json`, reload and check console for JSON parse errors.
-- Accessibility: ensure headings are hierarchical and images have meaningful `alt` text.
+**Coding Style**
+- Indentazione: 4 spazi per HTML/CSS; wrapping ~100 caratteri.
+- HTML: tag semantici (`header`, `main`, `section`), attributi lowercase, virgolette doppie.
+- CSS: classi minuscole con trattini (es. `hero-header`, `presentation-letter`); evitare inline styles.
+- Asset: immagini compresse (≤200KB se possibile); percorsi relativi.
+- Lingua: testo visibile in Italiano; rispettare accenti e punteggiatura.
+- JSON (`courses.json`): UTF-8, virgolette doppie, chiavi stabili; niente trailing comma.
 
-## Commit & Pull Request Guidelines
-- Commit style observed: short, action‑oriented messages (often Italian), no conventional prefix. Examples: `fix pulsante doppio LinkedIn`, `add firma in html per email`, `add miglioramento seo`.
-- Prefer present tense and a clear subject; group related changes per commit.
-- Branching: open a feature branch from `main`; keep diffs focused.
-- PRs must include: concise description, screenshots/GIFs for UI changes, rationale for data/SEO edits, and references to issues (if any).
-- Before requesting review: run local server, test on mobile viewport, spell‑check visible text.
+**Testing & Accessibility**
+- Responsività: verificare mobile/desktop e performance delle animazioni.
+- Link: controllare link esterni e download del PDF.
+- Dati: dopo modifiche a `courses.json`, ricarica e controlla la console per errori di parsing.
+- A11y: mantenere gerarchia dei titoli, `alt` significativi, live region `#a11y-status`, focus trap del modale corsi, `aria-*` coerenti.
+- Tema: preservare `#themeToggleIcon` e la logica che alterna `body.dark-theme`.
 
-## Security & Maintenance Tips
-- Do not commit secrets or tokens; this is a public static site.
-- When updating CV date or details, update all references consistently across HTML and PDF.
-- Keep file names stable to avoid broken links; if renaming, update all references.
+**Commits & PRs**
+- Stile commit: messaggi brevi e orientati all’azione (spesso in Italiano). Es.: `fix pulsante doppio LinkedIn`, `add firma in html per email`, `add miglioramento seo`.
+- Presente indicativo e soggetto chiaro; raggruppare modifiche correlate.
+- Branching: feature branch da `main`; diff focalizzati.
+- PR: descrizione concisa, screenshot/GIF per UI, motivazione per modifiche dati/SEO, riferimenti a issue.
+- Prima della review: test locale, viewport mobile, spell-check dei testi visibili.
+
+**Security & Maintenance**
+- Nessun segreto/token nel repo (sito pubblico statico).
+- Aggiornando date/dettagli del CV, tenere allineati HTML e PDF.
+- Nomi file stabili per evitare link rotti; se rinomini, aggiorna tutti i riferimenti.
+- URL JSON-LD in `index.html` (`application/ld+json`): aggiornare `url` se cambia l’hosting (es. path GitHub Pages).
+
+**Agent Tips**
+- Task tipici: contenuti in `index.html`, stile in `css/index.css`, dati in `courses.json`, aggiornamenti SEO/meta.
+- Cambi minimi e mirati; evitare refactor strutturali non richiesti.
+- Aggiungendo asset: preferire immagini compresse e riferimenti relativi.
+- Preferire miglioramenti semantici HTML rispetto a workaround puramente visivi.
+- Ancore navbar: preservare gli `id` delle sezioni (`home`, `presentation`, `profile`, `skills`, `experience`, `education`, `contact`).
+- PDF: il link a `cv-paolo-paci.pdf` è usato in più punti; non cambiare nome senza aggiornare i riferimenti.
+
+**courses.json — Schema e Linee Guida**
+- Root: oggetto con chiave `courses` (array di corsi) e opzionale `metadata`.
+- Campi tipici corso:
+  - Obbligatori: `platform`, `title`, `date`, `description`.
+  - Opzionali: `id`, `platformIcon` (o `platformicon`), `duration`, `level`, `students`, `audience`, `tags` (array di stringhe).
+- Ordinamento: aggiungi in ordine cronologico inverso (più recenti in alto) per coerenza visiva.
+- Localizzazione: usa mesi e testi in Italiano quando possibile (es. "Giugno 2025").
+- Validazione: mantenere JSON valido (niente trailing comma). La UI è tollerante su campi mancanti ma preferire chiavi consistenti.
+
+**SEO & Dati Strutturati**
+- `index.html` include un blocco JSON-LD `Person` con `jobTitle`, `url`, `address`, `email`, `telephone`, `sameAs`:
+  - Aggiornare `jobTitle` se cambia il ruolo principale.
+  - Aggiornare `url` se cambia il percorso di pubblicazione (es. GitHub Pages path).
+  - Verificare i link `sameAs` (LinkedIn, GitHub).
+
+**Hosting (GitHub Pages)**
+- Opzione consigliata: abilitare GitHub Pages dal branch `main`, directory root.
+- URL tipico del progetto: `https://paolopci.github.io/CV/` (coerente con il JSON-LD).
+- Checklist deploy:
+  - Build non necessaria (sito statico).
+  - Verifica percorsi relativi degli asset.
+  - Testa sezioni dinamiche (fetch `courses.json`).
+  - Controlla console per CORS/404.
+
+**Do Not**
+- Aggiungere toolchain/build system o framework senza richiesta esplicita.
+- Introdurre analytics o script esterni che raccolgono dati.
+- Rompere URL pubblici degli asset senza aggiornare ogni riferimento.
 
