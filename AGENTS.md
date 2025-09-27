@@ -19,8 +19,9 @@
 **Structure**
 - `index.html`: entry point del sito (include JSON-LD `Person`, navbar ad anchor, sezione corsi dinamica, tema chiaro/scuro, miglioramenti a11y).
 - `css/index.css`: stili globali, animazioni, tema scuro (`.dark-theme`), helper `.sr-only`.
+- `js/main.js`: logica UI (modale corsi, toggle tema, menu mobile, fetch `courses.json`).
 - `images/`: asset immagine (foto profilo, loghi, ecc.).
-- `courses.json`: sorgente dati per la sezione “Certificazioni & Corsi”.
+- `courses.json`: sorgente dati per la sezione "Certificazioni & Corsi".
 - `cv-paolo-paci.pdf`: CV scaricabile; mantenere il nome file stabile.
 - `favicon.ico`: icona del sito.
 - `firma.html`, `firma_paolopci.html`, `firma_email/`: modelli di firma email.
@@ -83,7 +84,7 @@
   - Verificare i link `sameAs` (LinkedIn, GitHub).
 
 **Hosting (GitHub Pages)**
--
+
 **Checklist Deploy Pages**
 - Abilita Pages: branch `main`, directory root `/`.
 - Aggiorna `index.html` JSON-LD `url` a `https://paolopci.github.io/CV/`.
@@ -97,4 +98,3 @@
 - Aggiungere toolchain/build system o framework senza richiesta esplicita.
 - Introdurre analytics o script esterni che raccolgono dati.
 - Rompere URL pubblici degli asset senza aggiornare ogni riferimento.
-
