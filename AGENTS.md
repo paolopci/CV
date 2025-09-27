@@ -25,6 +25,7 @@
 - `cv-paolo-paci.pdf`: CV scaricabile; mantenere il nome file stabile.
 - `favicon.ico`: icona del sito.
 - `firma.html`, `firma_paolopci.html`, `firma_email/`: modelli di firma email.
+ - Vedi anche `docs/STRUCTURE.md` per la mappa cartelle aggiornata (componenti in `js/components` e `css/components`, file legacy in `archive/legacy/`, file demo animazione `code-demo.js` in root).
 
 **Run & Validate**
 - Server locale: `python -m http.server 8080` e apri `http://localhost:8080`.
