@@ -161,16 +161,12 @@ html {
     margin-bottom: var(--hero-card-vspace, 3rem);
 }
 #code-bg{ position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.65; }
-.codebg-window{ position:absolute; inset:0; display:grid; grid-template-columns:44px 1fr; background:
+.codebg-window{ position:absolute; inset:0; display:grid; grid-template-columns:1fr; background:
     radial-gradient(1200px 500px at 20% -10%, rgba(255,255,255,.06), transparent),
     linear-gradient(180deg,#0d1117 0%, #0b1220 100%);
 }
 .codebg-window, #code-bg, #code-bg .codebg-body, #code-bg .codebg-body code{ text-align:left; }
-.codebg-gutter{
-    padding:16px 8px; color:#8b9bb4; text-align:right; white-space:pre; line-height:var(--code-lh,22px);
-    font: 500 var(--code-fs,14px) ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono','Courier New', monospace;
-    background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0)); user-select:none;
-}
+.codebg-gutter{ display:none; }
 .codebg-body{ margin:0; padding:16px 16px; overflow:hidden; white-space:pre; line-height:var(--code-lh,22px);
     font-size:var(--code-fs,14px); color:#e6edf3; background:transparent !important; }
 .codebg-body code{ background:transparent !important; text-shadow:none; }
