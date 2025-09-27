@@ -222,27 +222,27 @@
         <h2 class="section-title fade-in-up">💼 Carriera Professionale</h2>
         <div class="timeline">
             <details class="timeline-item">
-                <summary><strong>QbitSoft (Telecom S.p.A.)</strong> – <em>Software Developer - Full Remote</em> <span style="float:right;">Nov 2024 - Feb 2025</span></summary>
+                <summary><strong>QbitSoft (Telecom S.p.A.)</strong> – <em>Software Developer - Full Remote</em> <span class="timeline-date-inline">Nov 2024 - Feb 2025</span></summary>
                 <div class="timeline-description">Sviluppo software per Telecom S.p.A. con focus su Web API RESTful, Microservizi, JWT authentication, nuove funzionalità e bug fixing con C# e ASP.NET Core.</div>
             </details>
             <details class="timeline-item">
-                <summary><strong>Gruppo Global Sistemi (Aruba S.p.A.)</strong> – <em>Software Developer - Full Remote</em> <span style="float:right;">Mar 2021 - Dic 2023</span></summary>
+                <summary><strong>Gruppo Global Sistemi (Aruba S.p.A.)</strong> – <em>Software Developer - Full Remote</em> <span class="timeline-date-inline">Mar 2021 - Dic 2023</span></summary>
                 <div class="timeline-description">Sviluppo software in ambito PEC, SPID, Firma Digitale, Marche Temporali e Fatturazione Elettronica. Utilizzo di ASP.NET Core 6/8, Angular (v17), Cypress per testing, integrazione RESTful e Microservizi.</div>
             </details>
             <details class="timeline-item">
-                <summary><strong>LaserSoft S.r.l.</strong> – <em>Software Developer</em> <span style="float:right;">Giu 2020 - Dic 2020</span></summary>
+                <summary><strong>LaserSoft S.r.l.</strong> – <em>Software Developer</em> <span class="timeline-date-inline">Giu 2020 - Dic 2020</span></summary>
                 <div class="timeline-description">Sviluppo e manutenzione di applicativi aziendali utilizzando ASP.NET MVC, con focus su soluzioni software personalizzate per le esigenze del business.</div>
             </details>
             <details class="timeline-item">
-                <summary><strong>Attività Autonoma</strong> – <em>Freelance Developer</em> <span style="float:right;">Mag 2018 - Mar 2020</span></summary>
+                <summary><strong>Attività Autonoma</strong> – <em>Freelance Developer</em> <span class="timeline-date-inline">Mag 2018 - Mar 2020</span></summary>
                 <div class="timeline-description">Programmazione Web con ASP.NET Core MVC, sviluppo di RESTful API e Microservizi. Studio avanzato di tecnologie Microsoft e Frontend development.</div>
             </details>
             <details class="timeline-item">
-                <summary><strong>Combymatica S.r.l.</strong> – <em>Sistemista Programmatore</em> <span style="float:right;">Apr 2004 - Lug 2009</span></summary>
+                <summary><strong>Combymatica S.r.l.</strong> – <em>Sistemista Programmatore</em> <span class="timeline-date-inline">Apr 2004 - Lug 2009</span></summary>
                 <div class="timeline-description">Controllo e manutenzione di linee HDSL, ADSL, ISDN e rete Ethernet aziendale; riparazione hardware; sviluppo software in C# 3 &amp; 4, ASP.NET MVC, LINQ to SQL, WPF, Entity Framework.</div>
             </details>
             <details class="timeline-item">
-                <summary><strong>Software House - Diverse Aziende</strong> – <em>Sistemista Programmatore &amp; Assistenza Hardware</em> <span style="float:right;">1991 - 2004</span></summary>
+                <summary><strong>Software House - Diverse Aziende</strong> – <em>Sistemista Programmatore &amp; Assistenza Hardware</em> <span class="timeline-date-inline">1991 - 2004</span></summary>
                 <div class="timeline-description">Progettazione e sviluppo di applicazioni OOP in Delphi, modellazione e ottimizzazione database, soluzioni verticali, middleware per messaggistica (SMS, Telex, Fax, Email), assistenza hardware e deployment client-server.</div>
             </details>
         </div>
@@ -304,180 +304,7 @@
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
 <!-- Code background injector -->
-<script>
-(function(){
-  const LINE_DELAY = 420; // ms
-  const SOURCE_FILE = 'main.js';
-  if (window.Prism && Prism.plugins && Prism.plugins.autoloader) {
-    Prism.plugins.autoloader.languages_path = 'https://cdn.jsdelivr.net/npm/prismjs@1/components/';
-  }
-  const mqMobile = window.matchMedia('(max-width: 768px)');
-
-  function notify(msg){
-    let live = document.getElementById('codebg-status');
-    if (!live){
-      live = document.createElement('div');
-      live.id = 'codebg-status';
-      live.className = 'codebg-sr-only';
-      live.setAttribute('role','status');
-      live.setAttribute('aria-live','polite');
-      live.setAttribute('aria-atomic','true');
-      document.body.appendChild(live);
-    }
-    live.textContent = '';
-    setTimeout(()=>{ live.textContent = msg; }, 50);
-  }
-
-  function mountLayer(){
-    const host = document.getElementById('hero-cta');
-    if (!host) return null;
-    let bg = host.querySelector('#code-bg');
-    if (!bg){
-      bg = document.createElement('div');
-      bg.id = 'code-bg';
-      bg.setAttribute('aria-hidden','true');
-      host.insertBefore(bg, host.firstChild);
-    }
-    const win = document.createElement('div');
-    win.className = 'codebg-window';
-    const gutter = document.createElement('div');
-    gutter.className = 'codebg-gutter';
-    gutter.setAttribute('aria-hidden','true');
-    const pre = document.createElement('pre');
-    pre.className = 'codebg-body';
-    const code = document.createElement('code');
-    code.className = 'language-javascript';
-    pre.appendChild(code);
-    win.appendChild(gutter); win.appendChild(pre);
-    bg.appendChild(win);
-    if (!host.style.position) host.style.position = 'relative';
-    host.style.overflow = 'hidden';
-    host.style.isolation = 'isolate';
-    Object.assign(bg.style, { position:'absolute', inset:'0', zIndex:'1', pointerEvents:'none', opacity:'.65' });
-    const card = host.querySelector('.hero-card');
-    if (card){ if (!card.style.position) card.style.position = 'relative'; card.style.zIndex = '2'; }
-    return { host, gutter, code };
-  }
-
-  function getLineHeight(el){
-    const varLh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--code-lh'));
-    if (Number.isFinite(varLh) && varLh > 0) return varLh;
-    const lh = parseFloat(getComputedStyle(el).lineHeight);
-    return Number.isFinite(lh) && lh > 0 ? lh : 22;
-  }
-
-  function start(){
-    if (mqMobile.matches) { // non avviare su mobile
-      const bg = document.getElementById('code-bg');
-      if (bg) bg.style.display = 'none';
-      return;
-    }
-    const ctx = mountLayer();
-    if (!ctx) return;
-    const { host, gutter, code } = ctx;
-    window.__codebgInit = true;
-    let src = [];
-    const visible = [];
-    let nextIndex = 0;
-    let capacity = 8;
-    let written = 0;
-    let timerId = 0;
-
-    const calcCapacity = () => {
-      const h = host.clientHeight || parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hero-h')) || 420;
-      return Math.max(6, Math.floor(h / getLineHeight(code)));
-    };
-
-    function render(){
-      code.textContent = visible.join('\n');
-      if (window.Prism && Prism.highlightElement) Prism.highlightElement(code);
-      const startNum = Math.max(1, written - visible.length + 1);
-      gutter.textContent = Array.from({length: visible.length}, (_,i)=> String(startNum + i)).join('\n');
-    }
-
-    function step(){
-      const line = src[nextIndex];
-      visible.push(line); written++;
-      nextIndex = (nextIndex + 1) % src.length;
-      if (visible.length > capacity) visible.shift();
-      render();
-      timerId = window.setTimeout(step, LINE_DELAY);
-    }
-
-    function prefill(){
-      const preload = Math.min(capacity, src.length);
-      for (let i=0;i<preload;i++){ visible.push(src[(nextIndex + i) % src.length]); written++; }
-      nextIndex = (nextIndex + preload) % src.length;
-      render();
-      timerId = window.setTimeout(step, LINE_DELAY);
-    }
-
-    async function load(){
-      try{
-        const res = await fetch(SOURCE_FILE, { cache: 'no-store' });
-        const text = await res.text();
-        src = (text||'').replace(/\r\n/g,'\n').split('\n');
-        if (!src.length) throw new Error('empty');
-      } catch {
-        src = [
-          '/* fallback demo (no main.js) */',
-          "const months = ['Gen','Feb','Mar','Apr'];",
-          'function greet(name){',
-          "  const h = new Date().getHours();",
-          "  const hi = h < 12 ? 'Buongiorno' : 'Ciao';",
-          "  return `${hi}, ${name}!`;",
-          '}',
-          "console.log(greet('Paolo'));",
-        ];
-        notify('Animazione in modalità demo: main.js non disponibile.');
-      }
-      capacity = calcCapacity();
-      prefill();
-    }
-
-    function onResize(){
-      if (mqMobile.matches) { // pausa animazione su mobile
-        clearTimeout(timerId);
-        const bg = document.getElementById('code-bg');
-        if (bg) bg.style.display = 'none';
-        return;
-      }
-      const newCap = calcCapacity();
-      if (newCap !== capacity){
-        const diff = visible.length - newCap;
-        capacity = newCap;
-        if (diff > 0) visible.splice(0, diff);
-        render();
-      }
-    }
-
-    window.addEventListener('resize', onResize);
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) clearTimeout(timerId);
-      else { clearTimeout(timerId); timerId = setTimeout(step, LINE_DELAY); }
-    });
-
-    load();
-  }
-
-  // Reagisci ai cambi di viewport mobile/desktop
-  if (mqMobile.addEventListener) {
-    mqMobile.addEventListener('change', e => {
-      if (!e.matches && !window.__codebgInit) { // da mobile -> desktop
-        const bg = document.getElementById('code-bg');
-        if (bg) bg.style.display = '';
-        start();
-      } else if (e.matches) { // desktop -> mobile
-        const bg = document.getElementById('code-bg');
-        if (bg) bg.style.display = 'none';
-      }
-    });
-  }
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
-  else start();
-})();
-</script>
+<script src="js/hero-code-bg.js" defer></script>
 </body>
 </html>
 
