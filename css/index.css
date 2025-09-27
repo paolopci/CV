@@ -659,6 +659,11 @@ body.dark-theme .hero-card {
     box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.3);
 }
 
+/* Piccolo helper per la data inline nel <summary> della timeline */
+.timeline-date-inline {
+    float: right;
+}
+
 .timeline-company {
     font-size: 1.2rem;
     color: #333;
@@ -998,6 +1003,9 @@ body.dark-theme .hero-card {
     color: #718096;
     font-size: 0.9rem;
 }
+/* Evita a capo tra valore e label (es. "28 ore") */
+.course-details .detail-chip { white-space: nowrap; }
+.course-details .detail-value { font-weight: 600; margin-right: 2px; }
 
 .course-description {
     color: #4a5568;

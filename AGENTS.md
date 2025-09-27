@@ -20,11 +20,14 @@
 - `index.html`: entry point del sito (include JSON-LD `Person`, navbar ad anchor, sezione corsi dinamica, tema chiaro/scuro, miglioramenti a11y).
 - `css/index.css`: stili globali, animazioni, tema scuro (`.dark-theme`), helper `.sr-only`.
 - `js/main.js`: logica UI (modale corsi, toggle tema, menu mobile, fetch `courses.json`).
+- `js/hero-code-bg.js`: iniettore dell'animazione di codice nell'hero (pausa su mobile, riavvio automatico al resize desktop, debounce attivo).
 - `images/`: asset immagine (foto profilo, loghi, ecc.).
 - `courses.json`: sorgente dati per la sezione "Certificazioni & Corsi".
 - `cv-paolo-paci.pdf`: CV scaricabile; mantenere il nome file stabile.
 - `favicon.ico`: icona del sito.
 - `firma.html`, `firma_paolopci.html`, `firma_email/`: modelli di firma email.
+ - File demo per animazione: `code-demo.js` (root). Mantenere il nome stabile o aggiornare `SOURCE_FILE` in `js/hero-code-bg.js`/`index.html`.
+ - Vedi anche `docs/STRUCTURE.md` per la mappa cartelle aggiornata (file legacy in `archive/legacy/`).
 
 **Run & Validate**
 - Server locale: `python -m http.server 8080` e apri `http://localhost:8080`.
@@ -46,6 +49,10 @@
 - Dati: dopo modifiche a `courses.json`, ricarica e controlla la console per errori di parsing.
 - A11y: mantenere gerarchia dei titoli, `alt` significativi, live region `#a11y-status`, focus trap del modale corsi, `aria-*` coerenti.
 - Tema: preservare `#themeToggleIcon` e la logica che alterna `body.dark-theme`.
+
+**UI Corsi — Dettagli nelle card**
+- La riga dei dettagli (durata, studenti, livello) usa chip compatti: `.detail-chip` con valore evidenziato `.detail-value` per evitare a capo tra valore ed etichetta.
+- Non modificare il layout della card; eventuali nuove etichette devono seguire lo stesso schema.
 
 **Commits & PRs**
 - Stile commit: messaggi brevi e orientati all’azione (spesso in Italiano). Es.: `fix pulsante doppio LinkedIn`, `add firma in html per email`, `add miglioramento seo`.

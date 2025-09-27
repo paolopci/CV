@@ -14,6 +14,26 @@ async function loadCourses() {
         const coursesGrid = document.getElementById('coursesGrid');
         coursesGrid.innerHTML = '';
 
+        const fmt = (val) => {
+            if (val === undefined || val === null) return '';
+            const s = String(val).trim();
+            const up = s.toUpperCase();
+            if (!s || up === 'N/A' || up === 'N-D' || up === 'N/D') return '';
+            return s;
+        };
+        const chipWithValueLabel = (text) => {
+            const s = fmt(text);
+            if (!s) return '';
+            const m = s.match(/^([0-9]+(?:[.,][0-9]+)?\+?K?)\s*(.*)$/i);
+            if (m) {
+                const val = m[1];
+                const label = m[2] || '';
+                const space = label ? ' ' : '';
+                return `<span class="detail-chip"><span class="detail-value">${val}</span>${space}${label}</span>`;
+            }
+            return `<span class="detail-chip">${s}</span>`;
+        };
+
         data.courses.forEach(course => {
             const card = document.createElement('div');
             card.className = 'course-card fade-in-up';
@@ -23,20 +43,24 @@ async function loadCourses() {
             card.setAttribute('aria-label', `Apri dettagli corso: ${course.title}`);
 
             const courseDetails = [];
-            if (course.duration) courseDetails.push(`${course.duration}`);
-            if (course.students) courseDetails.push(`${course.students}`);
-            if (course.level) courseDetails.push(`${course.level}`);
-            if (course.audience) courseDetails.push(`${course.audience}`);
+            const d = fmt(course.duration);
+            const s = fmt(course.students);
+            const l = fmt(course.level);
+            const a = fmt(course.audience);
+            if (d) courseDetails.push(chipWithValueLabel(d));
+            if (s) courseDetails.push(chipWithValueLabel(s));
+            if (l) courseDetails.push(chipWithValueLabel(l));
+            if (a) courseDetails.push(chipWithValueLabel(a));
 
             const tagsHtml = course.tags ? course.tags.map(tag => `<span>${tag}</span>`).join('') : '';
 
             card.innerHTML = `
                 <div class="course-header">
-                    <span class="course-platform">${course.platformIcon || course.platformicon || ''} ${course.platform}</span>
+                    <span class="course-platform">${course.platformIcon || ''} ${course.platform}</span>
                     <span class="course-date">${course.date}</span>
                 </div>
                 <h3 class="course-title">${course.title}</h3>
-                <div class="course-details">${courseDetails.join('<span></span>')}</div>
+                <div class="course-details">${courseDetails.join('')}</div>
                 <p class="course-description">${course.description}</p>
                 <div class="course-tags">${tagsHtml}</div>
             `;
@@ -45,12 +69,15 @@ async function loadCourses() {
                 const modal = document.getElementById('courseModal');
                 const modalContent = modal.querySelector('.modal-content');
                 const modalBody = document.getElementById('modalBody');
+                const duration = course.duration;
+                const level = course.level;
+                const students = course.students;
                 modalBody.innerHTML = `
                     <h2 id="courseModalTitle">${course.title}</h2>
                     <p><strong>Piattaforma:</strong> ${course.platform}</p>
-                    <p><strong>Durata:</strong> ${course.duration || 'N/D'}</p>
-                    <p><strong>Livello:</strong> ${course.level || 'N/D'}</p>
-                    <p><strong>Studenti:</strong> ${course.students || 'N/D'}</p>
+                    <p><strong>Durata:</strong> ${duration}</p>
+                    <p><strong>Livello:</strong> ${level}</p>
+                    <p><strong>Studenti:</strong> ${students}</p>
                     <p><strong>Data:</strong> ${course.date}</p>
                     <p style="margin-top: 1rem;">${course.description}</p>
                     <p><strong>Tags:</strong> ${tagsHtml}</p>
@@ -188,7 +215,7 @@ const observer = new IntersectionObserver(function (entries) {
 document.querySelectorAll('.fade-in-up, .slide-in-left, .slide-in-right, .parallax-section').forEach(el => observer.observe(el));
 
 // Initialize smooth scroll behavior
-document.documentElement.style.scrollBehavior = 'smooth';
+// Smooth behavior gestito via CSS (evita duplicazioni)
 
 // Mobile Menu Toggle
 const mobileMenu = document.querySelector('.mobile-menu');
