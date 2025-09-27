@@ -423,6 +423,12 @@ body.dark-theme .hero-card {
     grid-template-columns: 1fr 2fr;
     gap: 3rem;
     align-items: center;
+    /* Card chiara su sfondo #f8f9ff per maggiore contrasto */
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 2rem;
+    border: 1px solid rgba(102, 126, 234, 0.14);
+    box-shadow: 0 8px 24px rgba(17, 24, 39, 0.12);
 }
 
 .profile-image {
@@ -801,6 +807,8 @@ body.dark-theme .hero-card {
     .profile-grid {
         grid-template-columns: 1fr;
         text-align: center;
+        padding: 1.25rem; /* card più compatta su mobile */
+        border-radius: 14px;
     }
 
     .profile-avatar {
@@ -1100,6 +1108,13 @@ body.dark-theme .contact-item {
     background-color: #1f1f1f !important;
     color: #f1f1f1;
     border-color: #333;
+}
+
+/* Dark theme: card profilo coerente e leggibile */
+body.dark-theme #profile .profile-grid {
+    background-color: #1e1e1e;
+    border-color: #333;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 /* FIX: Colori dei testi specifici */
