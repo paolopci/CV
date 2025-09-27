@@ -14,6 +14,14 @@ async function loadCourses() {
         const coursesGrid = document.getElementById('coursesGrid');
         coursesGrid.innerHTML = '';
 
+        const fmt = (val) => {
+            if (val === undefined || val === null) return '';
+            const s = String(val).trim();
+            const up = s.toUpperCase();
+            if (!s || up === 'N/A' || up === 'N-D' || up === 'N/D') return '';
+            return s;
+        };
+
         data.courses.forEach(course => {
             const card = document.createElement('div');
             card.className = 'course-card fade-in-up';
@@ -23,10 +31,14 @@ async function loadCourses() {
             card.setAttribute('aria-label', `Apri dettagli corso: ${course.title}`);
 
             const courseDetails = [];
-            if (course.duration) courseDetails.push(`${course.duration}`);
-            if (course.students) courseDetails.push(`${course.students}`);
-            if (course.level) courseDetails.push(`${course.level}`);
-            if (course.audience) courseDetails.push(`${course.audience}`);
+            const d = fmt(course.duration);
+            const s = fmt(course.students);
+            const l = fmt(course.level);
+            const a = fmt(course.audience);
+            if (d) courseDetails.push(d);
+            if (s) courseDetails.push(s);
+            if (l) courseDetails.push(l);
+            if (a) courseDetails.push(a);
 
             const tagsHtml = course.tags ? course.tags.map(tag => `<span>${tag}</span>`).join('') : '';
 
@@ -45,12 +57,15 @@ async function loadCourses() {
                 const modal = document.getElementById('courseModal');
                 const modalContent = modal.querySelector('.modal-content');
                 const modalBody = document.getElementById('modalBody');
+                const duration = fmt(course.duration) || 'N/D';
+                const level = fmt(course.level) || 'N/D';
+                const students = fmt(course.students) || 'N/D';
                 modalBody.innerHTML = `
                     <h2 id="courseModalTitle">${course.title}</h2>
                     <p><strong>Piattaforma:</strong> ${course.platform}</p>
-                    <p><strong>Durata:</strong> ${course.duration || 'N/D'}</p>
-                    <p><strong>Livello:</strong> ${course.level || 'N/D'}</p>
-                    <p><strong>Studenti:</strong> ${course.students || 'N/D'}</p>
+                    <p><strong>Durata:</strong> ${duration}</p>
+                    <p><strong>Livello:</strong> ${level}</p>
+                    <p><strong>Studenti:</strong> ${students}</p>
                     <p><strong>Data:</strong> ${course.date}</p>
                     <p style="margin-top: 1rem;">${course.description}</p>
                     <p><strong>Tags:</strong> ${tagsHtml}</p>

@@ -137,7 +137,7 @@
             "title": "From Zero to Hero: Docker for Developers",
             "date": "2025",
             "duration": "3+ ore",
-            "students": "N/A",
+            "students": "6341 studenti",
             "level": "Beginner to Advanced",
             "description": "Docker is one of the most essential tools that every developer needs to know. Learn everything from installation to mastering Docker usage, publishing images, and integrating it into your developer workflow.",
             "tags": [
@@ -155,8 +155,8 @@
             "platformIcon": "🧩",
             "title": "Blazor Deep Dive - From Beginner to Advanced in .NET 8",
             "date": "2025",
-            "duration": "N/A",
-            "students": "N/A",
+            "duration": "22.5 ore",
+            "students": "6897 studenti",
             "level": "Beginner to Advanced",
             "description": "A comprehensive journey with Blazor in .NET 8. Starting with fundamentals, this course supports beginners every step of the way and includes practical projects to solidify understanding and give practical experience in Blazor development.",
             "tags": [
