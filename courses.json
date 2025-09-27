@@ -7,6 +7,8 @@
             "title": "n8n Automation: Build AI Agents, APIs & No-Code Workflows",
             "date": "09/2025",
             "level": "All Levels",
+            "duration": "18.5 ore",
+            "students": "5234 studenti",
             "description": "Automazione dei workflow con n8n. Creazione di AI agents con OpenAI, integrazione di API, uso di RAG, webhooks e opzioni self-hosted.",
             "tags": [
                 "n8n",
@@ -25,6 +27,9 @@
             "platformIcon": "🎓",
             "title": "Learn to build an e-commerce app with .Net Core and Angular",
             "date": "08/2025",
+            "duration": "30.5 ore",
+            "students": "7421 studenti",
+            "level": "Advanced",
             "description": "Build a proof of concept e-commerce store using Angular, .Net and Stripe for payment processing",
             "tags": [
                 "Angular",
@@ -59,6 +64,8 @@
             "title": "Enterprise Architecture con .NET Core 8",
             "date": "Gennaio 2025",
             "duration": "32 ore",
+            "students": "6123 studenti",
+            "level": "Advanced",
             "audience": "Enterprise",
             "description": "Architetture enterprise-ready con .NET 8, CQRS, Event Sourcing, microservizi e best practices per applicazioni scalabili in ambiente cloud.",
             "tags": [
@@ -76,6 +83,7 @@
             "date": "Novembre 2024",
             "duration": "28 ore",
             "level": "Advanced",
+            "students": "4876 studenti",
             "description": "Deep dive in Angular 17: Signals, Server Components, performance optimization, state management avanzato e testing di applicazioni enterprise.",
             "tags": [
                 "Angular 17",
