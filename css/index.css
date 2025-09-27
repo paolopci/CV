@@ -130,6 +130,24 @@ html {
     margin-bottom: 3rem;
 }
 
+/* Hero Card wrapper: rounded, subtle elevation, invisible borders */
+.hero-card {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.05));
+    border-radius: 28px;
+    padding: 2.5rem 2rem;
+    max-width: 900px;
+    margin: 0 auto 3rem auto;
+    border: 1px solid transparent; /* bordi invisibili */
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(8px);
+}
+
+/* Optional tuning when theme toggles */
+body.dark-theme .hero-card {
+    background: linear-gradient(160deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.15));
+    border-color: transparent;
+}
+
 .hero h1 {
     font-size: 4rem;
     font-weight: 700;
