@@ -313,6 +313,16 @@
   }
   const mqMobile = window.matchMedia('(max-width: 768px)');
 
+  // Debounce utility to limit handler frequency
+  function debounce(fn, delay = 150){
+    let t;
+    return function(){
+      const ctx = this, args = arguments;
+      clearTimeout(t);
+      t = setTimeout(function(){ fn.apply(ctx, args); }, delay);
+    };
+  }
+
   function notify(msg){
     let live = document.getElementById('codebg-status');
     if (!live){
@@ -338,6 +348,8 @@
       bg.setAttribute('aria-hidden','true');
       host.insertBefore(bg, host.firstChild);
     }
+    // Pulisci eventuali residui per evitare duplicazioni dopo resize
+    if (bg) bg.innerHTML = '';
     const win = document.createElement('div');
     win.className = 'codebg-window';
     const gutter = document.createElement('div');
@@ -440,6 +452,8 @@
         clearTimeout(timerId);
         const bg = document.getElementById('code-bg');
         if (bg) bg.style.display = 'none';
+        // consenti un riavvio pulito quando si torna a desktop
+        window.__codebgInit = false;
         return;
       }
       const newCap = calcCapacity();
@@ -451,11 +465,18 @@
       }
     }
 
-    window.addEventListener('resize', onResize);
-    document.addEventListener('visibilitychange', () => {
+    // Avoid multiple listeners across restarts
+    const debouncedResize = debounce(onResize, 120);
+    if (window.__codebgResizeHandler) window.removeEventListener('resize', window.__codebgResizeHandler);
+    window.__codebgResizeHandler = debouncedResize;
+    window.addEventListener('resize', debouncedResize);
+    const visHandler = () => {
       if (document.hidden) clearTimeout(timerId);
       else { clearTimeout(timerId); timerId = setTimeout(step, LINE_DELAY); }
-    });
+    };
+    if (window.__codebgVisHandler) document.removeEventListener('visibilitychange', window.__codebgVisHandler);
+    window.__codebgVisHandler = visHandler;
+    document.addEventListener('visibilitychange', visHandler);
 
     load();
   }
@@ -463,13 +484,14 @@
   // Reagisci ai cambi di viewport mobile/desktop
   if (mqMobile.addEventListener) {
     mqMobile.addEventListener('change', e => {
-      if (!e.matches && !window.__codebgInit) { // da mobile -> desktop
+      if (!e.matches) { // da mobile -> desktop
         const bg = document.getElementById('code-bg');
         if (bg) bg.style.display = '';
-        start();
+        start(); // riavvia sempre: mountLayer pulisce i residui
       } else if (e.matches) { // desktop -> mobile
         const bg = document.getElementById('code-bg');
         if (bg) bg.style.display = 'none';
+        window.__codebgInit = false;
       }
     });
   }
