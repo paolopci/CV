@@ -132,14 +132,15 @@ html {
 
 /* Hero Card wrapper: rounded, subtle elevation, invisible borders */
 .hero-card {
-    background: linear-gradient(160deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.05));
+    /* OPAQUE: nessuna trasparenza, l'animazione sotto non si vede */
+    background: linear-gradient(160deg, #111827 0%, #0b1220 100%);
     border-radius: 28px;
     padding: 2rem 1.5rem; /* ridotto per diminuire la percezione di larghezza */
     max-width: var(--hero-card-max, 760px); /* prima 900px */
     margin: 0 auto 3rem auto;
     border: 1px solid transparent; /* bordi invisibili */
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(8px);
+    backdrop-filter: none; /* rimuove effetto vetro */
 }
 
 /* Riduzioni ulteriori su schermi molto grandi */
@@ -194,7 +195,8 @@ html {
 .codebg-sr-only{ position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap; }
 /* Optional tuning when theme toggles */
 body.dark-theme .hero-card {
-    background: linear-gradient(160deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.15));
+    /* OPAQUE anche in dark mode */
+    background: linear-gradient(160deg, #0e172a 0%, #0a0f1c 100%);
     border-color: transparent;
 }
 
