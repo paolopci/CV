@@ -54,18 +54,23 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <div class="hero-header">
-                <h1>Paolo Paci</h1>
-                <p class="subtitle">Software Engineer &amp; .NET Core Specialist</p>
-                <div class="summary-box">
-                    Ingegnere con oltre 10 anni di esperienza in .NET, Angular e architetture RESTful.
-                    Esperto in soluzioni enterprise e microservizi. Aperto a nuove collaborazioni full remote o ibride.
+            <section id="hero-cta" class="hero-cta">
+                <!-- Deve essere il PRIMO figlio -->
+                <div id="code-bg" aria-hidden="true"></div>
+
+                <div class="hero-header hero-card">
+                    <h1>Paolo Paci</h1>
+                    <p class="subtitle">Software Engineer &amp; .NET Core Specialist</p>
+                    <div class="summary-box">
+                        Ingegnere con oltre 10 anni di esperienza in .NET, Angular e architetture RESTful.
+                        Esperto in soluzioni enterprise e microservizi. Aperto a nuove collaborazioni full remote o ibride.
+                    </div>
+                    <div class="hero-buttons">
+                        <a class="btn-hero" href="cv-paolo-paci.pdf" download>📥 Scarica il CV</a>
+                        <a class="btn-hero" href="#contact">✉️ Contattami</a>
+                    </div>
                 </div>
-                <div class="hero-buttons">
-                    <a class="btn-hero" href="cv-paolo-paci.pdf" download>📥 Scarica il CV</a>
-                    <a class="btn-hero" href="#contact">✉️ Contattami</a>
-                </div>
-            </div>
+            </section>
 
             <!-- Presentation Letter -->
             <div class="presentation-letter" id="presentation">
@@ -293,6 +298,186 @@
         </div>
     </div>
 <script src="js/main.js" defer></script>
+<!-- Live region discreta per fallback del code background -->
+<div id="codebg-status" class="codebg-sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+<!-- Prism.js (core + autoloader) -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+<!-- Code background injector -->
+<script>
+(function(){
+  const LINE_DELAY = 420; // ms
+  const SOURCE_FILE = 'main.js';
+  if (window.Prism && Prism.plugins && Prism.plugins.autoloader) {
+    Prism.plugins.autoloader.languages_path = 'https://cdn.jsdelivr.net/npm/prismjs@1/components/';
+  }
+  const mqMobile = window.matchMedia('(max-width: 768px)');
+
+  function notify(msg){
+    let live = document.getElementById('codebg-status');
+    if (!live){
+      live = document.createElement('div');
+      live.id = 'codebg-status';
+      live.className = 'codebg-sr-only';
+      live.setAttribute('role','status');
+      live.setAttribute('aria-live','polite');
+      live.setAttribute('aria-atomic','true');
+      document.body.appendChild(live);
+    }
+    live.textContent = '';
+    setTimeout(()=>{ live.textContent = msg; }, 50);
+  }
+
+  function mountLayer(){
+    const host = document.getElementById('hero-cta');
+    if (!host) return null;
+    let bg = host.querySelector('#code-bg');
+    if (!bg){
+      bg = document.createElement('div');
+      bg.id = 'code-bg';
+      bg.setAttribute('aria-hidden','true');
+      host.insertBefore(bg, host.firstChild);
+    }
+    const win = document.createElement('div');
+    win.className = 'codebg-window';
+    const gutter = document.createElement('div');
+    gutter.className = 'codebg-gutter';
+    gutter.setAttribute('aria-hidden','true');
+    const pre = document.createElement('pre');
+    pre.className = 'codebg-body';
+    const code = document.createElement('code');
+    code.className = 'language-javascript';
+    pre.appendChild(code);
+    win.appendChild(gutter); win.appendChild(pre);
+    bg.appendChild(win);
+    if (!host.style.position) host.style.position = 'relative';
+    host.style.overflow = 'hidden';
+    host.style.isolation = 'isolate';
+    Object.assign(bg.style, { position:'absolute', inset:'0', zIndex:'1', pointerEvents:'none', opacity:'.65' });
+    const card = host.querySelector('.hero-card');
+    if (card){ if (!card.style.position) card.style.position = 'relative'; card.style.zIndex = '2'; }
+    return { host, gutter, code };
+  }
+
+  function getLineHeight(el){
+    const varLh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--code-lh'));
+    if (Number.isFinite(varLh) && varLh > 0) return varLh;
+    const lh = parseFloat(getComputedStyle(el).lineHeight);
+    return Number.isFinite(lh) && lh > 0 ? lh : 22;
+  }
+
+  function start(){
+    if (mqMobile.matches) { // non avviare su mobile
+      const bg = document.getElementById('code-bg');
+      if (bg) bg.style.display = 'none';
+      return;
+    }
+    const ctx = mountLayer();
+    if (!ctx) return;
+    const { host, gutter, code } = ctx;
+    window.__codebgInit = true;
+    let src = [];
+    const visible = [];
+    let nextIndex = 0;
+    let capacity = 8;
+    let written = 0;
+    let timerId = 0;
+
+    const calcCapacity = () => {
+      const h = host.clientHeight || parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hero-h')) || 420;
+      return Math.max(6, Math.floor(h / getLineHeight(code)));
+    };
+
+    function render(){
+      code.textContent = visible.join('\n');
+      if (window.Prism && Prism.highlightElement) Prism.highlightElement(code);
+      const startNum = Math.max(1, written - visible.length + 1);
+      gutter.textContent = Array.from({length: visible.length}, (_,i)=> String(startNum + i)).join('\n');
+    }
+
+    function step(){
+      const line = src[nextIndex];
+      visible.push(line); written++;
+      nextIndex = (nextIndex + 1) % src.length;
+      if (visible.length > capacity) visible.shift();
+      render();
+      timerId = window.setTimeout(step, LINE_DELAY);
+    }
+
+    function prefill(){
+      const preload = Math.min(capacity, src.length);
+      for (let i=0;i<preload;i++){ visible.push(src[(nextIndex + i) % src.length]); written++; }
+      nextIndex = (nextIndex + preload) % src.length;
+      render();
+      timerId = window.setTimeout(step, LINE_DELAY);
+    }
+
+    async function load(){
+      try{
+        const res = await fetch(SOURCE_FILE, { cache: 'no-store' });
+        const text = await res.text();
+        src = (text||'').replace(/\r\n/g,'\n').split('\n');
+        if (!src.length) throw new Error('empty');
+      } catch {
+        src = [
+          '/* fallback demo (no main.js) */',
+          "const months = ['Gen','Feb','Mar','Apr'];",
+          'function greet(name){',
+          "  const h = new Date().getHours();",
+          "  const hi = h < 12 ? 'Buongiorno' : 'Ciao';",
+          "  return `${hi}, ${name}!`;",
+          '}',
+          "console.log(greet('Paolo'));",
+        ];
+        notify('Animazione in modalità demo: main.js non disponibile.');
+      }
+      capacity = calcCapacity();
+      prefill();
+    }
+
+    function onResize(){
+      if (mqMobile.matches) { // pausa animazione su mobile
+        clearTimeout(timerId);
+        const bg = document.getElementById('code-bg');
+        if (bg) bg.style.display = 'none';
+        return;
+      }
+      const newCap = calcCapacity();
+      if (newCap !== capacity){
+        const diff = visible.length - newCap;
+        capacity = newCap;
+        if (diff > 0) visible.splice(0, diff);
+        render();
+      }
+    }
+
+    window.addEventListener('resize', onResize);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) clearTimeout(timerId);
+      else { clearTimeout(timerId); timerId = setTimeout(step, LINE_DELAY); }
+    });
+
+    load();
+  }
+
+  // Reagisci ai cambi di viewport mobile/desktop
+  if (mqMobile.addEventListener) {
+    mqMobile.addEventListener('change', e => {
+      if (!e.matches && !window.__codebgInit) { // da mobile -> desktop
+        const bg = document.getElementById('code-bg');
+        if (bg) bg.style.display = '';
+        start();
+      } else if (e.matches) { // desktop -> mobile
+        const bg = document.getElementById('code-bg');
+        if (bg) bg.style.display = 'none';
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+})();
+</script>
 </body>
 </html>
 
