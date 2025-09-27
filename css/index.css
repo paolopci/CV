@@ -156,6 +156,10 @@ html {
     min-height: var(--hero-h, 420px);
 }
 #hero-cta .hero-card{ position: relative; z-index: 2; }
+#hero-cta .hero-card{ 
+    margin-top: var(--hero-card-vspace, 3rem);
+    margin-bottom: var(--hero-card-vspace, 3rem);
+}
 #code-bg{ position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.65; }
 .codebg-window{ position:absolute; inset:0; display:grid; grid-template-columns:44px 1fr; background:
     radial-gradient(1200px 500px at 20% -10%, rgba(255,255,255,.06), transparent),
