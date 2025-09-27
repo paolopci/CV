@@ -98,4 +98,3 @@
 - Aggiungere toolchain/build system o framework senza richiesta esplicita.
 - Introdurre analytics o script esterni che raccolgono dati.
 - Rompere URL pubblici degli asset senza aggiornare ogni riferimento.
-
