@@ -1,6 +1,41 @@
 {
     "courses": [
         {
+            "id": "n8n-automation-ai-agents",
+            "platform": "Udemy",
+            "platformIcon": "🎓",
+            "title": "n8n Automation: Build AI Agents, APIs & No-Code Workflows",
+            "date": "09/2025",
+            "level": "All Levels",
+            "description": "Automazione dei workflow con n8n. Creazione di AI agents con OpenAI, integrazione di API, uso di RAG, webhooks e opzioni self-hosted.",
+            "tags": [
+                "n8n",
+                "AI Agents",
+                "No Code",
+                "API Automation",
+                "Webhooks",
+                "OpenAI",
+                "RAG",
+                "Self-hosted"
+            ]
+        },
+        {
+            "id": "ecommerce-dotnet-angular",
+            "platform": "Udemy",
+            "platformIcon": "🎓",
+            "title": "Learn to build an e-commerce app with .Net Core and Angular",
+            "date": "08/2025",
+            "description": "Build a proof of concept e-commerce store using Angular, .Net and Stripe for payment processing",
+            "tags": [
+                "Angular",
+                ".NET Core",
+                "Stripe",
+                "E-commerce",
+                "Payments",
+                "Web Development"
+            ]
+        },
+        {
             "id": "js-advanced",
             "platform": "Udemy",
             "platformIcon": "🎓",
@@ -127,8 +162,8 @@
         }
     ],
     "metadata": {
-        "lastUpdate": "2025-06-15",
-        "totalCourses": 7,
+        "lastUpdate": "2025-09-27",
+        "totalCourses": 9,
         "categories": [
             "Frontend",
             "Backend",
