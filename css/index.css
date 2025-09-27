@@ -142,6 +142,45 @@ html {
     backdrop-filter: blur(8px);
 }
 
+/* Code background: container + layer (prefisso codebg- per evitare collisioni) */
+#hero-cta{
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    min-height: var(--hero-h, 420px);
+}
+#hero-cta .hero-card{ position: relative; z-index: 2; }
+#code-bg{ position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.65; }
+.codebg-window{ position:absolute; inset:0; display:grid; grid-template-columns:44px 1fr; background:
+    radial-gradient(1200px 500px at 20% -10%, rgba(255,255,255,.06), transparent),
+    linear-gradient(180deg,#0d1117 0%, #0b1220 100%);
+}
+.codebg-gutter{
+    padding:16px 8px; color:#8b9bb4; text-align:right; white-space:pre; line-height:var(--code-lh,22px);
+    font: 500 var(--code-fs,14px) ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono','Courier New', monospace;
+    background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0)); user-select:none;
+}
+.codebg-body{ margin:0; padding:16px 16px; overflow:hidden; white-space:pre; line-height:var(--code-lh,22px);
+    font-size:var(--code-fs,14px); color:#e6edf3; background:transparent !important; }
+.codebg-body code{ background:transparent !important; text-shadow:none; }
+.codebg-body::-webkit-scrollbar{ display:none; }
+
+/* Prism vivida (Dark+) */
+.token.comment,.token.prolog,.token.doctype,.token.cdata{ color:#92c47b; }
+.token.keyword{ color:#c678dd; }
+.token.string,.token.char,.token.inserted{ color:#ffdf8b; }
+.token.number{ color:#ffe29a; }
+.token.function{ color:#ffee8b; }
+.token.punctuation{ color:#d1d7e0; }
+.token.operator,.token.entity,.token.url{ color:#e6edf3; }
+.token.property{ color:#63e6ff; }
+.token.boolean{ color:#8be9fd; }
+.token.tag{ color:#7cc7ff; }
+.token.class-name{ color:#5ff7d6; }
+.token.deleted{ color:#ff7b7b; }
+
+/* Live region helper (discreto) */
+.codebg-sr-only{ position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap; }
 /* Optional tuning when theme toggles */
 body.dark-theme .hero-card {
     background: linear-gradient(160deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.15));
