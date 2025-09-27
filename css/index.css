@@ -171,6 +171,11 @@ html {
 .codebg-body code{ background:transparent !important; text-shadow:none; }
 .codebg-body::-webkit-scrollbar{ display:none; }
 
+/* Disattiva il layer animato su mobile */
+@media (max-width: 768px) {
+  #code-bg { display: none !important; }
+}
+
 /* Prism vivida (Dark+) */
 .token.comment,.token.prolog,.token.doctype,.token.cdata{ color:#92c47b; }
 .token.keyword{ color:#c678dd; }

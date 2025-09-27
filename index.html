@@ -311,6 +311,7 @@
   if (window.Prism && Prism.plugins && Prism.plugins.autoloader) {
     Prism.plugins.autoloader.languages_path = 'https://cdn.jsdelivr.net/npm/prismjs@1/components/';
   }
+  const mqMobile = window.matchMedia('(max-width: 768px)');
 
   function notify(msg){
     let live = document.getElementById('codebg-status');
@@ -366,9 +367,15 @@
   }
 
   function start(){
+    if (mqMobile.matches) { // non avviare su mobile
+      const bg = document.getElementById('code-bg');
+      if (bg) bg.style.display = 'none';
+      return;
+    }
     const ctx = mountLayer();
     if (!ctx) return;
     const { host, gutter, code } = ctx;
+    window.__codebgInit = true;
     let src = [];
     const visible = [];
     let nextIndex = 0;
@@ -429,6 +436,12 @@
     }
 
     function onResize(){
+      if (mqMobile.matches) { // pausa animazione su mobile
+        clearTimeout(timerId);
+        const bg = document.getElementById('code-bg');
+        if (bg) bg.style.display = 'none';
+        return;
+      }
       const newCap = calcCapacity();
       if (newCap !== capacity){
         const diff = visible.length - newCap;
@@ -445,6 +458,20 @@
     });
 
     load();
+  }
+
+  // Reagisci ai cambi di viewport mobile/desktop
+  if (mqMobile.addEventListener) {
+    mqMobile.addEventListener('change', e => {
+      if (!e.matches && !window.__codebgInit) { // da mobile -> desktop
+        const bg = document.getElementById('code-bg');
+        if (bg) bg.style.display = '';
+        start();
+      } else if (e.matches) { // desktop -> mobile
+        const bg = document.getElementById('code-bg');
+        if (bg) bg.style.display = 'none';
+      }
+    });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
