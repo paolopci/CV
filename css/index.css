@@ -130,6 +130,76 @@ html {
     margin-bottom: 3rem;
 }
 
+/* Hero Card wrapper: rounded, subtle elevation, invisible borders */
+.hero-card {
+    /* OPAQUE: nessuna trasparenza, l'animazione sotto non si vede */
+    background: linear-gradient(160deg, #111827 0%, #0b1220 100%);
+    border-radius: 28px;
+    padding: 2rem 1.5rem; /* ridotto per diminuire la percezione di larghezza */
+    max-width: var(--hero-card-max, 760px); /* prima 900px */
+    margin: 0 auto 3rem auto;
+    border: 1px solid transparent; /* bordi invisibili */
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+    backdrop-filter: none; /* rimuove effetto vetro */
+}
+
+/* Riduzioni ulteriori su schermi molto grandi */
+@media (min-width: 1400px) {
+    .hero-card { max-width: var(--hero-card-max-xl, 720px); }
+}
+
+/* Code background: container + layer (prefisso codebg- per evitare collisioni) */
+#hero-cta{
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    min-height: var(--hero-h, 420px);
+}
+#hero-cta .hero-card{ position: relative; z-index: 2; }
+#hero-cta .hero-card{ 
+    margin-top: var(--hero-card-vspace, 3rem);
+    margin-bottom: var(--hero-card-vspace, 3rem);
+}
+#code-bg{ position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.65; }
+.codebg-window{ position:absolute; inset:0; display:grid; grid-template-columns:1fr; background:
+    radial-gradient(1200px 500px at 20% -10%, rgba(255,255,255,.06), transparent),
+    linear-gradient(180deg,#0d1117 0%, #0b1220 100%);
+}
+.codebg-window, #code-bg, #code-bg .codebg-body, #code-bg .codebg-body code{ text-align:left; }
+.codebg-gutter{ display:none; }
+.codebg-body{ margin:0; padding:16px 16px; overflow:hidden; white-space:pre; line-height:var(--code-lh,22px);
+    font-size:var(--code-fs,14px); color:#e6edf3; background:transparent !important; }
+.codebg-body code{ background:transparent !important; text-shadow:none; }
+.codebg-body::-webkit-scrollbar{ display:none; }
+
+/* Disattiva il layer animato su mobile */
+@media (max-width: 768px) {
+  #code-bg { display: none !important; }
+}
+
+/* Prism vivida (Dark+) */
+.token.comment,.token.prolog,.token.doctype,.token.cdata{ color:#92c47b; }
+.token.keyword{ color:#c678dd; }
+.token.string,.token.char,.token.inserted{ color:#ffdf8b; }
+.token.number{ color:#ffe29a; }
+.token.function{ color:#ffee8b; }
+.token.punctuation{ color:#d1d7e0; }
+.token.operator,.token.entity,.token.url{ color:#e6edf3; }
+.token.property{ color:#63e6ff; }
+.token.boolean{ color:#8be9fd; }
+.token.tag{ color:#7cc7ff; }
+.token.class-name{ color:#5ff7d6; }
+.token.deleted{ color:#ff7b7b; }
+
+/* Live region helper (discreto) */
+.codebg-sr-only{ position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);border:0;white-space:nowrap; }
+/* Optional tuning when theme toggles */
+body.dark-theme .hero-card {
+    /* OPAQUE anche in dark mode */
+    background: linear-gradient(160deg, #0e172a 0%, #0a0f1c 100%);
+    border-color: transparent;
+}
+
 .hero h1 {
     font-size: 4rem;
     font-weight: 700;
@@ -349,6 +419,12 @@ html {
     grid-template-columns: 1fr 2fr;
     gap: 3rem;
     align-items: center;
+    /* Card chiara su sfondo #f8f9ff per maggiore contrasto */
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 2rem;
+    border: 1px solid rgba(102, 126, 234, 0.14);
+    box-shadow: 0 8px 24px rgba(17, 24, 39, 0.12);
 }
 
 .profile-image {
@@ -727,6 +803,8 @@ html {
     .profile-grid {
         grid-template-columns: 1fr;
         text-align: center;
+        padding: 1.25rem; /* card più compatta su mobile */
+        border-radius: 14px;
     }
 
     .profile-avatar {
@@ -1026,6 +1104,13 @@ body.dark-theme .contact-item {
     background-color: #1f1f1f !important;
     color: #f1f1f1;
     border-color: #333;
+}
+
+/* Dark theme: card profilo coerente e leggibile */
+body.dark-theme #profile .profile-grid {
+    background-color: #1e1e1e;
+    border-color: #333;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 /* FIX: Colori dei testi specifici */
