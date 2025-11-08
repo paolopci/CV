@@ -1290,6 +1290,7 @@ body.dark-theme a {
 body.dark-theme .section,
 body.dark-theme .skill-category,
 body.dark-theme .course-card,
+body.dark-theme .portfolio-card,
 body.dark-theme .timeline-date,
 body.dark-theme .education-card,
 body.dark-theme .presentation-letter,
@@ -1319,7 +1320,9 @@ body.dark-theme .skill-percentage {
 }
 
 body.dark-theme .timeline-role,
-body.dark-theme .course-platform {
+body.dark-theme .course-platform,
+body.dark-theme .portfolio-cta,
+body.dark-theme .portfolio-link {
     color: #89c4f4;
 }
 
@@ -1357,6 +1360,19 @@ body.dark-theme h2,
 body.dark-theme h3,
 body.dark-theme h4 {
     color: #f1f1f1;
+}
+
+body.dark-theme .portfolio-intro {
+    color: #d1d5db;
+}
+
+body.dark-theme .portfolio-card h3 {
+    color: #f9fafb;
+}
+
+body.dark-theme .portfolio-card p,
+body.dark-theme .portfolio-card ul {
+    color: #d1d5db;
 }
 
 /* Light Mode: Education Card */
