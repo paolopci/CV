@@ -45,6 +45,9 @@
             <circle cx="12" cy="8" r="5" fill="currentColor" />
             <path d="M9 13l-2 9 5-3 5 3-2-9z" fill="currentColor" />
         </symbol>
+        <symbol id="icon-portfolio" viewBox="0 0 24 24">
+            <path d="M9 4a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3V6a2 2 0 0 0-2-2Zm0 2h6v1H9Zm5.5 6.5 4.5-2.5v2.24l-4.5 2.5-2.5-1.4-4.5 2.5v-2.24l4.5-2.5Z" fill="currentColor" />
+        </symbol>
         <symbol id="icon-graduation" viewBox="0 0 24 24">
             <path d="M12 3L1 9l11 6 11-6z" fill="currentColor" />
             <path d="M5 12v3.5C5 18 8.58 20 12 20s7-2 7-4.5V12l-7 3.82z" fill="currentColor" />
@@ -125,6 +128,7 @@
                 <li><a href="#skills">Competenze</a></li>
                 <li><a href="#experience">Carriera</a></li>
                 <li><a href="#certifications">Corsi</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
                 <li><a href="#education">Studi</a></li>
                 <li><a href="#contact">Contatti</a></li>
                 <li>
@@ -436,6 +440,49 @@
         </h2>
         <div class="courses-grid" id="coursesGrid">
             <div class="loading">Caricamento corsi...</div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="section parallax-section" id="portfolio">
+        <h2 class="section-title fade-in-up">
+            <svg class="icon icon-lg" aria-hidden="true">
+                <use href="#icon-portfolio"></use>
+            </svg>
+            <span class="section-title-text">Portfolio &amp; GitHub</span>
+        </h2>
+        <div class="portfolio-intro fade-in-up">
+            <p>
+                Selezione curata dei repository pubblici che rappresentano al meglio il mio approccio
+                full-stack: architetture .NET, frontend Angular/Blazor e automazioni AI.
+                Ogni progetto include README dettagliati, workflow CI/CD e issue tracker aperti.
+            </p>
+            <a class="portfolio-cta" href="https://github.com/paolopci?tab=repositories" target="_blank" rel="noopener noreferrer">
+                <svg class="icon" aria-hidden="true">
+                    <use href="#icon-globe"></use>
+                </svg>
+                <span>Visita il profilo GitHub</span>
+            </a>
+        </div>
+        <div class="portfolio-grid">
+            <article class="portfolio-card fade-in-up">
+                <h3>.NET Services Toolkit</h3>
+                <p>Set di microservizi ASP.NET Core 8 (serie Mango.*) con autenticazione JWT, messaging via Azure Service Bus, API gateway e orchestrazione con Docker Compose.</p>
+                <ul>
+                    <li>Stack: .NET 8, EF Core, Docker, Azure Service Bus</li>
+                    <li>Focus: scalabilità, observability, integrazione REST tra Mango.Mango2Web e i servizi Product/Order/Email/Auth</li>
+                </ul>
+                <a href="https://github.com/paolopci/Mango.Mango2Web" target="_blank" rel="noopener noreferrer" class="portfolio-link">Apri repository principale</a>
+            </article>
+            <article class="portfolio-card fade-in-up">
+                <h3>BlazorBookStoreApp</h3>
+                <p>Applicazione e-commerce di libri sviluppata in Blazor WebAssembly con backend ASP.NET Core. Include catalogo filtrabile, carrello persistente e pipeline CI/CD su GitHub Actions.</p>
+                <ul>
+                    <li>Stack: Blazor WASM, ASP.NET Core API, EF Core, Azure Static Web Apps</li>
+                    <li>Focus: componenti riusabili, dark mode, integrazione REST e deploy automatizzato</li>
+                </ul>
+                <a href="https://github.com/paolopci/BlazorBookStoreApp" target="_blank" rel="noopener noreferrer" class="portfolio-link">Apri repository</a>
+            </article>
         </div>
     </section>
 

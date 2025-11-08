@@ -1061,6 +1061,74 @@ body.dark-theme .hero-card {
     justify-content: center;
 }
 
+.portfolio-intro {
+    max-width: 860px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    color: #4b5563;
+    line-height: 1.7;
+}
+
+.portfolio-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.portfolio-cta:hover {
+    text-decoration: underline;
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.portfolio-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 1.75rem;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+    border: 1px solid rgba(102, 126, 234, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+.portfolio-card h3 {
+    font-size: 1.25rem;
+    color: #111827;
+}
+
+.portfolio-card p {
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+.portfolio-card ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: #1f2937;
+    line-height: 1.5;
+}
+
+.portfolio-link {
+    margin-top: auto;
+    align-self: flex-start;
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.portfolio-link:hover {
+    text-decoration: underline;
+}
+
 .course-card {
     background: white;
     border-radius: 15px;
@@ -1145,6 +1213,14 @@ body.dark-theme .hero-card {
 
     .course-card {
         padding: 1.25rem;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .portfolio-intro {
+        text-align: left;
     }
 }
 
