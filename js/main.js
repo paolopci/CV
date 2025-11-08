@@ -1,4 +1,4 @@
-// Accessibility live region helper (global)
+﻿// Accessibility live region helper (global)
 window.a11yAnnounce = window.a11yAnnounce || function (msg) {
     const live = document.getElementById('a11y-status');
     if (!live) return;
@@ -20,6 +20,20 @@ async function loadCourses() {
             const up = s.toUpperCase();
             if (!s || up === 'N/A' || up === 'N-D' || up === 'N/D') return '';
             return s;
+        };
+
+        const createSvgIcon = (symbolId, extraClass = '') => {
+            const cleanId = fmt(symbolId);
+            if (!cleanId) return null;
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            const classes = ['icon'];
+            if (extraClass) classes.push(extraClass);
+            svg.setAttribute('class', classes.join(' '));
+            svg.setAttribute('aria-hidden', 'true');
+            const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+            use.setAttribute('href', `#${cleanId}`);
+            svg.appendChild(use);
+            return svg;
         };
 
         const createDetailChip = (text) => {
@@ -77,11 +91,13 @@ async function loadCourses() {
 
             const platformSpan = document.createElement('span');
             platformSpan.className = 'course-platform';
-            const platformIcon = fmt(course.platformIcon);
+            const platformIcon = createSvgIcon(course.platformIcon, 'icon-platform');
             if (platformIcon) {
-                platformSpan.appendChild(document.createTextNode(`${platformIcon} `));
+                platformSpan.appendChild(platformIcon);
+                platformSpan.appendChild(document.createTextNode(' '));
             }
-            platformSpan.appendChild(document.createTextNode(fmt(course.platform) || ''));
+            const platformName = fmt(course.platform) || '';
+            platformSpan.appendChild(document.createTextNode(platformName));
 
             const dateSpan = document.createElement('span');
             dateSpan.className = 'course-date';
@@ -119,11 +135,11 @@ async function loadCourses() {
                 const modal = document.getElementById('courseModal');
                 const modalContent = modal.querySelector('.modal-content');
                 const modalBody = document.getElementById('modalBody');
-                const duration = fmt(course.duration) || '—';
-                const level = fmt(course.level) || '—';
-                const students = fmt(course.students) || '—';
-                const platform = fmt(course.platform) || '—';
-                const date = fmt(course.date) || '—';
+                const duration = fmt(course.duration) || 'â€”';
+                const level = fmt(course.level) || 'â€”';
+                const students = fmt(course.students) || 'â€”';
+                const platform = fmt(course.platform) || 'â€”';
+                const date = fmt(course.date) || 'â€”';
                 const title = fmt(course.title) || 'Corso';
                 const descriptionText = fmt(course.description) || '';
 
@@ -155,7 +171,7 @@ async function loadCourses() {
                     tagsRow.appendChild(document.createTextNode(' '));
                     tagsRow.appendChild(tagsFragment);
                 } else {
-                    tagsRow.appendChild(document.createTextNode(' —'));
+                    tagsRow.appendChild(document.createTextNode(' â€”'));
                 }
 
                 modalBody.appendChild(titleEl);
@@ -356,8 +372,7 @@ if (courseModal) {
 document.addEventListener('DOMContentLoaded', () => {
     const icon = document.getElementById('themeToggleIcon');
     if (!icon) return;
-    icon.setAttribute('role', 'button');
-    icon.setAttribute('aria-label', 'Cambia tema');
+    icon.setAttribute('aria-pressed', 'false');
     const announce = window.a11yAnnounce || function (msg) {
         const live = document.getElementById('a11y-status');
         if (!live) return;
@@ -366,10 +381,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const updateIcon = () => {
         const isDark = document.body.classList.contains('dark-theme');
-        // Show sun in dark mode (to switch to light), moon in light mode (to switch to dark)
-        icon.textContent = isDark ? '🌞' : '🌙';
+        icon.dataset.mode = isDark ? 'dark' : 'light';
         icon.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-        icon.setAttribute('title', isDark ? 'Passa al tema chiaro' : 'Passa al tema scuro');
+        const label = isDark ? 'Passa al tema chiaro' : 'Passa al tema scuro';
+        icon.setAttribute('aria-label', label);
+        icon.setAttribute('title', label);
     };
     const applyTheme = (makeDark, persist = true) => {
         document.body.classList.toggle('dark-theme', makeDark);
@@ -382,13 +398,6 @@ document.addEventListener('DOMContentLoaded', () => {
     icon.addEventListener('click', () => {
         const isDark = document.body.classList.contains('dark-theme');
         applyTheme(!isDark);
-    });
-    icon.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            const isDark = document.body.classList.contains('dark-theme');
-            applyTheme(!isDark);
-        }
     });
     // Preferenza salvata o tema di sistema come default
     const saved = localStorage.getItem('theme');
@@ -404,14 +413,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     applyTheme(e.matches, false);
                 }
             };
-            if (mq.addEventListener) mq.addEventListener('change', onSystemChange);
-            else if (mq.addListener) mq.addListener(onSystemChange);
-        } catch (_) { /* no-op */ }
+            if (mq.addEventListener) {
+                mq.addEventListener('change', onSystemChange);
+            } else if (mq.addListener) {
+                mq.addListener(onSystemChange);
+            }
+        } catch (_) {
+            /* no-op */
+        }
     } else {
         applyTheme(false, false); // fallback: light
     }
 });
-
 // Dynamic Italian date in the presentation letter
 const monthsIt = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
 const today = new Date();
@@ -422,3 +435,7 @@ const dynamicDateEl = document.getElementById('dynamic-date');
 if (dynamicDateEl) {
     dynamicDateEl.textContent = `Pesaro, ${giorno} ${mese} ${anno}`;
 }
+
+
+
+
