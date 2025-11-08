@@ -135,11 +135,11 @@ async function loadCourses() {
                 const modal = document.getElementById('courseModal');
                 const modalContent = modal.querySelector('.modal-content');
                 const modalBody = document.getElementById('modalBody');
-                const duration = fmt(course.duration) || 'â€”';
-                const level = fmt(course.level) || 'â€”';
-                const students = fmt(course.students) || 'â€”';
-                const platform = fmt(course.platform) || 'â€”';
-                const date = fmt(course.date) || 'â€”';
+                const duration = fmt(course.duration) || 'N/D';
+                const level = fmt(course.level) || 'N/D';
+                const students = fmt(course.students) || 'N/D';
+                const platform = fmt(course.platform) || 'N/D';
+                const date = fmt(course.date) || 'N/D';
                 const title = fmt(course.title) || 'Corso';
                 const descriptionText = fmt(course.description) || '';
 
