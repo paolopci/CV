@@ -848,6 +848,9 @@ body.dark-theme .hero-card {
     cursor: pointer;
     padding: 10px;
     z-index: 1001;
+    background: transparent;
+    border: none;
+    color: inherit;
 }
 
 .mobile-menu span {
@@ -855,6 +858,11 @@ body.dark-theme .hero-card {
     height: 2px;
     background: #333;
     transition: all 0.3s ease-in-out;
+}
+
+.mobile-menu:focus-visible {
+    outline: 3px solid #2563eb;
+    border-radius: 4px;
 }
 
 .mobile-menu.active span:nth-child(1) {
