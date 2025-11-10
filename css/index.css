@@ -18,6 +18,24 @@
     white-space: nowrap;
 }
 
+/* Icon system */
+.icon {
+    width: 1.1em;
+    height: 1.1em;
+    display: inline-block;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.icon-lg {
+    width: 1.6rem;
+    height: 1.6rem;
+}
+
+.icon-defs {
+    pointer-events: none;
+}
+
 body,
 html {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -319,6 +337,21 @@ body.dark-theme .hero-card {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
+.notice-icon {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.notice-icon .icon {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
 /* Navigation */
 .nav {
     background: rgba(255, 255, 255, 0.95);
@@ -341,7 +374,7 @@ body.dark-theme .hero-card {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding: 0 2rem;
 }
@@ -350,6 +383,12 @@ body.dark-theme .hero-card {
     display: flex;
     gap: 2rem;
     list-style: none;
+    align-items: center;
+}
+
+.nav-links li {
+    display: flex;
+    align-items: center;
 }
 
 .nav-links a {
@@ -379,6 +418,32 @@ body.dark-theme .hero-card {
     width: 100%;
 }
 
+.theme-toggle {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0.4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle svg {
+    display: none;
+}
+
+.theme-toggle[data-mode="light"] svg[data-theme-icon="light"],
+.theme-toggle[data-mode="dark"] svg[data-theme-icon="dark"] {
+    display: inline-block;
+}
+
+.theme-toggle:focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+    border-radius: 6px;
+}
+
 /* Sections */
 .section {
     padding: 5rem 2rem;
@@ -394,11 +459,22 @@ body.dark-theme .hero-card {
 .section-title {
     font-size: 2.5rem;
     text-align: center;
-    margin-bottom: 3rem;
+    margin: 0 auto 3rem;
     color: #333;
     position: relative;
-    /* Aggiunto padding-top per maggiore spaziatura */
     padding-top: 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    justify-content: center;
+}
+
+.section-title .icon {
+    color: #667eea;
+}
+
+.section-title-text {
+    display: inline-block;
 }
 
 .section-title::after {
@@ -686,6 +762,17 @@ body.dark-theme .hero-card {
 
 /* Education Section */
 
+.education-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+}
+
+.education-title .icon {
+    color: #667eea;
+}
 
 .education-card h4 {
     font-size: 1.5rem;
@@ -719,6 +806,9 @@ body.dark-theme .hero-card {
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.1);
     transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
 }
 
 .footer-link:hover {
@@ -848,6 +938,9 @@ body.dark-theme .hero-card {
     cursor: pointer;
     padding: 10px;
     z-index: 1001;
+    background: transparent;
+    border: none;
+    color: inherit;
 }
 
 .mobile-menu span {
@@ -855,6 +948,11 @@ body.dark-theme .hero-card {
     height: 2px;
     background: #333;
     transition: all 0.3s ease-in-out;
+}
+
+.mobile-menu:focus-visible {
+    outline: 3px solid #2563eb;
+    border-radius: 4px;
 }
 
 .mobile-menu.active span:nth-child(1) {
@@ -893,6 +991,10 @@ body.dark-theme .hero-card {
     .nav-links.active {
         transform: translateY(0);
         display: flex;
+    }
+
+    .nav-container {
+        justify-content: space-between;
     }
 
     /* Improved Typography for Mobile */
@@ -956,6 +1058,75 @@ body.dark-theme .hero-card {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     padding: 1rem;
+    justify-content: center;
+}
+
+.portfolio-intro {
+    max-width: 860px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    color: #4b5563;
+    line-height: 1.7;
+}
+
+.portfolio-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.portfolio-cta:hover {
+    text-decoration: underline;
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.portfolio-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 1.75rem;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+    border: 1px solid rgba(102, 126, 234, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+.portfolio-card h3 {
+    font-size: 1.25rem;
+    color: #111827;
+}
+
+.portfolio-card p {
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+.portfolio-card ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: #1f2937;
+    line-height: 1.5;
+}
+
+.portfolio-link {
+    margin-top: auto;
+    align-self: flex-start;
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.portfolio-link:hover {
+    text-decoration: underline;
 }
 
 .course-card {
@@ -982,6 +1153,12 @@ body.dark-theme .hero-card {
 .course-platform {
     font-weight: 600;
     color: #667eea;
+}
+
+.course-platform .icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.35rem;
 }
 
 .course-date {
@@ -1030,11 +1207,20 @@ body.dark-theme .hero-card {
 
 @media (max-width: 768px) {
     .courses-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: stretch;
     }
 
     .course-card {
         padding: 1.25rem;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .portfolio-intro {
+        text-align: left;
     }
 }
 
@@ -1104,6 +1290,7 @@ body.dark-theme a {
 body.dark-theme .section,
 body.dark-theme .skill-category,
 body.dark-theme .course-card,
+body.dark-theme .portfolio-card,
 body.dark-theme .timeline-date,
 body.dark-theme .education-card,
 body.dark-theme .presentation-letter,
@@ -1133,7 +1320,9 @@ body.dark-theme .skill-percentage {
 }
 
 body.dark-theme .timeline-role,
-body.dark-theme .course-platform {
+body.dark-theme .course-platform,
+body.dark-theme .portfolio-cta,
+body.dark-theme .portfolio-link {
     color: #89c4f4;
 }
 
@@ -1171,6 +1360,19 @@ body.dark-theme h2,
 body.dark-theme h3,
 body.dark-theme h4 {
     color: #f1f1f1;
+}
+
+body.dark-theme .portfolio-intro {
+    color: #d1d5db;
+}
+
+body.dark-theme .portfolio-card h3 {
+    color: #f9fafb;
+}
+
+body.dark-theme .portfolio-card p,
+body.dark-theme .portfolio-card ul {
+    color: #d1d5db;
 }
 
 /* Light Mode: Education Card */
@@ -1296,6 +1498,9 @@ body.dark-theme .timeline-item[open] .timeline-description {
     font-weight: bold;
     padding: 0.5rem;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
 }
 
 .cv-download-link:hover {
@@ -1304,7 +1509,9 @@ body.dark-theme .timeline-item[open] .timeline-description {
 
 /* Footer download */
 .cv-download-footer {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     margin-top: 1rem;
     font-size: 0.9rem;
     color: #007bff;
@@ -1380,6 +1587,11 @@ body.dark-theme .nav-links a:hover {
     margin-top: 1.5rem;
 }
 
+.hero-buttons .icon {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
 @media (max-width: 768px) {
     .hero-buttons {
         flex-direction: column;
@@ -1406,4 +1618,9 @@ body.dark-theme .nav-links a:hover {
   height: 20px;
   vertical-align: middle;
   margin-right: 8px;
+}
+
+.footer-link .icon {
+    width: 1rem;
+    height: 1rem;
 }

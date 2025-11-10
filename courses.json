@@ -3,7 +3,7 @@
         {
             "id": "n8n-automation-ai-agents",
             "platform": "Udemy",
-            "platformIcon": "🎓",
+            "platformIcon": "platform-udemy",
             "title": "n8n Automation: Build AI Agents, APIs & No-Code Workflows",
             "date": "09/2025",
             "level": "All Levels",
@@ -24,7 +24,7 @@
         {
             "id": "ecommerce-dotnet-angular",
             "platform": "Udemy",
-            "platformIcon": "🎓",
+            "platformIcon": "platform-udemy",
             "title": "Learn to build an e-commerce app with .Net Core and Angular",
             "date": "08/2025",
             "duration": "30.5 ore",
@@ -43,7 +43,7 @@
         {
             "id": "js-advanced",
             "platform": "Udemy",
-            "platformIcon": "🎓",
+            "platformIcon": "platform-udemy",
             "title": "JavaScript Moderno & Pattern Avanzati",
             "date": "Marzo 2025",
             "duration": "40 ore",
@@ -60,7 +60,7 @@
         {
             "id": "dotnet-architecture",
             "platform": "Pluralsight",
-            "platformIcon": "🧠",
+            "platformIcon": "platform-pluralsight",
             "title": "Enterprise Architecture con .NET Core 8",
             "date": "Gennaio 2025",
             "duration": "32 ore",
@@ -78,7 +78,7 @@
         {
             "id": "angular-master",
             "platform": "Angular University",
-            "platformIcon": "🅰️",
+            "platformIcon": "platform-angular",
             "title": "Angular 17 Master Class",
             "date": "Novembre 2024",
             "duration": "28 ore",
@@ -95,7 +95,7 @@
         {
             "id": "dotnet-microservices-complete",
             "platform": "Udemy",
-            "platformIcon": "🎓",
+            "platformIcon": "platform-udemy",
             "title": ".NET Core Microservices - The Complete Guide (.NET 6 MVC)",
             "date": "Giugno 2025",
             "duration": "35 ore",
@@ -114,7 +114,7 @@
         {
             "id": "python-mega-course",
             "platform": "Udemy",
-            "platformIcon": "🐍",
+            "platformIcon": "platform-udemy",
             "title": "The Python Mega Course: Learn Python in 60 Days, Build 20 Apps",
             "date": "Marzo 2025",
             "duration": "51.5 ore",
@@ -133,7 +133,7 @@
         {
             "id": "docker-zero-to-hero",
             "platform": "Dometrain",
-            "platformIcon": "🐳",
+            "platformIcon": "platform-dometrain",
             "title": "From Zero to Hero: Docker for Developers",
             "date": "2025",
             "duration": "3+ ore",
@@ -152,7 +152,7 @@
         {
             "id": "blazor-deep-dive-net8",
             "platform": "Udemy",
-            "platformIcon": "🧩",
+            "platformIcon": "platform-udemy",
             "title": "Blazor Deep Dive - From Beginner to Advanced in .NET 8",
             "date": "2025",
             "duration": "22.5 ore",

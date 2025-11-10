@@ -1,4 +1,4 @@
-// Accessibility live region helper (global)
+﻿// Accessibility live region helper (global)
 window.a11yAnnounce = window.a11yAnnounce || function (msg) {
     const live = document.getElementById('a11y-status');
     if (!live) return;
@@ -21,17 +21,51 @@ async function loadCourses() {
             if (!s || up === 'N/A' || up === 'N-D' || up === 'N/D') return '';
             return s;
         };
-        const chipWithValueLabel = (text) => {
+
+        const createSvgIcon = (symbolId, extraClass = '') => {
+            const cleanId = fmt(symbolId);
+            if (!cleanId) return null;
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            const classes = ['icon'];
+            if (extraClass) classes.push(extraClass);
+            svg.setAttribute('class', classes.join(' '));
+            svg.setAttribute('aria-hidden', 'true');
+            const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+            use.setAttribute('href', `#${cleanId}`);
+            svg.appendChild(use);
+            return svg;
+        };
+
+        const createDetailChip = (text) => {
             const s = fmt(text);
-            if (!s) return '';
-            const m = s.match(/^([0-9]+(?:[.,][0-9]+)?\+?K?)\s*(.*)$/i);
-            if (m) {
-                const val = m[1];
-                const label = m[2] || '';
-                const space = label ? ' ' : '';
-                return `<span class="detail-chip"><span class="detail-value">${val}</span>${space}${label}</span>`;
+            if (!s) return null;
+            const chip = document.createElement('span');
+            chip.className = 'detail-chip';
+            const match = s.match(/^([0-9]+(?:[.,][0-9]+)?\+?K?)\s*(.*)$/i);
+            if (match) {
+                const valueEl = document.createElement('span');
+                valueEl.className = 'detail-value';
+                valueEl.textContent = match[1];
+                chip.appendChild(valueEl);
+                if (match[2]) {
+                    chip.appendChild(document.createTextNode(` ${match[2]}`));
+                }
+            } else {
+                chip.textContent = s;
             }
-            return `<span class="detail-chip">${s}</span>`;
+            return chip;
+        };
+
+        const createTagsFragment = (tags = []) => {
+            const fragment = document.createDocumentFragment();
+            tags.forEach(tag => {
+                const cleanTag = fmt(tag);
+                if (!cleanTag) return;
+                const span = document.createElement('span');
+                span.textContent = cleanTag;
+                fragment.appendChild(span);
+            });
+            return fragment;
         };
 
         data.courses.forEach(course => {
@@ -47,41 +81,108 @@ async function loadCourses() {
             const s = fmt(course.students);
             const l = fmt(course.level);
             const a = fmt(course.audience);
-            if (d) courseDetails.push(chipWithValueLabel(d));
-            if (s) courseDetails.push(chipWithValueLabel(s));
-            if (l) courseDetails.push(chipWithValueLabel(l));
-            if (a) courseDetails.push(chipWithValueLabel(a));
+            if (d) courseDetails.push(d);
+            if (s) courseDetails.push(s);
+            if (l) courseDetails.push(l);
+            if (a) courseDetails.push(a);
 
-            const tagsHtml = course.tags ? course.tags.map(tag => `<span>${tag}</span>`).join('') : '';
+            const header = document.createElement('div');
+            header.className = 'course-header';
 
-            card.innerHTML = `
-                <div class="course-header">
-                    <span class="course-platform">${course.platformIcon || ''} ${course.platform}</span>
-                    <span class="course-date">${course.date}</span>
-                </div>
-                <h3 class="course-title">${course.title}</h3>
-                <div class="course-details">${courseDetails.join('')}</div>
-                <p class="course-description">${course.description}</p>
-                <div class="course-tags">${tagsHtml}</div>
-            `;
+            const platformSpan = document.createElement('span');
+            platformSpan.className = 'course-platform';
+            const platformIcon = createSvgIcon(course.platformIcon, 'icon-platform');
+            if (platformIcon) {
+                platformSpan.appendChild(platformIcon);
+                platformSpan.appendChild(document.createTextNode(' '));
+            }
+            const platformName = fmt(course.platform) || '';
+            platformSpan.appendChild(document.createTextNode(platformName));
+
+            const dateSpan = document.createElement('span');
+            dateSpan.className = 'course-date';
+            dateSpan.textContent = fmt(course.date);
+
+            header.appendChild(platformSpan);
+            header.appendChild(dateSpan);
+
+            const titleEl = document.createElement('h3');
+            titleEl.className = 'course-title';
+            titleEl.textContent = fmt(course.title) || 'Corso';
+
+            const detailsContainer = document.createElement('div');
+            detailsContainer.className = 'course-details';
+            courseDetails.forEach(chipHtml => {
+                const chip = createDetailChip(chipHtml);
+                if (chip) detailsContainer.appendChild(chip);
+            });
+
+            const description = document.createElement('p');
+            description.className = 'course-description';
+            description.textContent = fmt(course.description);
+
+            const tagsContainer = document.createElement('div');
+            tagsContainer.className = 'course-tags';
+            tagsContainer.appendChild(createTagsFragment(course.tags || []));
+
+            card.appendChild(header);
+            card.appendChild(titleEl);
+            card.appendChild(detailsContainer);
+            card.appendChild(description);
+            card.appendChild(tagsContainer);
 
             const openModal = (openerEl) => {
                 const modal = document.getElementById('courseModal');
                 const modalContent = modal.querySelector('.modal-content');
                 const modalBody = document.getElementById('modalBody');
-                const duration = course.duration;
-                const level = course.level;
-                const students = course.students;
-                modalBody.innerHTML = `
-                    <h2 id="courseModalTitle">${course.title}</h2>
-                    <p><strong>Piattaforma:</strong> ${course.platform}</p>
-                    <p><strong>Durata:</strong> ${duration}</p>
-                    <p><strong>Livello:</strong> ${level}</p>
-                    <p><strong>Studenti:</strong> ${students}</p>
-                    <p><strong>Data:</strong> ${course.date}</p>
-                    <p style="margin-top: 1rem;">${course.description}</p>
-                    <p><strong>Tags:</strong> ${tagsHtml}</p>
-                `;
+                const duration = fmt(course.duration) || 'N/D';
+                const level = fmt(course.level) || 'N/D';
+                const students = fmt(course.students) || 'N/D';
+                const platform = fmt(course.platform) || 'N/D';
+                const date = fmt(course.date) || 'N/D';
+                const title = fmt(course.title) || 'Corso';
+                const descriptionText = fmt(course.description) || '';
+
+                const makeInfoRow = (label, value) => {
+                    const p = document.createElement('p');
+                    const strong = document.createElement('strong');
+                    strong.textContent = `${label}:`;
+                    p.appendChild(strong);
+                    p.appendChild(document.createTextNode(` ${value}`));
+                    return p;
+                };
+
+                modalBody.innerHTML = '';
+
+                const titleEl = document.createElement('h2');
+                titleEl.id = 'courseModalTitle';
+                titleEl.textContent = title;
+
+                const descriptionEl = document.createElement('p');
+                descriptionEl.style.marginTop = '1rem';
+                descriptionEl.textContent = descriptionText;
+
+                const tagsRow = document.createElement('p');
+                const tagsLabel = document.createElement('strong');
+                tagsLabel.textContent = 'Tags:';
+                tagsRow.appendChild(tagsLabel);
+                const tagsFragment = createTagsFragment(course.tags || []);
+                if (tagsFragment.childNodes.length) {
+                    tagsRow.appendChild(document.createTextNode(' '));
+                    tagsRow.appendChild(tagsFragment);
+                } else {
+                    tagsRow.appendChild(document.createTextNode(' â€”'));
+                }
+
+                modalBody.appendChild(titleEl);
+                modalBody.appendChild(makeInfoRow('Piattaforma', platform));
+                modalBody.appendChild(makeInfoRow('Durata', duration));
+                modalBody.appendChild(makeInfoRow('Livello', level));
+                modalBody.appendChild(makeInfoRow('Studenti', students));
+                modalBody.appendChild(makeInfoRow('Data', date));
+                modalBody.appendChild(descriptionEl);
+                modalBody.appendChild(tagsRow);
+
                 modal.style.display = 'flex';
 
                 // Focus management
@@ -221,21 +322,27 @@ document.querySelectorAll('.fade-in-up, .slide-in-left, .slide-in-right, .parall
 const mobileMenu = document.querySelector('.mobile-menu');
 const navLinks = document.querySelector('.nav-links');
 if (mobileMenu && navLinks) {
+    const setMenuState = (isOpen) => {
+        mobileMenu.classList.toggle('active', isOpen);
+        navLinks.classList.toggle('active', isOpen);
+        mobileMenu.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        mobileMenu.setAttribute('aria-label', isOpen ? 'Chiudi menu di navigazione' : 'Apri menu di navigazione');
+        document.body.style.overflow = isOpen ? 'hidden' : 'visible';
+    };
+
     mobileMenu.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
-        navLinks.classList.toggle('active');
-        document.body.style.overflow = document.body.style.overflow === 'hidden' ? 'visible' : 'hidden';
+        setMenuState(!mobileMenu.classList.contains('active'));
     });
+
     document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => {
-        mobileMenu.classList.remove('active');
-        navLinks.classList.remove('active');
-        document.body.style.overflow = 'visible';
+        if (mobileMenu.classList.contains('active')) {
+            setMenuState(false);
+        }
     }));
+
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('.nav-container')) {
-            mobileMenu.classList.remove('active');
-            navLinks.classList.remove('active');
-            document.body.style.overflow = 'visible';
+        if (!e.target.closest('.nav-container') && mobileMenu.classList.contains('active')) {
+            setMenuState(false);
         }
     });
 }
@@ -265,8 +372,7 @@ if (courseModal) {
 document.addEventListener('DOMContentLoaded', () => {
     const icon = document.getElementById('themeToggleIcon');
     if (!icon) return;
-    icon.setAttribute('role', 'button');
-    icon.setAttribute('aria-label', 'Cambia tema');
+    icon.setAttribute('aria-pressed', 'false');
     const announce = window.a11yAnnounce || function (msg) {
         const live = document.getElementById('a11y-status');
         if (!live) return;
@@ -275,10 +381,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const updateIcon = () => {
         const isDark = document.body.classList.contains('dark-theme');
-        // Show sun in dark mode (to switch to light), moon in light mode (to switch to dark)
-        icon.textContent = isDark ? '🌞' : '🌙';
+        icon.dataset.mode = isDark ? 'dark' : 'light';
         icon.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-        icon.setAttribute('title', isDark ? 'Passa al tema chiaro' : 'Passa al tema scuro');
+        const label = isDark ? 'Passa al tema chiaro' : 'Passa al tema scuro';
+        icon.setAttribute('aria-label', label);
+        icon.setAttribute('title', label);
     };
     const applyTheme = (makeDark, persist = true) => {
         document.body.classList.toggle('dark-theme', makeDark);
@@ -291,13 +398,6 @@ document.addEventListener('DOMContentLoaded', () => {
     icon.addEventListener('click', () => {
         const isDark = document.body.classList.contains('dark-theme');
         applyTheme(!isDark);
-    });
-    icon.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            const isDark = document.body.classList.contains('dark-theme');
-            applyTheme(!isDark);
-        }
     });
     // Preferenza salvata o tema di sistema come default
     const saved = localStorage.getItem('theme');
@@ -313,14 +413,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     applyTheme(e.matches, false);
                 }
             };
-            if (mq.addEventListener) mq.addEventListener('change', onSystemChange);
-            else if (mq.addListener) mq.addListener(onSystemChange);
-        } catch (_) { /* no-op */ }
+            if (mq.addEventListener) {
+                mq.addEventListener('change', onSystemChange);
+            } else if (mq.addListener) {
+                mq.addListener(onSystemChange);
+            }
+        } catch (_) {
+            /* no-op */
+        }
     } else {
         applyTheme(false, false); // fallback: light
     }
 });
-
 // Dynamic Italian date in the presentation letter
 const monthsIt = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
 const today = new Date();
@@ -331,3 +435,7 @@ const dynamicDateEl = document.getElementById('dynamic-date');
 if (dynamicDateEl) {
     dynamicDateEl.textContent = `Pesaro, ${giorno} ${mese} ${anno}`;
 }
+
+
+
+
