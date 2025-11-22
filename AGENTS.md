@@ -6,6 +6,14 @@
 - SEO/dati strutturati: verifica `url`/`sameAs` nel JSON-LD; non rinominare asset pubblici.
 - Commit: messaggi brevi in IT; cambi mirati; evita nuovi toolchain/framework.
 
+**Workflow & Interaction**
+- **Lingua**: Chat e interazioni di progetto rigorosamente in Italiano.
+- **Procedura di Modifica**:
+  1. **Analisi**: Identificare la modifica da eseguire.
+  2. **Checklist**: Prima di procedere, presentare una lista (1-7 punti) usando 🟩 per i punti aperti e 🟨 (con testo barrato) per i completati.
+  3. **Esecuzione**: Richiedere conferma per ogni step; validare l'esito con 1-2 frasi dopo ogni modifica.
+  4. **Chiusura**: Testare, riformattare il codice e proporre eventuali refactoring solo alla fine.
+
 **Purpose & Scope**
 - Istruzioni operative per agenti e contributor che lavorano in questo repository.
 - Ambito: l'intero repository radicato nella cartella corrente.
