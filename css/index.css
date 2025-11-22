@@ -230,6 +230,20 @@ body.dark-theme .hero-card {
     margin-bottom: 2rem;
     opacity: 0.9;
     animation: fadeInUp 1s ease-out 0.3s both;
+    min-height: 1.6em; /* Prevents layout shift */
+}
+
+.typewriter-cursor {
+    display: inline-block;
+    margin-left: 2px;
+    color: #667eea;
+    animation: blink 1s step-end infinite;
+    font-weight: 400;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
 
 /* Presentation Letter */
