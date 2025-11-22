@@ -508,3 +508,40 @@ document.addEventListener('DOMContentLoaded', () => {
         new TypeWriter(txtElement, words);
     }
 });
+
+// Portfolio Filtering
+document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const portfolioItems = document.querySelectorAll('.portfolio-card');
+
+    if (filterButtons.length === 0 || portfolioItems.length === 0) return;
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterButtons.forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            btn.classList.add('active');
+
+            const filterValue = btn.getAttribute('data-filter');
+
+            portfolioItems.forEach(item => {
+                const categories = (item.getAttribute('data-category') || '').split(' ');
+                
+                if (filterValue === 'all' || categories.includes(filterValue)) {
+                    item.classList.remove('hidden');
+                    // Small delay to allow display:block to apply before opacity transition
+                    setTimeout(() => {
+                        item.classList.remove('fade-out');
+                    }, 10);
+                } else {
+                    item.classList.add('fade-out');
+                    // Wait for transition to finish before hiding
+                    setTimeout(() => {
+                        item.classList.add('hidden');
+                    }, 400); // Matches CSS transition duration
+                }
+            });
+        });
+    });
+});
