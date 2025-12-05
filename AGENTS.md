@@ -34,8 +34,10 @@
 - `cv-paolo-paci.pdf`: CV scaricabile; mantenere il nome file stabile.
 - `favicon.ico`: icona del sito.
 - `firma.html`, `firma_paolopci.html`, `firma_email/`: modelli di firma email.
+- `docs/`: documentazione aggiuntiva (es. `STRUCTURE.md`).
+- `archive/`: file legacy e versioni precedenti (es. `legacy/`).
  - File demo per animazione: `code-demo.js` (root). Mantenere il nome stabile o aggiornare `SOURCE_FILE` in `js/hero-code-bg.js`/`index.html`.
- - Vedi anche `docs/STRUCTURE.md` per la mappa cartelle aggiornata (file legacy in `archive/legacy/`).
+ - Vedi anche `docs/STRUCTURE.md` per la mappa cartelle aggiornata.
 
 **Run & Validate**
 - Server locale: `python -m http.server 8080` e apri `http://localhost:8080`.
