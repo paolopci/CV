@@ -573,14 +573,12 @@ body.dark-theme .hero-card {
 
 /* Sections */
 .section {
-    padding: 5rem 2rem;
+    padding: 2.5rem 2rem 5rem;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 3rem auto;
     position: relative;
     background: #f8f9ff;
     z-index: 2;
-    /* Aggiunto margin-top per evitare sovrapposizioni */
-    margin-top: 2rem;
 }
 
 .section-title {
@@ -589,7 +587,7 @@ body.dark-theme .hero-card {
     margin: 0 auto 3rem;
     color: #333;
     position: relative;
-    padding-top: 2rem;
+    padding-top: 1rem;
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
@@ -1416,7 +1414,7 @@ body.dark-theme .hero-card {
 }
 
 body {
-    background-color: #eef1f7;
+    background-color: #e6eaf2;
     color: #111;
     transition: background-color 0.3s ease, color 0.3s ease;
 }

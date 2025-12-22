@@ -284,22 +284,7 @@ window.addEventListener('scroll', function () {
     lastScroll = currentScroll;
 });
 
-// Effetto parallax leggero (senza spingere le sezioni verso il basso)
-const parallaxSections = Array.from(document.querySelectorAll('.parallax-section'))
-    .filter(s => !['certifications', 'education', 'contact'].includes(s.id));
-window.addEventListener('scroll', () => {
-    requestAnimationFrame(() => {
-        parallaxSections.forEach(section => {
-            const distance = window.pageYOffset - section.offsetTop;
-            const speed = 0.15;
-            const raw = distance * speed;
-            const offset = Math.max(-60, Math.min(0, raw));
-            if (Math.abs(distance) < window.innerHeight * 1.5) {
-                section.style.transform = `translateY(${offset}px)`;
-            }
-        });
-    });
-});
+// Effetto parallax disattivato: mantieni lo stacco tra le sezioni durante lo scroll.
 
 // Intersection Observer for scroll animations
 const observerOptions = { threshold: 0.1, rootMargin: '-50px 0px -50px 0px' };
@@ -307,9 +292,6 @@ const observer = new IntersectionObserver(function (entries) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            if (entry.target.classList.contains('parallax-section')) {
-                entry.target.style.transform = 'translateY(0)';
-            }
         }
     });
 }, observerOptions);
