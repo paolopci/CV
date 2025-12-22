@@ -387,12 +387,30 @@ document.addEventListener('DOMContentLoaded', () => {
         icon.setAttribute('aria-label', label);
         icon.setAttribute('title', label);
     };
+    const updateInfographicTheme = () => {
+        const isDark = document.body.classList.contains('dark-theme');
+        const sources = document.querySelectorAll('[data-dark][data-light]');
+        sources.forEach((el) => {
+            const src = isDark ? el.getAttribute('data-dark') : el.getAttribute('data-light');
+            if (!src) return;
+            if (el.tagName.toLowerCase() === 'source') {
+                if (el.getAttribute('srcset') !== src) {
+                    el.setAttribute('srcset', src);
+                }
+            } else if (el.tagName.toLowerCase() === 'img') {
+                if (el.getAttribute('src') !== src) {
+                    el.setAttribute('src', src);
+                }
+            }
+        });
+    };
     const applyTheme = (makeDark, persist = true) => {
         document.body.classList.toggle('dark-theme', makeDark);
         if (persist) {
             localStorage.setItem('theme', makeDark ? 'dark' : 'light');
         }
         updateIcon();
+        updateInfographicTheme();
         announce(makeDark ? 'Tema scuro attivato' : 'Tema chiaro attivato');
     };
     icon.addEventListener('click', () => {

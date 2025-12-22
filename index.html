@@ -7,6 +7,9 @@
     <title>Paolo Paci - Software Engineer</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="css/index.css" />
+    <link rel="preload" as="image" href="images/infoCV-1200.webp" type="image/webp" />
+    <link rel="preload" as="image" href="images/infoCV-dark-1200.webp" type="image/webp"
+        media="(prefers-color-scheme: dark)" />
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -144,6 +147,7 @@
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#presentation">Intro</a></li>
+                <li><a href="#infografica">Sintesi Professionale</a></li>
                 <li><a href="#profile">Profilo</a></li>
                 <li><a href="#skills">Competenze</a></li>
                 <li><a href="#experience">Carriera</a></li>
@@ -272,6 +276,29 @@
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Infografica Section -->
+    <section class="section parallax-section" id="infografica">
+        <h2 class="section-title fade-in-up">
+            <svg class="icon icon-lg" aria-hidden="true">
+                <use href="#icon-portfolio"></use>
+            </svg>
+            <span class="section-title-text">Sintesi Professionale</span>
+        </h2>
+        <figure class="infographic-card fade-in-up">
+            <picture>
+                <source srcset="images/infoCV-1200.webp" type="image/webp"
+                    data-light="images/infoCV-1200.webp" data-dark="images/infoCV-dark-1200.webp" />
+                <img src="images/infoCV-light-1200.png" width="1200" height="670"
+                    alt="Infografica con sintesi delle competenze e del profilo di Paolo Paci"
+                    loading="lazy" decoding="async" data-light="images/infoCV-light-1200.png"
+                    data-dark="images/infoCV-dark-1200.png" />
+            </picture>
+            <figcaption class="infographic-caption sr-only">
+                Sintesi visiva del profilo professionale e delle competenze principali.
+            </figcaption>
+        </figure>
     </section>
 
     <!-- Profile Section -->
