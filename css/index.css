@@ -1416,7 +1416,7 @@ body.dark-theme .hero-card {
 }
 
 body {
-    background-color: #ffffff;
+    background-color: #eef1f7;
     color: #111;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
