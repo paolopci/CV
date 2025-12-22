@@ -297,6 +297,21 @@ const observer = new IntersectionObserver(function (entries) {
 }, observerOptions);
 document.querySelectorAll('.fade-in-up, .slide-in-left, .slide-in-right, .parallax-section').forEach(el => observer.observe(el));
 
+// Accordion per la timeline: una sola card aperta alla volta
+const timelineDetails = Array.from(document.querySelectorAll('#experience .timeline-item'));
+timelineDetails.forEach((detail) => {
+    detail.addEventListener('toggle', () => {
+        if (!detail.open) {
+            return;
+        }
+        timelineDetails.forEach((other) => {
+            if (other !== detail && other.open) {
+                other.open = false;
+            }
+        });
+    });
+});
+
 // Initialize smooth scroll behavior
 // Smooth behavior gestito via CSS (evita duplicazioni)
 
