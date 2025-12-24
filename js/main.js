@@ -284,22 +284,7 @@ window.addEventListener('scroll', function () {
     lastScroll = currentScroll;
 });
 
-// Effetto parallax leggero (senza spingere le sezioni verso il basso)
-const parallaxSections = Array.from(document.querySelectorAll('.parallax-section'))
-    .filter(s => !['certifications', 'education', 'contact'].includes(s.id));
-window.addEventListener('scroll', () => {
-    requestAnimationFrame(() => {
-        parallaxSections.forEach(section => {
-            const distance = window.pageYOffset - section.offsetTop;
-            const speed = 0.15;
-            const raw = distance * speed;
-            const offset = Math.max(-60, Math.min(0, raw));
-            if (Math.abs(distance) < window.innerHeight * 1.5) {
-                section.style.transform = `translateY(${offset}px)`;
-            }
-        });
-    });
-});
+// Effetto parallax disattivato: mantieni lo stacco tra le sezioni durante lo scroll.
 
 // Intersection Observer for scroll animations
 const observerOptions = { threshold: 0.1, rootMargin: '-50px 0px -50px 0px' };
@@ -307,13 +292,25 @@ const observer = new IntersectionObserver(function (entries) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            if (entry.target.classList.contains('parallax-section')) {
-                entry.target.style.transform = 'translateY(0)';
-            }
         }
     });
 }, observerOptions);
 document.querySelectorAll('.fade-in-up, .slide-in-left, .slide-in-right, .parallax-section').forEach(el => observer.observe(el));
+
+// Accordion per la timeline: una sola card aperta alla volta
+const timelineDetails = Array.from(document.querySelectorAll('#experience .timeline-item'));
+timelineDetails.forEach((detail) => {
+    detail.addEventListener('toggle', () => {
+        if (!detail.open) {
+            return;
+        }
+        timelineDetails.forEach((other) => {
+            if (other !== detail && other.open) {
+                other.open = false;
+            }
+        });
+    });
+});
 
 // Initialize smooth scroll behavior
 // Smooth behavior gestito via CSS (evita duplicazioni)
@@ -387,12 +384,30 @@ document.addEventListener('DOMContentLoaded', () => {
         icon.setAttribute('aria-label', label);
         icon.setAttribute('title', label);
     };
+    const updateInfographicTheme = () => {
+        const isDark = document.body.classList.contains('dark-theme');
+        const sources = document.querySelectorAll('[data-dark][data-light]');
+        sources.forEach((el) => {
+            const src = isDark ? el.getAttribute('data-dark') : el.getAttribute('data-light');
+            if (!src) return;
+            if (el.tagName.toLowerCase() === 'source') {
+                if (el.getAttribute('srcset') !== src) {
+                    el.setAttribute('srcset', src);
+                }
+            } else if (el.tagName.toLowerCase() === 'img') {
+                if (el.getAttribute('src') !== src) {
+                    el.setAttribute('src', src);
+                }
+            }
+        });
+    };
     const applyTheme = (makeDark, persist = true) => {
         document.body.classList.toggle('dark-theme', makeDark);
         if (persist) {
             localStorage.setItem('theme', makeDark ? 'dark' : 'light');
         }
         updateIcon();
+        updateInfographicTheme();
         announce(makeDark ? 'Tema scuro attivato' : 'Tema chiaro attivato');
     };
     icon.addEventListener('click', () => {
