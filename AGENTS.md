@@ -10,8 +10,9 @@
 - **Lingua**: Chat e interazioni di progetto rigorosamente in Italiano.
 - **Procedura di Modifica**:
   1. **Analisi**: Identificare la modifica da eseguire.
-  2. **Checklist**: Prima di procedere, presentare una lista (1-7 punti) usando 🟩 per i punti aperti e 🟨 (con testo barrato) per i completati.
+  2. **Checklist**: Prima di procedere, presentare una lista (1-7 punti) usando 🟩 per i punti aperti e 🟨 (con testo barrato) per i completati. Alla fine chiedere: "Confermi lo step X? oppure si step all".
   3. **Esecuzione**: Richiedere conferma per ogni step; validare l'esito con 1-2 frasi dopo ogni modifica.
+     Se l'utente scrive "si step all", eseguire tutti gli step rimanenti senza ulteriori richieste di conferma. Questa regola ha priorità rispetto alle conferme step-by-step.
   4. **Chiusura**: Testare, riformattare il codice e proporre eventuali refactoring solo alla fine.
 
 **Purpose & Scope**
@@ -36,8 +37,8 @@
 - `firma.html`, `firma_paolopci.html`, `firma_email/`: modelli di firma email.
 - `docs/`: documentazione aggiuntiva (es. `STRUCTURE.md`).
 - `archive/`: file legacy e versioni precedenti (es. `legacy/`).
- - File demo per animazione: `code-demo.js` (root). Mantenere il nome stabile o aggiornare `SOURCE_FILE` in `js/hero-code-bg.js`/`index.html`.
- - Vedi anche `docs/STRUCTURE.md` per la mappa cartelle aggiornata.
+- File demo per animazione: `code-demo.js` (root). Mantenere il nome stabile o aggiornare `SOURCE_FILE` in `js/hero-code-bg.js`/`index.html`.
+- Vedi anche `docs/STRUCTURE.md` per la mappa cartelle aggiornata.
 
 **Run & Validate**
 - Server locale: `python -m http.server 8080` e apri `http://localhost:8080`.
