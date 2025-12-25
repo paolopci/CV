@@ -10,6 +10,7 @@
 *   **Asset Optimization:** Utilizzo di formati immagine moderni (WebP) e caricamento ottimizzato.
 *   **Git:** Gestione del codice sorgente.
 *   **GitHub Actions:** Pipeline CI/CD per il deploy automatizzato su GitHub Pages.
+*   **Jest:** Framework di testing JavaScript.
 
 ## Core Professional Expertise (Riflessa nel CV)
 *   **Backend Ecosystem:** .NET Core 6/8, C#, ASP.NET Core MVC/Web API, Microservizi.
