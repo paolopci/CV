@@ -624,6 +624,25 @@ document.addEventListener('DOMContentLoaded', () => {
     initTimelineScroll();
     initAIChat();
     loadGitHubActivity();
+
+    // Modal closing logic
+    const closeBtn = document.getElementById('closeModal');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            const modal = document.getElementById('courseModal');
+            if (modal && modal._close) modal._close();
+        });
+    }
+
+    const courseModal = document.getElementById('courseModal');
+    if (courseModal) {
+        courseModal.addEventListener('click', (e) => {
+            if (e.target.id === 'courseModal') {
+                const modal = document.getElementById('courseModal');
+                if (modal && modal._close) modal._close();
+            }
+        });
+    }
 });
 // Dynamic Italian date in the presentation letter
 const monthsIt = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
