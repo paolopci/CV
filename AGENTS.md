@@ -1,13 +1,16 @@
 **Checklist Rapida**
 - Avvia server: `python -m http.server 8080` e apri `http://localhost:8080`.
 - Test rapido: anchor, modale corsi, toggle tema, menu mobile, scroll fluido.
+- **AI Assistant**: verifica apertura chat, invio messaggio e risposte (knowledge base).
+- **GitHub Widget**: verifica caricamento ultimi eventi nel portfolio.
+- **Testing**: esegui `npm test` per validare logica AI e UI.
 - Dati: se modifichi `courses.json`, ricarica e controlla la console (JSON valido).
 - A11y: titoli coerenti, `alt` significativi, live region `#a11y-status`, focus trap del modale.
-- SEO/dati strutturati: verifica `url`/`sameAs` nel JSON-LD; non rinominare asset pubblici.
-- Commit: messaggi brevi in IT; cambi mirati; evita nuovi toolchain/framework.
+- Commit: messaggi brevi in IT; cambi mirati; escludi `node_modules` (usare `.gitignore`).
 
 **Workflow & Interaction**
 - **Lingua**: Chat e interazioni di progetto rigorosamente in Italiano.
+- **Metodologia**: Il progetto utilizza la metodologia **Conductor** (v. cartella `conductor/`) per lo sviluppo guidato da specifiche e track.
 - **Procedura di Modifica**:
   1. **Analisi**: Identificare la modifica da eseguire.
   2. **Checklist**: Prima di procedere, presentare una lista (1-7 punti) usando 🟩 per i punti aperti e 🟨 (con testo barrato) per i completati. Alla fine chiedere: "Confermi lo step X? oppure si step all".
@@ -22,97 +25,53 @@
 
 **Project Overview**
 - Sito statico del CV di Paolo Paci (lingua: Italiano).
+- Frontend moderno con AI Assistant, scrollytelling e integrazione GitHub.
 - Solo client-side; nessun backend né segreti.
-- Pubblicabile su qualunque hosting statico (es. GitHub Pages) o via semplice server HTTP locale.
 
 **Structure**
-- `index.html`: entry point del sito (include JSON-LD `Person`, navbar ad anchor, sezione corsi dinamica, tema chiaro/scuro, miglioramenti a11y).
-- `css/index.css`: stili globali, animazioni, tema scuro (`.dark-theme`), helper `.sr-only`.
-- `js/main.js`: logica UI (modale corsi, toggle tema, menu mobile, fetch `courses.json`).
-- `js/hero-code-bg.js`: iniettore dell'animazione di codice nell'hero (pausa su mobile, riavvio automatico al resize desktop, debounce attivo).
-- `images/`: asset immagine (foto profilo, loghi, ecc.).
+- `index.html`: entry point del sito (include AI UI, GitHub widget, JSON-LD, navbar).
+- `css/index.css`: stili globali, Glassmorphism, animazioni, tema scuro.
+- `js/main.js`: logica UI core, AI Assistant (knowledge base), GitHub API, scroll observer.
+- `conductor/`: documentazione di progetto (Product Guide, Tech Stack, Guidelines, Tracks).
+- `tests/`: suite di test Jest per validare la logica JavaScript.
+- `package.json`: dipendenze per l'ambiente di test (Jest).
+- `js/hero-code-bg.js`: iniettore dell'animazione di codice nell'hero.
+- `images/`: asset immagine (foto profilo, infografiche WebP/PNG).
 - `courses.json`: sorgente dati per la sezione "Certificazioni & Corsi".
-- `cv-paolo-paci.pdf`: CV scaricabile; mantenere il nome file stabile.
-- `favicon.ico`: icona del sito.
-- `firma.html`, `firma_paolopci.html`, `firma_email/`: modelli di firma email.
-- `docs/`: documentazione aggiuntiva (es. `STRUCTURE.md`).
-- `archive/`: file legacy e versioni precedenti (es. `legacy/`).
-- File demo per animazione: `code-demo.js` (root). Mantenere il nome stabile o aggiornare `SOURCE_FILE` in `js/hero-code-bg.js`/`index.html`.
-- Vedi anche `docs/STRUCTURE.md` per la mappa cartelle aggiornata.
+- `cv-paolo-paci.pdf`: CV scaricabile.
+- `archive/`: track completati e file legacy.
 
 **Run & Validate**
 - Server locale: `python -m http.server 8080` e apri `http://localhost:8080`.
-- Validazione HTML: W3C validator (upload o URL pubblico).
-- Lint opzionale (se Node disponibile): `npx html-validate .` e `npx stylelint "css/**/*.css"`.
-- Test rapido: navigazione tra anchor, apertura/chiusura modale corsi, toggle tema, scorrimento fluido, comportamento mobile del menu.
+- **Esecuzione Test**: `npm test` (richiede Node.js installato).
+- Validazione HTML: W3C validator.
+- Test rapido: navigazione, modale corsi, toggle tema, chatbot AI, widget GitHub.
 
 **Coding Style**
 - Indentazione: 4 spazi per HTML/CSS; wrapping ~100 caratteri.
-- HTML: tag semantici (`header`, `main`, `section`), attributi lowercase, virgolette doppie.
-- CSS: classi minuscole con trattini (es. `hero-header`, `presentation-letter`); evitare inline styles.
-- Asset: immagini compresse (≤200KB se possibile); percorsi relativi.
-- Lingua: testo visibile in Italiano; rispettare accenti e punteggiatura.
-- JSON (`courses.json`): UTF-8, virgolette doppie, chiavi stabili; niente trailing comma.
+- JavaScript: Preferire funzioni globali per testabilità (attaccate a `window` se necessario per Jest).
+- CSS: Classi BEM-like o descrittive; uso intensivo di variabili CSS e `backdrop-filter`.
+- AI Knowledge Base: Mantenere le chiavi ordinate per specificità per evitare conflitti di parsing.
 
 **Testing & Accessibility**
-- Responsività: verificare mobile/desktop e performance delle animazioni.
-- Link: controllare link esterni e download del PDF.
-- Dati: dopo modifiche a `courses.json`, ricarica e controlla la console per errori di parsing.
-- A11y: mantenere gerarchia dei titoli, `alt` significativi, live region `#a11y-status`, focus trap del modale corsi, `aria-*` coerenti.
-- Tema: preservare `#themeToggleIcon` e la logica che alterna `body.dark-theme`.
+- **Jest**: Mantenere la copertura >80% per le nuove logiche JS in `tests/`.
+- Responsività: Verificare l'effetto magnetico e il chatbot su diversi viewport.
+- A11y: Live region `#a11y-status` per feedback dinamici (es. attivazione tema, invio messaggi AI).
+- Tema: Assicurarsi che le trasparenze (Glassmorphism) siano leggibili in entrambi i temi.
 
-**UI Corsi — Dettagli nelle card**
-- La riga dei dettagli (durata, studenti, livello) usa chip compatti: `.detail-chip` con valore evidenziato `.detail-value` per evitare a capo tra valore ed etichetta.
-- Non modificare il layout della card; eventuali nuove etichette devono seguire lo stesso schema.
+**AI Assistant — Gestione Knowledge Base**
+- La logica risiede in `js/main.js` sotto `aiKnowledgeBase`.
+- Per aggiungere informazioni (es. nuove esperienze o dettagli contrattuali), aggiornare l'oggetto JSON e aggiungere il relativo test case in `tests/ai.test.js`.
 
 **Commits & PRs**
-- Stile commit: messaggi brevi e orientati all’azione (spesso in Italiano). Es.: `fix pulsante doppio LinkedIn`, `add firma in html per email`, `add miglioramento seo`.
-- Presente indicativo e soggetto chiaro; raggruppare modifiche correlate.
-- Branching: feature branch da `main`; diff focalizzati.
-- PR: descrizione concisa, screenshot/GIF per UI, motivazione per modifiche dati/SEO, riferimenti a issue.
-- Prima della review: test locale, viewport mobile, spell-check dei testi visibili.
-
-**Security & Maintenance**
-- Nessun segreto/token nel repo (sito pubblico statico).
-- Aggiornando date/dettagli del CV, tenere allineati HTML e PDF.
-- Nomi file stabili per evitare link rotti; se rinomini, aggiorna tutti i riferimenti.
-- URL JSON-LD in `index.html` (`application/ld+json`): aggiornare `url` se cambia l’hosting (es. path GitHub Pages).
+- Stile commit: orientato all'azione in IT. Es.: `feat(ai): add info laurea`, `fix(ui): modal close button`.
+- **Importante**: Non committare mai `node_modules/` (già escluso in `.gitignore`).
 
 **Agent Tips**
-- Task tipici: contenuti in `index.html`, stile in `css/index.css`, dati in `courses.json`, aggiornamenti SEO/meta.
-- Cambi minimi e mirati; evitare refactor strutturali non richiesti.
-- Aggiungendo asset: preferire immagini compresse e riferimenti relativi.
-- Preferire miglioramenti semantici HTML rispetto a workaround puramente visivi.
-- Ancore navbar: preservare gli `id` delle sezioni (`home`, `presentation`, `profile`, `skills`, `experience`, `education`, `contact`).
-- PDF: il link a `cv-paolo-paci.pdf` è usato in più punti; non cambiare nome senza aggiornare i riferimenti.
-
-**courses.json — Schema e Linee Guida**
-- Root: oggetto con chiave `courses` (array di corsi) e opzionale `metadata`.
-- Campi tipici corso:
-  - Obbligatori: `platform`, `title`, `date`, `description`.
-  - Opzionali: `id`, `platformIcon` (o `platformicon`), `duration`, `level`, `students`, `audience`, `tags` (array di stringhe).
-- Ordinamento: aggiungi in ordine cronologico inverso (più recenti in alto) per coerenza visiva.
-- Localizzazione: usa mesi e testi in Italiano quando possibile (es. "Giugno 2025").
-- Validazione: mantenere JSON valido (niente trailing comma). La UI è tollerante su campi mancanti ma preferire chiavi consistenti.
+- Per modifiche alla UI: intervenire su `css/index.css` (Glassmorphism usa `rgba` e `blur`).
+- Per nuove info nel chatbot: aggiornare `aiKnowledgeBase` in `js/main.js` e riflettere le info in `index.html` se necessario.
+- Per il widget GitHub: i dati vengono presi da `api.github.com/users/paolopci/events/public`.
+- Conductor: aggiornare sempre lo stato in `conductor/setup_state.json` durante i setup.
 
 **SEO & Dati Strutturati**
-- `index.html` include un blocco JSON-LD `Person` con `jobTitle`, `url`, `address`, `email`, `telephone`, `sameAs`:
-  - Aggiornare `jobTitle` se cambia il ruolo principale.
-  - Aggiornare `url` se cambia il percorso di pubblicazione (es. GitHub Pages path).
-  - Verificare i link `sameAs` (LinkedIn, GitHub).
-
-**Hosting (GitHub Pages)**
-
-**Checklist Deploy Pages**
-- Abilita Pages: branch `main`, directory root `/`.
-- Aggiorna `index.html` JSON-LD `url` a `https://paolopci.github.io/CV/`.
-- Verifica asset e fetch `courses.json` (niente 404/CORS in console).
-- Prova link interni/esterni e download `cv-paolo-paci.pdf`.
-
- - Opzione consigliata: abilitare GitHub Pages dal branch `main`, directory root.
- - URL tipico del progetto: `https://paolopci.github.io/CV/` (coerente con il JSON-LD).
-
-**Do Not**
-- Aggiungere toolchain/build system o framework senza richiesta esplicita.
-- Introdurre analytics o script esterni che raccolgono dati.
-- Rompere URL pubblici degli asset senza aggiornare ogni riferimento.
+- `index.html` include JSON-LD `Person`. Tenere allineate le info di contatto con la knowledge base dell'AI.
