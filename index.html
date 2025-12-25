@@ -343,7 +343,7 @@
             <span class="section-title-text">Competenze Tecniche</span>
         </h2>
         <div class="skills-grid">
-            <div class="skill-category fade-in-up">
+            <div id="skill-backend" class="skill-category fade-in-up">
                 <h3>
                     <span class="skill-icon" aria-hidden="true">
                         <svg class="icon">
@@ -360,7 +360,7 @@
                     <li>Microservizi &amp; Web API <span class="badge-level esperto">Esperto</span></li>
                 </ul>
             </div>
-            <div class="skill-category fade-in-up">
+            <div id="skill-frontend" class="skill-category fade-in-up">
                 <h3>
                     <span class="skill-icon" aria-hidden="true">
                         <svg class="icon">
@@ -377,7 +377,7 @@
                     <li>Bootstrap 5 <span class="badge-level esperto">Esperto</span></li>
                 </ul>
             </div>
-            <div class="skill-category fade-in-up">
+            <div id="skill-database" class="skill-category fade-in-up">
                 <h3>
                     <span class="skill-icon" aria-hidden="true">
                         <svg class="icon">
@@ -394,7 +394,7 @@
                     <li>Docker</li>
                 </ul>
             </div>
-            <div class="skill-category fade-in-up">
+            <div id="skill-testing" class="skill-category fade-in-up">
                 <h3>
                     <span class="skill-icon" aria-hidden="true">
                         <svg class="icon">
@@ -411,7 +411,7 @@
                     <li>Serilog &amp; Seq</li>
                 </ul>
             </div>
-            <div class="skill-category fade-in-up">
+            <div id="skill-security" class="skill-category fade-in-up">
                 <h3>
                     <span class="skill-icon" aria-hidden="true">
                         <svg class="icon">
@@ -428,7 +428,7 @@
                     <!-- <li>Firma Digitale</li> -->
                 </ul>
             </div>
-            <div class="skill-category fade-in-up">
+            <div id="skill-innovation" class="skill-category fade-in-up">
                 <h3>
                     <span class="skill-icon" aria-hidden="true">
                         <svg class="icon">
@@ -458,7 +458,7 @@
             <span class="section-title-text">Carriera Professionale</span>
         </h2>
         <div class="timeline">
-            <details class="timeline-item">
+            <details class="timeline-item" data-related-skills="backend frontend database">
                 <summary><strong>QbitSoft (Telecom S.p.A.)</strong> &ndash; <em>Software Developer - Full Remote</em>
                     <span class="timeline-date-inline">Nov 2024 - Feb 2025</span></summary>
                 <div class="timeline-description">
@@ -477,7 +477,7 @@
                     collaborazione in team full-remote in ambiente medio strutturato.
                 </div>
             </details>
-            <details class="timeline-item">
+            <details class="timeline-item" data-related-skills="backend testing security">
                 <summary><strong>Gruppo Global Sistemi (Aruba S.p.A.)</strong> &ndash; <em>Software Developer - Full
                         Remote</em> <span class="timeline-date-inline">Apr 2022 - Dic 2023</span></summary>
                 <div class="timeline-description">
@@ -497,7 +497,7 @@
                     strutturato e full-remote.
                 </div>
             </details>
-            <details class="timeline-item">
+            <details class="timeline-item" data-related-skills="backend database">
                 <summary><strong>Gruppo Global Sistemi (Bkn301)</strong> &ndash; <em>Full Smart Working - consulenza</em>
                     <span class="timeline-date-inline">Gen 2021 - Feb 2022</span></summary>
                 <div class="timeline-description">
@@ -515,7 +515,7 @@
                     access; collaborazione con team mobile in ambiente medio strutturato.
                 </div>
             </details>
-            <details class="timeline-item">
+            <details class="timeline-item" data-related-skills="backend database">
                 <summary><strong>LaserSoft S.r.l.</strong> &ndash; <em>Software Developer</em> <span
                         class="timeline-date-inline">Giu 2020 - Dic 2020</span></summary>
                 <div class="timeline-description">
@@ -529,7 +529,7 @@
                     strutturato.
                 </div>
             </details>
-            <details class="timeline-item">
+            <details class="timeline-item" data-related-skills="backend frontend innovation">
                 <summary><strong>Attività Autonoma</strong> &ndash; <em>Freelance Developer</em> <span
                         class="timeline-date-inline">Mag 2018 - Mar 2020</span></summary>
                 <div class="timeline-description">
@@ -541,7 +541,7 @@
                     TDD, LINQ, Bootstrap, Responsive Web, Identity API, Git, TypeScript, Angular.
                 </div>
             </details>
-            <details class="timeline-item">
+            <details class="timeline-item" data-related-skills="backend database">
                 <summary><strong>Combymatica S.r.l.</strong> &ndash; <em>Sistemista Programmatore</em> <span
                         class="timeline-date-inline">Apr 2004 - Lug 2009</span></summary>
                 <div class="timeline-description">
@@ -553,7 +553,7 @@
                     LINQ to SQL, MVC, WPF, Entity Framework (anche Code First).
                 </div>
             </details>
-            <details class="timeline-item">
+            <details class="timeline-item" data-related-skills="backend database">
                 <summary><strong>Software House - Diverse Aziende</strong> &ndash; <em>Sistemista Programmatore &amp;
                         Assistenza Hardware</em> <span class="timeline-date-inline">1991 - 2004</span></summary>
                 <div class="timeline-description">
@@ -626,6 +626,18 @@
         </div>
 
         <div class="portfolio-grid">
+            <!-- GitHub Activity Widget -->
+            <article class="portfolio-card github-widget fade-in-up" data-category="all">
+                <h3>
+                    <svg class="icon"><use href="#icon-globe"></use></svg>
+                    Attività GitHub Recente
+                </h3>
+                <div id="github-activity-content" class="github-activity-list">
+                    <div class="loading-small">Caricamento attività...</div>
+                </div>
+                <a href="https://github.com/paolopci" target="_blank" rel="noopener noreferrer" class="portfolio-link">Vedi tutto su GitHub</a>
+            </article>
+
             <article class="portfolio-card fade-in-up" data-category="backend">
                 <h3>.NET Services Toolkit</h3>
                 <p>Set di microservizi ASP.NET Core 8 (serie Mango.*) con autenticazione JWT, messaging via Azure
@@ -728,6 +740,34 @@
             <div id="modalBody"></div>
         </div>
     </div>
+
+    <!-- AI Assistant UI -->
+    <div id="ai-assistant-container" class="ai-assistant">
+        <div id="ai-chat-window" class="ai-chat-window" style="display:none;">
+            <div class="ai-chat-header">
+                <div class="ai-chat-title">
+                    <svg class="icon"><use href="#icon-ai"></use></svg>
+                    <span>AI Assistant - Paolo Paci</span>
+                </div>
+                <button id="close-chat" class="ai-close-btn">&times;</button>
+            </div>
+            <div id="ai-chat-messages" class="ai-chat-messages">
+                <div class="ai-message assistant">
+                    Ciao! Sono l'assistente virtuale di Paolo. Chiedimi pure della sua esperienza con .NET, Angular o AI!
+                </div>
+            </div>
+            <div class="ai-chat-input-area">
+                <input type="text" id="ai-user-input" placeholder="Scrivi un messaggio..." aria-label="Messaggio per l'assistente AI">
+                <button id="ai-send-btn" aria-label="Invia messaggio">
+                    <svg class="icon"><use href="#icon-mail"></use></svg>
+                </button>
+            </div>
+        </div>
+        <button id="ai-fab" class="ai-fab" aria-label="Apri assistente AI" title="Chiedi all'AI">
+            <svg class="icon"><use href="#icon-ai"></use></svg>
+        </button>
+    </div>
+
     <script src="js/main.js" defer></script>
     <!-- Live region discreta per fallback del code background -->
     <div id="codebg-status" class="codebg-sr-only" role="status" aria-live="polite" aria-atomic="true"></div>

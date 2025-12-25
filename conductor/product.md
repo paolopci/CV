@@ -14,14 +14,12 @@ Il progetto consiste in un sito web personale professionale (CV e Portfolio) pro
 
 ## Key Features (Inferred)
 *   **Hero Section Interattiva:** Presentazione immediata con effetto "typewriter" e call-to-action chiare.
-*   **Timeline Esperienza:** Visualizzazione cronologica e dettagliata della carriera professionale.
-*   **Showcase Competenze:** Sezione dedicata alle skills tecniche con indicatori di livello.
-*   **Portfolio Integrato:** Collegamenti diretti ai repository e demo dei progetti realizzati.
+*   **Assistente Virtuale AI:** Chatbot interattivo che risponde a domande su competenze, studi (NASpI, laurea) e contatti.
+*   **Timeline Dinamica:** Esperienza di "scrollytelling" che evidenzia le tappe della carriera e le skill correlate.
+*   **GitHub Activity Widget:** Visualizzazione in tempo reale degli ultimi contributi e repository pubblici.
+*   **UI Modernization:** Effetti Glassmorphism e micro-interazioni magnetizzate sui bottoni CTA.
 *   **Gestione Temi:** Supporto nativo per Dark Mode e Light Mode.
 *   **Ottimizzazione SEO & Performance:** Utilizzo di best practices per velocità e indicizzazione (JSON-LD, WebP).
 
 ## Evolution Strategy (Planned Improvements)
-1.  **Assistente Virtuale AI:** Integrazione di una chat bot basata su AI per rispondere a domande sul CV e sulle competenze (Showcase competenze AI).
-2.  **Timeline Interattiva "Scrollytelling":** Animazione della timeline esperienze che interagisce con lo scroll e illumina le skill correlate.
-3.  **Widget "GitHub Activity" Real-Time:** Integrazione API GitHub per mostrare grafici dei contributi e attività recenti in tempo reale.
-4.  **UI/UX Refinement (Glassmorphism & Micro-interactions):** Adozione di effetti "frosted glass", transizioni fluide e micro-interazioni sui controlli per un look & feel premium.
+*Nessun miglioramento pianificato al momento. Il track iniziale è stato completato con successo.*

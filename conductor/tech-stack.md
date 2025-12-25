@@ -10,6 +10,7 @@
 *   **Asset Optimization:** Utilizzo di formati immagine moderni (WebP) e caricamento ottimizzato.
 *   **Git:** Gestione del codice sorgente.
 *   **GitHub Actions:** Pipeline CI/CD per il deploy automatizzato su GitHub Pages.
+*   **GitHub API Integration:** Fetch dinamico dell'attività utente.
 *   **Jest:** Framework di testing JavaScript.
 
 ## Core Professional Expertise (Riflessa nel CV)
