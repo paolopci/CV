@@ -344,29 +344,8 @@ if (mobileMenu && navLinks) {
     });
 }
 
-// Load courses when page is ready
-document.addEventListener('DOMContentLoaded', loadCourses);
-
-// Close modal
-const closeBtn = document.getElementById('closeModal');
-if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-        const modal = document.getElementById('courseModal');
-        if (modal && modal._close) modal._close();
-    });
-}
-const courseModal = document.getElementById('courseModal');
-if (courseModal) {
-    courseModal.addEventListener('click', (e) => {
-        if (e.target.id === 'courseModal') {
-            const modal = document.getElementById('courseModal');
-            if (modal && modal._close) modal._close();
-        }
-    });
-}
-
-// Theme toggle
-document.addEventListener('DOMContentLoaded', () => {
+// Theme toggle logic
+function initTheme() {
     const icon = document.getElementById('themeToggleIcon');
     if (!icon) return;
     icon.setAttribute('aria-pressed', 'false');
@@ -438,6 +417,231 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } else {
         applyTheme(false, false); // fallback: light
+    }
+}
+
+// Magnet effect for CTA buttons
+function initMagnetButtons() {
+    const buttons = document.querySelectorAll('.btn-hero');
+    buttons.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.5}px)`;
+        });
+        
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translate(0px, 0px)';
+        });
+    });
+}
+
+// Timeline scroll activation
+function initTimelineScroll() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px 0px -20% 0px'
+    };
+
+    const timelineObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                highlightRelatedSkills(entry.target.dataset.relatedSkills);
+            } else {
+                entry.target.classList.remove('active');
+            }
+        });
+    }, observerOptions);
+
+    timelineItems.forEach(item => timelineObserver.observe(item));
+}
+
+function highlightRelatedSkills(skillsString) {
+    // Reset all highlights
+    document.querySelectorAll('.skill-category').forEach(el => {
+        el.classList.remove('highlight');
+    });
+
+    if (!skillsString) return;
+
+    const skills = skillsString.split(' ');
+    skills.forEach(skillType => {
+        const skillEl = document.getElementById(`skill-${skillType}`);
+        if (skillEl) {
+            skillEl.classList.add('highlight');
+        }
+    });
+}
+
+    const aiKnowledgeBase = {
+        "email": "Puoi scrivere a Paolo all'indirizzo paolopci@yahoo.it.",
+        "telefono": "Il numero di telefono di Paolo è +39 328 3834012.",
+        "cellulare": "Puoi contattare Paolo al numero +39 328 3834012.",
+        "recapito": "Il numero di Paolo è +39 328 3834012 e la sua email è paolopci@yahoo.it.",
+        "linkedin": "Trovi il profilo LinkedIn di Paolo qui: https://www.linkedin.com/in/paolo-paci-a89b7438/",
+        "partita iva": "No, Paolo non ha la Partita IVA. È interessato a collaborazioni come lavoratore dipendente o tramite altre forme contrattuali previste per i professionisti.",
+        "p.iva": "Paolo non possiede una Partita IVA.",
+        "piva": "Paolo non possiede una Partita IVA.",
+        "lavoro": "Paolo è disponibile per collaborazioni Full-Remote o Ibride. Predilige l'assunzione diretta in azienda con contratto Full-Time.",
+        "remoto": "Sì, Paolo è disponibile per posizioni Full-Remote o Ibride.",
+        "ibrido": "Paolo valuta opportunità in modalità ibrida o full-remote.",
+        "sede": "Paolo è disponibile per lavoro Full-Remote o Ibrido.",
+        "contratto": "Paolo predilige l'assunzione diretta in azienda a tempo pieno (Full-Time).",
+        "assunzione": "Paolo cerca preferibilmente un'assunzione diretta in azienda.",
+        "naspi": "Sì, Paolo è attualmente percettore NASpI, il che può comportare significativi incentivi contributivi per l'azienda che assume.",
+        "percettore": "Paolo è percettore NASpI (incentivi assunzione disponibili).",
+        "laurea": "Paolo è laureato in Ingegneria Elettronica presso l'Università di Bologna (1991), con una tesi sul controllo in tempo reale in ambiente Matlab/Simulink.",
+        "laureato": "Sì, Paolo è laureato in Ingegneria Elettronica presso l'Università di Bologna.",
+        "studi": "Paolo ha conseguito la laurea in Ingegneria Elettronica all'Università di Bologna e continua a formarsi costantemente con corsi specialistici su .NET e Angular.",
+        ".net": "Paolo ha oltre 10 anni di esperienza con l'ecosistema Microsoft. È esperto di .NET Core 6/8, ASP.NET Core MVC e Web API.",
+        "angular": "Paolo utilizza Angular (attualmente v18+) per lo sviluppo frontend, con forte competenza in TypeScript, RxJS e Signals.",
+        "ai": "Recentemente Paolo ha integrato modelli OpenAI in applicazioni enterprise, occupandosi di prompt engineering e integrazione API.",
+        "soft skills": "Oltre alle competenze tecniche, Paolo possiede ottime doti di problem solving, attitudine al team working, proattività e una naturale curiosità verso l'innovazione.",
+        "carattere": "Paolo è una persona equilibrata, proattiva e con ottime capacità comunicative e relazionali.",
+        "skills": "Le competenze principali di Paolo includono: .NET Core, C#, Angular, SQL Server, Entity Framework, Microservizi, Docker e Integrazione AI.",
+        "competenze": "Le competenze principali di Paolo includono: .NET Core, C#, Angular, SQL Server, Entity Framework, Microservizi, Docker e Integrazione AI.",
+        "chi sei": "Sono l'assistente virtuale di Paolo Paci. Posso darti informazioni sulla sua carriera, competenze e progetti.",
+        "contatti": "Puoi contattare Paolo via email (paolopci@yahoo.it), telefono (+39 328 3834012) o su LinkedIn.",
+        "default": "Interessante! Paolo ha molta esperienza in quell'ambito. Vuoi sapere di più sulla sua carriera o sulle sue competenze tecniche?"
+    };
+function getAIResponse(input) {
+    if (!input) return aiKnowledgeBase.default;
+    const lowerInput = input.toLowerCase();
+    for (const key in aiKnowledgeBase) {
+        if (lowerInput.includes(key)) return aiKnowledgeBase[key];
+    }
+    return aiKnowledgeBase.default;
+}
+
+window.getAIResponse = getAIResponse;
+
+// AI Chat Assistant UI Logic
+function initAIChat() {
+    const fab = document.getElementById('ai-fab');
+    const chatWindow = document.getElementById('ai-chat-window');
+    const closeBtn = document.getElementById('close-chat');
+    const sendBtn = document.getElementById('ai-send-btn');
+    const userInput = document.getElementById('ai-user-input');
+    const messagesContainer = document.getElementById('ai-chat-messages');
+
+    if (!fab || !chatWindow || !closeBtn || !sendBtn || !userInput || !messagesContainer) return;
+
+    const addMessage = (text, sender) => {
+        const msg = document.createElement('div');
+        msg.className = `ai-message ${sender}`;
+        msg.textContent = text;
+        messagesContainer.appendChild(msg);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    };
+
+    const handleSend = () => {
+        const text = userInput.value.trim();
+        if (!text) return;
+
+        addMessage(text, 'user');
+        userInput.value = '';
+
+        // Simulate thinking
+        setTimeout(() => {
+            const response = getAIResponse(text);
+            addMessage(response, 'assistant');
+        }, 600);
+    };
+
+    fab.addEventListener('click', () => {
+        const isVisible = chatWindow.style.display !== 'none';
+        chatWindow.style.display = isVisible ? 'none' : 'flex';
+        if (!isVisible) {
+            userInput.focus();
+        }
+    });
+
+    closeBtn.addEventListener('click', () => {
+        chatWindow.style.display = 'none';
+    });
+
+    sendBtn.addEventListener('click', handleSend);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleSend();
+    });
+}
+
+// GitHub Activity Logic
+async function loadGitHubActivity() {
+    const container = document.getElementById('github-activity-content');
+    if (!container) return;
+
+    try {
+        const response = await fetch('https://api.github.com/users/paolopci/events/public');
+        if (!response.ok) throw new Error('GitHub API error');
+        
+        const events = await response.json();
+        const recentEvents = events.slice(0, 5); // Prendi i primi 5 eventi
+
+        if (recentEvents.length === 0) {
+            container.innerHTML = '<p>Nessuna attività pubblica recente trovata.</p>';
+            return;
+        }
+
+        container.innerHTML = '';
+        recentEvents.forEach(event => {
+            const eventEl = document.createElement('div');
+            eventEl.className = 'github-event';
+            
+            let action = '';
+            switch(event.type) {
+                case 'PushEvent': action = 'Push su'; break;
+                case 'CreateEvent': action = 'Creato'; break;
+                case 'WatchEvent': action = 'Star su'; break;
+                default: action = 'Attività su';
+            }
+
+            const date = new Date(event.created_at).toLocaleDateString('it-IT');
+            const repoName = event.repo.name.replace('paolopci/', '');
+
+            eventEl.innerHTML = `
+                <span class="event-date">${date}</span>
+                <span class="event-action">${action}</span>
+                <a href="https://github.com/${event.repo.name}" target="_blank" class="event-repo">${repoName}</a>
+            `;
+            container.appendChild(eventEl);
+        });
+    } catch (error) {
+        console.error('Errore GitHub:', error);
+        container.innerHTML = '<p>Impossibile caricare l\'attività di GitHub.</p>';
+    }
+}
+
+// Initialize components when page is ready
+document.addEventListener('DOMContentLoaded', () => {
+    loadCourses();
+    initMagnetButtons();
+    initTheme();
+    initTimelineScroll();
+    initAIChat();
+    loadGitHubActivity();
+
+    // Modal closing logic
+    const closeBtn = document.getElementById('closeModal');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            const modal = document.getElementById('courseModal');
+            if (modal && modal._close) modal._close();
+        });
+    }
+
+    const courseModal = document.getElementById('courseModal');
+    if (courseModal) {
+        courseModal.addEventListener('click', (e) => {
+            if (e.target.id === 'courseModal') {
+                const modal = document.getElementById('courseModal');
+                if (modal && modal._close) modal._close();
+            }
+        });
     }
 });
 // Dynamic Italian date in the presentation letter
