@@ -38,7 +38,7 @@
 - `js/hero-code-bg.js`: iniettore dell'animazione di codice nell'hero.
 - `images/`: asset immagine (foto profilo, infografiche WebP/PNG).
 - `courses.json`: sorgente dati per la sezione "Certificazioni & Corsi".
-- `cv-paolo-paci.pdf`: CV scaricabile.
+- `Paolo Paci.pdf`: CV scaricabile.
 - `archive/`: track completati e file legacy.
 
 **Run & Validate**
