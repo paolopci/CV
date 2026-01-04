@@ -420,6 +420,8 @@ function initTheme() {
     }
 }
 
+window.initTheme = initTheme;
+
 // Magnet effect for CTA buttons
 function initMagnetButtons() {
     const buttons = document.querySelectorAll('.btn-hero');
@@ -571,51 +573,116 @@ function initAIChat() {
 }
 
 // GitHub Activity Logic
-async function loadGitHubActivity() {
-    const container = document.getElementById('github-activity-content');
-    if (!container) return;
+const GITHUB_EVENTS_CACHE_KEY = 'githubEventsCache';
 
+function getGitHubCache() {
     try {
-        const response = await fetch('https://api.github.com/users/paolopci/events/public');
-        if (!response.ok) throw new Error('GitHub API error');
-        
-        const events = await response.json();
-        const recentEvents = events.slice(0, 5); // Prendi i primi 5 eventi
+        const raw = localStorage.getItem(GITHUB_EVENTS_CACHE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !Array.isArray(parsed.events)) return null;
+        return parsed;
+    } catch (error) {
+        return null;
+    }
+}
 
-        if (recentEvents.length === 0) {
-            container.innerHTML = '<p>Nessuna attività pubblica recente trovata.</p>';
-            return;
+function setGitHubCache(events) {
+    if (!Array.isArray(events)) return;
+    const payload = {
+        updatedAt: Date.now(),
+        events: events,
+    };
+    try {
+        localStorage.setItem(GITHUB_EVENTS_CACHE_KEY, JSON.stringify(payload));
+    } catch (error) {
+        // LocalStorage non disponibile o pieno: fallback silenzioso.
+    }
+}
+
+function renderGitHubEvents(container, events, options = {}) {
+    const note = options.note || '';
+    const safeEvents = Array.isArray(events) ? events.slice(0, 5) : [];
+
+    container.innerHTML = '';
+
+    if (note) {
+        const noteEl = document.createElement('p');
+        noteEl.className = 'github-event-note';
+        noteEl.textContent = note;
+        container.appendChild(noteEl);
+    }
+
+    if (safeEvents.length === 0) {
+        const emptyEl = document.createElement('p');
+        emptyEl.textContent = 'Nessuna attività pubblica recente trovata.';
+        container.appendChild(emptyEl);
+        return;
+    }
+
+    safeEvents.forEach(event => {
+        if (!event || !event.repo || !event.repo.name || !event.created_at) return;
+
+        const eventEl = document.createElement('div');
+        eventEl.className = 'github-event';
+
+        let action = '';
+        switch (event.type) {
+            case 'PushEvent': action = 'Push su'; break;
+            case 'CreateEvent': action = 'Creato'; break;
+            case 'WatchEvent': action = 'Star su'; break;
+            default: action = 'Attivit? su';
         }
 
-        container.innerHTML = '';
-        recentEvents.forEach(event => {
-            const eventEl = document.createElement('div');
-            eventEl.className = 'github-event';
-            
-            let action = '';
-            switch(event.type) {
-                case 'PushEvent': action = 'Push su'; break;
-                case 'CreateEvent': action = 'Creato'; break;
-                case 'WatchEvent': action = 'Star su'; break;
-                default: action = 'Attività su';
-            }
+        const date = new Date(event.created_at).toLocaleDateString('it-IT');
+        const repoName = event.repo.name.replace('paolopci/', '');
 
-            const date = new Date(event.created_at).toLocaleDateString('it-IT');
-            const repoName = event.repo.name.replace('paolopci/', '');
-
-            eventEl.innerHTML = `
+        eventEl.innerHTML = `
                 <span class="event-date">${date}</span>
                 <span class="event-action">${action}</span>
                 <a href="https://github.com/${event.repo.name}" target="_blank" class="event-repo">${repoName}</a>
             `;
-            container.appendChild(eventEl);
-        });
+        container.appendChild(eventEl);
+    });
+}
+
+async function loadGitHubActivity() {
+    const container = document.getElementById('github-activity-content');
+    if (!container) return;
+
+    const cached = getGitHubCache();
+    const cachedEvents = cached ? cached.events : null;
+
+    try {
+        const response = await fetch('https://api.github.com/users/paolopci/events/public');
+        if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+
+        const events = await response.json();
+        if (!Array.isArray(events)) throw new Error('GitHub payload non valido');
+
+        renderGitHubEvents(container, events);
+        setGitHubCache(events);
     } catch (error) {
         console.error('Errore GitHub:', error);
-        container.innerHTML = '<p>Impossibile caricare l\'attività di GitHub.</p>';
+        if (cachedEvents && cachedEvents.length > 0) {
+            const lastUpdate = cached && cached.updatedAt
+                ? new Date(cached.updatedAt).toLocaleString('it-IT')
+                : 'data non disponibile';
+            renderGitHubEvents(
+                container,
+                cachedEvents,
+                { note: `Dati offline. Ultimo aggiornamento: ${lastUpdate}.` }
+            );
+            return;
+        }
+        container.innerHTML = "<p>Impossibile caricare l'attività di GitHub.</p>";
     }
 }
 
+window.getGitHubCache = getGitHubCache;
+window.setGitHubCache = setGitHubCache;
+window.renderGitHubEvents = renderGitHubEvents;
+window.loadGitHubActivity = loadGitHubActivity;
 // Initialize components when page is ready
 document.addEventListener('DOMContentLoaded', () => {
     loadCourses();

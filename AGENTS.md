@@ -17,6 +17,7 @@
   3. **Esecuzione**: Richiedere conferma per ogni step; validare l'esito con 1-2 frasi dopo ogni modifica.
      Se l'utente scrive "si step all", eseguire tutti gli step rimanenti senza ulteriori richieste di conferma. Questa regola ha priorità rispetto alle conferme step-by-step.
   4. **Chiusura**: Testare, riformattare il codice e proporre eventuali refactoring solo alla fine.
+- **Permessi**: Se per eseguire test o altre operazioni sono richiesti permessi più elevati, usare permessi più elevati.
 
 **Purpose & Scope**
 - Istruzioni operative per agenti e contributor che lavorano in questo repository.
