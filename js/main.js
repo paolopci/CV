@@ -520,6 +520,7 @@ function highlightRelatedSkills(skillsString) {
         "p.iva": "Paolo non possiede una Partita IVA.",
         "piva": "Paolo non possiede una Partita IVA.",
         "lavoro": "Paolo è disponibile per collaborazioni Full-Remote o Ibride. Predilige l'assunzione diretta in azienda con contratto Full-Time.",
+        "team remoto": "Paolo ha lavorato in team full-remote e ambienti enterprise strutturati.",
         "remoto": "Sì, Paolo è disponibile per posizioni Full-Remote o Ibride.",
         "ibrido": "Paolo valuta opportunità in modalità ibrida o full-remote.",
         "sede": "Paolo è disponibile per lavoro Full-Remote o Ibrido.",
@@ -539,8 +540,30 @@ function highlightRelatedSkills(skillsString) {
         "competenze": "Le competenze principali di Paolo includono: .NET Core, C#, Angular, SQL Server, Entity Framework, Microservizi, Docker e Integrazione AI.",
         "chi sei": "Sono l'assistente virtuale di Paolo Paci. Posso darti informazioni sulla sua carriera, competenze e progetti.",
         "contatti": "Puoi contattare Paolo via email (paolopci@yahoo.it), telefono (+39 328 3834012) o su LinkedIn.",
+        "github actions": "Paolo ha esperienza con CI/CD e workflow GitHub Actions.",
+        "ci/cd": "Paolo ha esperienza con CI/CD e workflow GitHub Actions.",
+        "full stack": "Paolo lavora principalmente in ambito full-stack: backend .NET e frontend Angular/Blazor.",
+        "microservizi": "Paolo ha esperienza con microservizi, REST API e architetture moderne.",
+        "entity framework": "Paolo usa Entity Framework (anche Code First) e Dapper per l'accesso ai dati.",
+        "open source": "Paolo ha sviluppato progetti open-source su GitHub con README tecnici.",
+        "openai": "Paolo ha integrato modelli AI (OpenAI) in applicazioni enterprise.",
+        "prestazioni": "Paolo ha competenze su RxJS, Signals e performance frontend.",
+        "docker": "Paolo ha esperienza con Docker e containerizzazione di servizi.",
+        "postman": "Paolo usa strumenti di API testing (Postman/Swagger).",
+        "swagger": "Paolo usa strumenti di API testing (Postman/Swagger).",
+        "jwt": "Paolo ha esperienza con JWT, OAuth e sicurezza applicativa.",
+        "oauth": "Paolo ha esperienza con JWT, OAuth e sicurezza applicativa.",
+        "azure": "Paolo ha lavorato con Azure (livello base) e servizi cloud.",
+        "database": "Paolo ha esperienza con SQL Server, PostgreSQL e MongoDB.",
+        "e-commerce": "Paolo ha lavorato su progetti per e-commerce e servizi digitali regolati.",
+        "test": "Paolo usa strumenti di testing come xUnit, Jest e Cypress.",
+        "esperienza": "Paolo è un Software Engineer con 10+ anni di esperienza in .NET e Angular.",
         "default": "Interessante! Paolo ha molta esperienza in quell'ambito. Vuoi sapere di più sulla sua carriera o sulle sue competenze tecniche?"
     };
+
+
+
+
 function getAIResponse(input) {
     if (!input) return aiKnowledgeBase.default;
     const lowerInput = input.toLowerCase();
