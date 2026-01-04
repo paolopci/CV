@@ -481,6 +481,14 @@
                     modelli generativi)
                     <br />
                     <br />
+                    <strong>Test stack:</strong> xUnit, Jest, Cypress, Postman, Swagger; test API automatizzati e smoke
+                    test UI
+                    <br />
+                    <br />
+                    <strong>Impatto:</strong> standardizzazione dei repository con README tecnici, pipeline CI/CD e
+                    checklist di qualità; maggiore chiarezza dei casi d'uso per stakeholder.
+                    <br />
+                    <br />
                     <strong>Attivit&agrave; principali:</strong> aggiornamento avanzato sulle tecnologie backend .NET e
                     Web API RESTful; approfondimento di Angular con focus su Signals per la gestione dello stato e
                     miglioramento delle performance; sviluppo di applicazioni full-stack con integrazione
@@ -501,6 +509,14 @@
                     Bootstrap 5
                     <br />
                     <br />
+                    <strong>Test stack:</strong> Postman, Swagger, test di regressione manuali mirati; verifiche su
+                    endpoint JWT e validazioni
+                    <br />
+                    <br />
+                    <strong>Impatto:</strong> maggiore affidabilità del planning settimanale e riduzione dei tempi di
+                    diagnosi dei bug ricorrenti.
+                    <br />
+                    <br />
                     <strong>Attività principali:</strong> sviluppo e correzione bug del software di pianificazione
                     settimana lavorativa (presenza in sede, remoto e ferie); analisi ticket e refactoring;
                     implementazione/ottimizzazione endpoint REST (validazioni, gestione autorizzazioni JWT); data access
@@ -519,6 +535,14 @@
                     <strong>Ruolo:</strong> Programmatore &ndash; ASP.NET / ASP.NET Core 6/8, C#, Web API, JWT, SQL
                     Server, MySQL, ADO.NET, Dapper, Entity Framework 6, LINQ; Front-end: WebForms, HTML, CSS; Testing:
                     Cypress (E2E), predisposizione ed esecuzione unit test e test applicativi
+                    <br />
+                    <br />
+                    <strong>Test stack:</strong> Cypress E2E, test di integrazione API, Postman/Swagger, unit test
+                    mirati sui servizi critici
+                    <br />
+                    <br />
+                    <strong>Impatto:</strong> stabilità dei flussi di acquisto/attivazione e maggiore affidabilità
+                    nelle release in ambiente regolato.
                     <br />
                     <br />
                     <strong>Attività principali:</strong> nuove funzionalità e manutenzione del portale e-commerce per
@@ -765,8 +789,9 @@
     </footer>
 
     <!-- Modal per Dettagli Corso -->
-    <div class="modal-overlay" id="courseModal" style="display:none;">
-        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="courseModalTitle" tabindex="-1">
+    <div class="modal-overlay" id="courseModal" style="display:none;" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="courseModalTitle"
+            aria-describedby="modalBody" tabindex="-1">
             <button class="modal-close" id="closeModal" aria-label="Chiudi modale">&times;</button>
             <div id="modalBody"></div>
         </div>
@@ -774,15 +799,17 @@
 
     <!-- AI Assistant UI -->
     <div id="ai-assistant-container" class="ai-assistant">
-        <div id="ai-chat-window" class="ai-chat-window" style="display:none;">
+        <div id="ai-chat-window" class="ai-chat-window" style="display:none;" role="dialog" aria-modal="false"
+            aria-labelledby="ai-chat-title" aria-describedby="ai-chat-messages" aria-hidden="true">
             <div class="ai-chat-header">
                 <div class="ai-chat-title">
                     <svg class="icon"><use href="#icon-ai"></use></svg>
-                    <span>AI Assistant - Paolo Paci</span>
+                    <span id="ai-chat-title">AI Assistant - Paolo Paci</span>
                 </div>
-                <button id="close-chat" class="ai-close-btn">&times;</button>
+                <button id="close-chat" class="ai-close-btn" aria-label="Chiudi assistente AI">&times;</button>
             </div>
-            <div id="ai-chat-messages" class="ai-chat-messages">
+            <div id="ai-chat-messages" class="ai-chat-messages" role="log" aria-live="polite"
+                aria-relevant="additions text" aria-atomic="false">
                 <div class="ai-message assistant">
                     Ciao! Sono l'assistente virtuale di Paolo. Chiedimi pure della sua esperienza con .NET, Angular o AI!
                 </div>
@@ -794,7 +821,8 @@
                 </button>
             </div>
         </div>
-        <button id="ai-fab" class="ai-fab" aria-label="Apri assistente AI" title="Chiedi all'AI">
+        <button id="ai-fab" class="ai-fab" aria-label="Apri assistente AI" title="Chiedi all'AI"
+            aria-controls="ai-chat-window" aria-expanded="false" aria-haspopup="dialog">
             <svg class="icon"><use href="#icon-ai"></use></svg>
         </button>
     </div>

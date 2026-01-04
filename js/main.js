@@ -171,7 +171,7 @@ async function loadCourses() {
                     tagsRow.appendChild(document.createTextNode(' '));
                     tagsRow.appendChild(tagsFragment);
                 } else {
-                    tagsRow.appendChild(document.createTextNode(' â€”'));
+                    tagsRow.appendChild(document.createTextNode(' Nessun tag'));
                 }
 
                 modalBody.appendChild(titleEl);
@@ -184,23 +184,33 @@ async function loadCourses() {
                 modalBody.appendChild(tagsRow);
 
                 modal.style.display = 'flex';
+                modal.setAttribute('aria-hidden', 'false');
+                const previousOverflow = document.body.style.overflow;
+                modal._previousBodyOverflow = previousOverflow;
+                document.body.style.overflow = 'hidden';
+
+                const hiddenSiblings = [];
+                Array.from(document.body.children).forEach((el) => {
+                    if (el === modal || el.id === 'a11y-status' || el.id === 'codebg-status') return;
+                    if (el.tagName === 'SCRIPT' || el.classList.contains('icon-defs')) return;
+                    const prev = el.getAttribute('aria-hidden');
+                    hiddenSiblings.push({ el, prev });
+                    el.setAttribute('aria-hidden', 'true');
+                });
+                modal._hiddenSiblings = hiddenSiblings;
 
                 // Focus management
                 const previouslyFocused = document.activeElement;
-                modal.dataset.returnFocus = previouslyFocused ? '1' : '';
-                if (previouslyFocused) {
-                    modal.dataset.returnSelector = openerEl ? '' : '';
-                    modal._returnEl = openerEl || previouslyFocused;
-                }
+                modal._returnEl = openerEl || previouslyFocused;
 
                 // Trap focus
                 const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
                 const getFocusable = () => Array.from(modalContent.querySelectorAll(focusableSelectors))
-                    .filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+                    .filter(el => !el.hasAttribute('disabled'));
                 const focusables = getFocusable();
                 const first = focusables[0] || modalContent;
                 const last = focusables[focusables.length - 1] || modalContent;
-                first.focus();
+                setTimeout(() => first.focus(), 0);
                 if (window.a11yAnnounce) {
                     window.a11yAnnounce(`Dettagli corso aperti: ${course.title}`);
                 }
@@ -223,11 +233,31 @@ async function loadCourses() {
                     }
                 }
 
+                function handleFocusIn(e) {
+                    if (!modalContent.contains(e.target)) {
+                        const f = getFocusable();
+                        (f[0] || modalContent).focus();
+                    }
+                }
+
                 document.addEventListener('keydown', handleKey);
+                document.addEventListener('focusin', handleFocusIn);
 
                 function closeModal() {
                     modal.style.display = 'none';
+                    modal.setAttribute('aria-hidden', 'true');
+                    document.body.style.overflow = modal._previousBodyOverflow || '';
+                    if (modal._hiddenSiblings) {
+                        modal._hiddenSiblings.forEach(({ el, prev }) => {
+                            if (prev === null || prev === undefined) {
+                                el.removeAttribute('aria-hidden');
+                            } else {
+                                el.setAttribute('aria-hidden', prev);
+                            }
+                        });
+                    }
                     document.removeEventListener('keydown', handleKey);
+                    document.removeEventListener('focusin', handleFocusIn);
                     if (window.a11yAnnounce) {
                         window.a11yAnnounce('Dettagli corso chiusi');
                     }
@@ -236,6 +266,7 @@ async function loadCourses() {
                     }
                 }
                 modal._close = closeModal;
+
             };
 
             card.addEventListener('click', () => openModal(card));
@@ -554,16 +585,52 @@ function initAIChat() {
         }, 600);
     };
 
+    let lastFocusedEl = null;
+    const setChatState = (isOpen, options = {}) => {
+        const { focus = true, announce = true } = options;
+        chatWindow.style.display = isOpen ? 'flex' : 'none';
+        chatWindow.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+        fab.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        const label = isOpen ? 'Chiudi assistente AI' : 'Apri assistente AI';
+        fab.setAttribute('aria-label', label);
+        fab.setAttribute('title', isOpen ? 'Chiudi chat' : 'Chiedi all\'AI');
+
+        if (isOpen) {
+            lastFocusedEl = document.activeElement;
+            if (focus) {
+                setTimeout(() => userInput.focus(), 0);
+            }
+            if (announce && window.a11yAnnounce) {
+                window.a11yAnnounce('Assistente AI aperto');
+            }
+        } else {
+            if (announce && window.a11yAnnounce) {
+                window.a11yAnnounce('Assistente AI chiuso');
+            }
+            if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') {
+                lastFocusedEl.focus();
+            }
+        }
+    };
+
+    closeBtn.setAttribute('aria-label', closeBtn.getAttribute('aria-label') || 'Chiudi assistente AI');
+    setChatState(chatWindow.style.display !== 'none', { focus: false, announce: false });
+
     fab.addEventListener('click', () => {
         const isVisible = chatWindow.style.display !== 'none';
-        chatWindow.style.display = isVisible ? 'none' : 'flex';
-        if (!isVisible) {
-            userInput.focus();
-        }
+        setChatState(!isVisible);
     });
 
     closeBtn.addEventListener('click', () => {
-        chatWindow.style.display = 'none';
+        setChatState(false);
+    });
+
+    chatWindow.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            setChatState(false);
+            fab.focus();
+        }
     });
 
     sendBtn.addEventListener('click', handleSend);
@@ -571,6 +638,8 @@ function initAIChat() {
         if (e.key === 'Enter') handleSend();
     });
 }
+
+window.initAIChat = initAIChat;
 
 // GitHub Activity Logic
 const GITHUB_EVENTS_CACHE_KEY = 'githubEventsCache';
