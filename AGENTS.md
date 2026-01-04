@@ -1,4 +1,4 @@
-**Checklist Rapida**
+﻿**Checklist Rapida**
 - Avvia server: `python -m http.server 8080` e apri `http://localhost:8080`.
 - Test rapido: anchor, modale corsi, toggle tema, menu mobile, scroll fluido.
 - **AI Assistant**: verifica apertura chat, invio messaggio e risposte (knowledge base).
