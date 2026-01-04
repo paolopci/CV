@@ -19,7 +19,7 @@ Animazione codice (hero)
 - Il vecchio componente "code-typer" è archiviato in `archive/legacy/code-typer/` e non è referenziato.
 
 Convenzioni
-- Non rinominare: cv-paolo-paci.pdf, courses.json, favicon.ico, id delle sezioni.
+- Non rinominare: Paolo Paci.pdf, courses.json, favicon.ico, id delle sezioni.
 - Aggiungere nuovi componenti in js/components e i relativi stili in css/components.
 - Evitare file JS/CSS in root, salvo asset demo esplicitamente letti dallo script dell’hero.
 
