@@ -590,10 +590,12 @@ body.dark-theme .hero-card {
     color: #333;
     position: relative;
     padding-top: 1rem;
+    padding-right: 3.5rem;
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
     justify-content: center;
+    width: 100%;
 }
 
 .section-title .icon {
@@ -602,6 +604,41 @@ body.dark-theme .hero-card {
 
 .section-title-text {
     display: inline-block;
+}
+
+.section-title-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid rgba(102, 126, 234, 0.35);
+    background: rgba(255, 255, 255, 0.55);
+    color: #667eea;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    position: absolute;
+    right: 0;
+}
+
+.section-title-btn .icon {
+    width: 1.35em;
+    height: 1.35em;
+}
+
+.section-title-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 10px 24px rgba(102, 126, 234, 0.3);
+}
+
+.section-title-btn:focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 3px;
 }
 
 .section-title::after {
@@ -1442,6 +1479,21 @@ body.dark-theme .skill-category.highlight {
     animation: fadeInUp 0.4s ease;
 }
 
+.infoskills-modal .modal-content {
+    max-width: 980px;
+}
+
+.infoskills-figure {
+    margin: 1rem 0 0;
+}
+
+.infoskills-figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+}
+
 .modal-close {
     position: absolute;
     top: 12px;
@@ -1475,6 +1527,18 @@ body.dark-theme .modal-content {
     background-color: #1e1e1e;
     color: #f1f1f1;
     border-color: #333;
+}
+
+body.dark-theme .section-title-btn {
+    background: rgba(20, 20, 20, 0.6);
+    border-color: rgba(137, 196, 244, 0.45);
+    color: #c7d2ff;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-theme .section-title-btn:hover {
+    background: rgba(30, 30, 30, 0.85);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45);
 }
 
 body.dark-theme a {

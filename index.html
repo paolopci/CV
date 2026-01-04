@@ -54,6 +54,10 @@
             <path d="M6.6 2l2.1 2.1-1.5 1.5 3.4 3.4 1.5-1.5L14.6 9l-3 3L4 4.4 6.6 2z" fill="currentColor" />
             <path d="M20.5 14.1a3.5 3.5 0 0 0-4.95 0L9 20.7V24h3.3l6.6-6.6a3.5 3.5 0 0 0 0-4.95z" fill="currentColor" />
         </symbol>
+        <symbol id="icon-infographic" viewBox="0 0 24 24">
+            <path d="M4 19h16v2H4z" fill="currentColor" />
+            <path d="M7 10h3v7H7zM11 6h3v11h-3zM15 12h3v5h-3z" fill="currentColor" />
+        </symbol>
         <symbol id="icon-briefcase" viewBox="0 0 24 24">
             <path
                 d="M9 3a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3V5a2 2 0 0 0-2-2H9zm0 2h6v1H9zM4 9h16v3h-5v1H9v-1H4z"
@@ -351,6 +355,13 @@
                 <use href="#icon-tools"></use>
             </svg>
             <span class="section-title-text">Competenze Tecniche</span>
+            <button type="button" class="section-title-btn" id="infoskillsTrigger"
+                aria-label="Apri infografica competenze" aria-haspopup="dialog" aria-controls="infoskillsModal"
+                aria-expanded="false" title="Apri infografica competenze">
+                <svg class="icon" aria-hidden="true">
+                    <use href="#icon-infographic"></use>
+                </svg>
+            </button>
         </h2>
         <div class="skills-grid">
             <div id="skill-backend" class="skill-category fade-in-up">
@@ -787,6 +798,30 @@
             <span>Scarica CV</span>
         </a>
     </footer>
+
+    <!-- Modal Infografica Competenze -->
+    <div class="modal-overlay infoskills-modal" id="infoskillsModal" style="display:none;" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="infoskillsModalTitle"
+            aria-describedby="infoskillsModalBody" tabindex="-1">
+            <button class="modal-close" id="closeInfoSkills" aria-label="Chiudi infografica">&times;</button>
+            <div id="infoskillsModalBody">
+                <h2 id="infoskillsModalTitle">Infografica Competenze</h2>
+                <figure class="infoskills-figure">
+                    <picture>
+                        <source srcset="images/infoskills-1200.webp" type="image/webp"
+                            data-light="images/infoskills-1200.webp" data-dark="images/infoskills-dark-1200.webp" />
+                        <img src="images/infoskills-light-1200.png"
+                            alt="Infografica delle competenze tecniche di Paolo Paci" loading="lazy" decoding="async"
+                            data-light="images/infoskills-light-1200.png"
+                            data-dark="images/infoskills-dark-1200.png" />
+                    </picture>
+                    <figcaption class="sr-only">
+                        Infografica con dettaglio delle competenze tecniche.
+                    </figcaption>
+                </figure>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal per Dettagli Corso -->
     <div class="modal-overlay" id="courseModal" style="display:none;" aria-hidden="true">

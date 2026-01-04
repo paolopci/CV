@@ -453,6 +453,119 @@ function initTheme() {
 
 window.initTheme = initTheme;
 
+function initInfoskillsModal() {
+    const trigger = document.getElementById('infoskillsTrigger');
+    const modal = document.getElementById('infoskillsModal');
+    if (!trigger || !modal) return;
+
+    const modalContent = modal.querySelector('.modal-content');
+    const closeBtn = modal.querySelector('.modal-close');
+    const announce = window.a11yAnnounce || function () { };
+    const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+    const openModal = (openerEl) => {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+        trigger.setAttribute('aria-expanded', 'true');
+        const previousOverflow = document.body.style.overflow;
+        modal._previousBodyOverflow = previousOverflow;
+        document.body.style.overflow = 'hidden';
+
+        const hiddenSiblings = [];
+        Array.from(document.body.children).forEach((el) => {
+            if (el === modal || el.id === 'a11y-status' || el.id === 'codebg-status') return;
+            if (el.tagName === 'SCRIPT' || el.classList.contains('icon-defs')) return;
+            const prev = el.getAttribute('aria-hidden');
+            hiddenSiblings.push({ el, prev });
+            el.setAttribute('aria-hidden', 'true');
+        });
+        modal._hiddenSiblings = hiddenSiblings;
+
+        const previouslyFocused = document.activeElement;
+        modal._returnEl = openerEl || previouslyFocused;
+
+        const getFocusable = () => Array.from(modalContent.querySelectorAll(focusableSelectors))
+            .filter(el => !el.hasAttribute('disabled'));
+        const focusables = getFocusable();
+        const first = focusables[0] || modalContent;
+        const last = focusables[focusables.length - 1] || modalContent;
+        setTimeout(() => first.focus(), 0);
+        announce('Infografica competenze aperta');
+
+        function handleKey(e) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeModal();
+            } else if (e.key === 'Tab') {
+                const f = getFocusable();
+                const firstEl = f[0] || modalContent;
+                const lastEl = f[f.length - 1] || modalContent;
+                if (e.shiftKey && document.activeElement === firstEl) {
+                    e.preventDefault();
+                    lastEl.focus();
+                } else if (!e.shiftKey && document.activeElement === lastEl) {
+                    e.preventDefault();
+                    firstEl.focus();
+                }
+            }
+        }
+
+        function handleFocusIn(e) {
+            if (!modalContent.contains(e.target)) {
+                const f = getFocusable();
+                (f[0] || modalContent).focus();
+            }
+        }
+
+        modal._keyHandler = handleKey;
+        modal._focusHandler = handleFocusIn;
+        document.addEventListener('keydown', handleKey);
+        document.addEventListener('focusin', handleFocusIn);
+    };
+
+    function closeModal() {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        trigger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = modal._previousBodyOverflow || '';
+        if (modal._hiddenSiblings) {
+            modal._hiddenSiblings.forEach(({ el, prev }) => {
+                if (prev === null || prev === undefined) {
+                    el.removeAttribute('aria-hidden');
+                } else {
+                    el.setAttribute('aria-hidden', prev);
+                }
+            });
+        }
+        if (modal._keyHandler) document.removeEventListener('keydown', modal._keyHandler);
+        if (modal._focusHandler) document.removeEventListener('focusin', modal._focusHandler);
+        announce('Infografica competenze chiusa');
+        if (modal._returnEl && typeof modal._returnEl.focus === 'function') {
+            modal._returnEl.focus();
+        }
+    }
+
+    modal._close = closeModal;
+
+    trigger.addEventListener('click', () => openModal(trigger));
+    trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openModal(trigger);
+        }
+    });
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => closeModal());
+    }
+
+    modal.addEventListener('click', (e) => {
+        if (e.target.id === 'infoskillsModal') {
+            closeModal();
+        }
+    });
+}
+
 // Magnet effect for CTA buttons
 function initMagnetButtons() {
     const buttons = document.querySelectorAll('.btn-hero');
@@ -778,6 +891,7 @@ window.loadGitHubActivity = loadGitHubActivity;
 // Initialize components when page is ready
 document.addEventListener('DOMContentLoaded', () => {
     loadCourses();
+    initInfoskillsModal();
     initMagnetButtons();
     initTheme();
     initTimelineScroll();
