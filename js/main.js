@@ -171,7 +171,7 @@ async function loadCourses() {
                     tagsRow.appendChild(document.createTextNode(' '));
                     tagsRow.appendChild(tagsFragment);
                 } else {
-                    tagsRow.appendChild(document.createTextNode(' â€”'));
+                    tagsRow.appendChild(document.createTextNode(' Nessun tag'));
                 }
 
                 modalBody.appendChild(titleEl);
@@ -184,23 +184,33 @@ async function loadCourses() {
                 modalBody.appendChild(tagsRow);
 
                 modal.style.display = 'flex';
+                modal.setAttribute('aria-hidden', 'false');
+                const previousOverflow = document.body.style.overflow;
+                modal._previousBodyOverflow = previousOverflow;
+                document.body.style.overflow = 'hidden';
+
+                const hiddenSiblings = [];
+                Array.from(document.body.children).forEach((el) => {
+                    if (el === modal || el.id === 'a11y-status' || el.id === 'codebg-status') return;
+                    if (el.tagName === 'SCRIPT' || el.classList.contains('icon-defs')) return;
+                    const prev = el.getAttribute('aria-hidden');
+                    hiddenSiblings.push({ el, prev });
+                    el.setAttribute('aria-hidden', 'true');
+                });
+                modal._hiddenSiblings = hiddenSiblings;
 
                 // Focus management
                 const previouslyFocused = document.activeElement;
-                modal.dataset.returnFocus = previouslyFocused ? '1' : '';
-                if (previouslyFocused) {
-                    modal.dataset.returnSelector = openerEl ? '' : '';
-                    modal._returnEl = openerEl || previouslyFocused;
-                }
+                modal._returnEl = openerEl || previouslyFocused;
 
                 // Trap focus
                 const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
                 const getFocusable = () => Array.from(modalContent.querySelectorAll(focusableSelectors))
-                    .filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+                    .filter(el => !el.hasAttribute('disabled'));
                 const focusables = getFocusable();
                 const first = focusables[0] || modalContent;
                 const last = focusables[focusables.length - 1] || modalContent;
-                first.focus();
+                setTimeout(() => first.focus(), 0);
                 if (window.a11yAnnounce) {
                     window.a11yAnnounce(`Dettagli corso aperti: ${course.title}`);
                 }
@@ -223,11 +233,31 @@ async function loadCourses() {
                     }
                 }
 
+                function handleFocusIn(e) {
+                    if (!modalContent.contains(e.target)) {
+                        const f = getFocusable();
+                        (f[0] || modalContent).focus();
+                    }
+                }
+
                 document.addEventListener('keydown', handleKey);
+                document.addEventListener('focusin', handleFocusIn);
 
                 function closeModal() {
                     modal.style.display = 'none';
+                    modal.setAttribute('aria-hidden', 'true');
+                    document.body.style.overflow = modal._previousBodyOverflow || '';
+                    if (modal._hiddenSiblings) {
+                        modal._hiddenSiblings.forEach(({ el, prev }) => {
+                            if (prev === null || prev === undefined) {
+                                el.removeAttribute('aria-hidden');
+                            } else {
+                                el.setAttribute('aria-hidden', prev);
+                            }
+                        });
+                    }
                     document.removeEventListener('keydown', handleKey);
+                    document.removeEventListener('focusin', handleFocusIn);
                     if (window.a11yAnnounce) {
                         window.a11yAnnounce('Dettagli corso chiusi');
                     }
@@ -236,6 +266,7 @@ async function loadCourses() {
                     }
                 }
                 modal._close = closeModal;
+
             };
 
             card.addEventListener('click', () => openModal(card));
@@ -420,6 +451,121 @@ function initTheme() {
     }
 }
 
+window.initTheme = initTheme;
+
+function initInfoskillsModal() {
+    const trigger = document.getElementById('infoskillsTrigger');
+    const modal = document.getElementById('infoskillsModal');
+    if (!trigger || !modal) return;
+
+    const modalContent = modal.querySelector('.modal-content');
+    const closeBtn = modal.querySelector('.modal-close');
+    const announce = window.a11yAnnounce || function () { };
+    const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+    const openModal = (openerEl) => {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+        trigger.setAttribute('aria-expanded', 'true');
+        const previousOverflow = document.body.style.overflow;
+        modal._previousBodyOverflow = previousOverflow;
+        document.body.style.overflow = 'hidden';
+
+        const hiddenSiblings = [];
+        Array.from(document.body.children).forEach((el) => {
+            if (el === modal || el.id === 'a11y-status' || el.id === 'codebg-status') return;
+            if (el.tagName === 'SCRIPT' || el.classList.contains('icon-defs')) return;
+            const prev = el.getAttribute('aria-hidden');
+            hiddenSiblings.push({ el, prev });
+            el.setAttribute('aria-hidden', 'true');
+        });
+        modal._hiddenSiblings = hiddenSiblings;
+
+        const previouslyFocused = document.activeElement;
+        modal._returnEl = openerEl || previouslyFocused;
+
+        const getFocusable = () => Array.from(modalContent.querySelectorAll(focusableSelectors))
+            .filter(el => !el.hasAttribute('disabled'));
+        const focusables = getFocusable();
+        const first = focusables[0] || modalContent;
+        const last = focusables[focusables.length - 1] || modalContent;
+        setTimeout(() => first.focus(), 0);
+        announce('Infografica competenze aperta');
+
+        function handleKey(e) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeModal();
+            } else if (e.key === 'Tab') {
+                const f = getFocusable();
+                const firstEl = f[0] || modalContent;
+                const lastEl = f[f.length - 1] || modalContent;
+                if (e.shiftKey && document.activeElement === firstEl) {
+                    e.preventDefault();
+                    lastEl.focus();
+                } else if (!e.shiftKey && document.activeElement === lastEl) {
+                    e.preventDefault();
+                    firstEl.focus();
+                }
+            }
+        }
+
+        function handleFocusIn(e) {
+            if (!modalContent.contains(e.target)) {
+                const f = getFocusable();
+                (f[0] || modalContent).focus();
+            }
+        }
+
+        modal._keyHandler = handleKey;
+        modal._focusHandler = handleFocusIn;
+        document.addEventListener('keydown', handleKey);
+        document.addEventListener('focusin', handleFocusIn);
+    };
+
+    function closeModal() {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        trigger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = modal._previousBodyOverflow || '';
+        if (modal._hiddenSiblings) {
+            modal._hiddenSiblings.forEach(({ el, prev }) => {
+                if (prev === null || prev === undefined) {
+                    el.removeAttribute('aria-hidden');
+                } else {
+                    el.setAttribute('aria-hidden', prev);
+                }
+            });
+        }
+        if (modal._keyHandler) document.removeEventListener('keydown', modal._keyHandler);
+        if (modal._focusHandler) document.removeEventListener('focusin', modal._focusHandler);
+        announce('Infografica competenze chiusa');
+        if (modal._returnEl && typeof modal._returnEl.focus === 'function') {
+            modal._returnEl.focus();
+        }
+    }
+
+    modal._close = closeModal;
+
+    trigger.addEventListener('click', () => openModal(trigger));
+    trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openModal(trigger);
+        }
+    });
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => closeModal());
+    }
+
+    modal.addEventListener('click', (e) => {
+        if (e.target.id === 'infoskillsModal') {
+            closeModal();
+        }
+    });
+}
+
 // Magnet effect for CTA buttons
 function initMagnetButtons() {
     const buttons = document.querySelectorAll('.btn-hero');
@@ -487,6 +633,7 @@ function highlightRelatedSkills(skillsString) {
         "p.iva": "Paolo non possiede una Partita IVA.",
         "piva": "Paolo non possiede una Partita IVA.",
         "lavoro": "Paolo è disponibile per collaborazioni Full-Remote o Ibride. Predilige l'assunzione diretta in azienda con contratto Full-Time.",
+        "team remoto": "Paolo ha lavorato in team full-remote e ambienti enterprise strutturati.",
         "remoto": "Sì, Paolo è disponibile per posizioni Full-Remote o Ibride.",
         "ibrido": "Paolo valuta opportunità in modalità ibrida o full-remote.",
         "sede": "Paolo è disponibile per lavoro Full-Remote o Ibrido.",
@@ -506,8 +653,30 @@ function highlightRelatedSkills(skillsString) {
         "competenze": "Le competenze principali di Paolo includono: .NET Core, C#, Angular, SQL Server, Entity Framework, Microservizi, Docker e Integrazione AI.",
         "chi sei": "Sono l'assistente virtuale di Paolo Paci. Posso darti informazioni sulla sua carriera, competenze e progetti.",
         "contatti": "Puoi contattare Paolo via email (paolopci@yahoo.it), telefono (+39 328 3834012) o su LinkedIn.",
+        "github actions": "Paolo ha esperienza con CI/CD e workflow GitHub Actions.",
+        "ci/cd": "Paolo ha esperienza con CI/CD e workflow GitHub Actions.",
+        "full stack": "Paolo lavora principalmente in ambito full-stack: backend .NET e frontend Angular/Blazor.",
+        "microservizi": "Paolo ha esperienza con microservizi, REST API e architetture moderne.",
+        "entity framework": "Paolo usa Entity Framework (anche Code First) e Dapper per l'accesso ai dati.",
+        "open source": "Paolo ha sviluppato progetti open-source su GitHub con README tecnici.",
+        "openai": "Paolo ha integrato modelli AI (OpenAI) in applicazioni enterprise.",
+        "prestazioni": "Paolo ha competenze su RxJS, Signals e performance frontend.",
+        "docker": "Paolo ha esperienza con Docker e containerizzazione di servizi.",
+        "postman": "Paolo usa strumenti di API testing (Postman/Swagger).",
+        "swagger": "Paolo usa strumenti di API testing (Postman/Swagger).",
+        "jwt": "Paolo ha esperienza con JWT, OAuth e sicurezza applicativa.",
+        "oauth": "Paolo ha esperienza con JWT, OAuth e sicurezza applicativa.",
+        "azure": "Paolo ha lavorato con Azure (livello base) e servizi cloud.",
+        "database": "Paolo ha esperienza con SQL Server, PostgreSQL e MongoDB.",
+        "e-commerce": "Paolo ha lavorato su progetti per e-commerce e servizi digitali regolati.",
+        "test": "Paolo usa strumenti di testing come xUnit, Jest e Cypress.",
+        "esperienza": "Paolo è un Software Engineer con 10+ anni di esperienza in .NET e Angular.",
         "default": "Interessante! Paolo ha molta esperienza in quell'ambito. Vuoi sapere di più sulla sua carriera o sulle sue competenze tecniche?"
     };
+
+
+
+
 function getAIResponse(input) {
     if (!input) return aiKnowledgeBase.default;
     const lowerInput = input.toLowerCase();
@@ -552,16 +721,52 @@ function initAIChat() {
         }, 600);
     };
 
+    let lastFocusedEl = null;
+    const setChatState = (isOpen, options = {}) => {
+        const { focus = true, announce = true } = options;
+        chatWindow.style.display = isOpen ? 'flex' : 'none';
+        chatWindow.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+        fab.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        const label = isOpen ? 'Chiudi assistente AI' : 'Apri assistente AI';
+        fab.setAttribute('aria-label', label);
+        fab.setAttribute('title', isOpen ? 'Chiudi chat' : 'Chiedi all\'AI');
+
+        if (isOpen) {
+            lastFocusedEl = document.activeElement;
+            if (focus) {
+                setTimeout(() => userInput.focus(), 0);
+            }
+            if (announce && window.a11yAnnounce) {
+                window.a11yAnnounce('Assistente AI aperto');
+            }
+        } else {
+            if (announce && window.a11yAnnounce) {
+                window.a11yAnnounce('Assistente AI chiuso');
+            }
+            if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') {
+                lastFocusedEl.focus();
+            }
+        }
+    };
+
+    closeBtn.setAttribute('aria-label', closeBtn.getAttribute('aria-label') || 'Chiudi assistente AI');
+    setChatState(chatWindow.style.display !== 'none', { focus: false, announce: false });
+
     fab.addEventListener('click', () => {
         const isVisible = chatWindow.style.display !== 'none';
-        chatWindow.style.display = isVisible ? 'none' : 'flex';
-        if (!isVisible) {
-            userInput.focus();
-        }
+        setChatState(!isVisible);
     });
 
     closeBtn.addEventListener('click', () => {
-        chatWindow.style.display = 'none';
+        setChatState(false);
+    });
+
+    chatWindow.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            setChatState(false);
+            fab.focus();
+        }
     });
 
     sendBtn.addEventListener('click', handleSend);
@@ -570,55 +775,123 @@ function initAIChat() {
     });
 }
 
+window.initAIChat = initAIChat;
+
 // GitHub Activity Logic
-async function loadGitHubActivity() {
-    const container = document.getElementById('github-activity-content');
-    if (!container) return;
+const GITHUB_EVENTS_CACHE_KEY = 'githubEventsCache';
 
+function getGitHubCache() {
     try {
-        const response = await fetch('https://api.github.com/users/paolopci/events/public');
-        if (!response.ok) throw new Error('GitHub API error');
-        
-        const events = await response.json();
-        const recentEvents = events.slice(0, 5); // Prendi i primi 5 eventi
+        const raw = localStorage.getItem(GITHUB_EVENTS_CACHE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !Array.isArray(parsed.events)) return null;
+        return parsed;
+    } catch (error) {
+        return null;
+    }
+}
 
-        if (recentEvents.length === 0) {
-            container.innerHTML = '<p>Nessuna attività pubblica recente trovata.</p>';
-            return;
+function setGitHubCache(events) {
+    if (!Array.isArray(events)) return;
+    const payload = {
+        updatedAt: Date.now(),
+        events: events,
+    };
+    try {
+        localStorage.setItem(GITHUB_EVENTS_CACHE_KEY, JSON.stringify(payload));
+    } catch (error) {
+        // LocalStorage non disponibile o pieno: fallback silenzioso.
+    }
+}
+
+function renderGitHubEvents(container, events, options = {}) {
+    const note = options.note || '';
+    const safeEvents = Array.isArray(events) ? events.slice(0, 5) : [];
+
+    container.innerHTML = '';
+
+    if (note) {
+        const noteEl = document.createElement('p');
+        noteEl.className = 'github-event-note';
+        noteEl.textContent = note;
+        container.appendChild(noteEl);
+    }
+
+    if (safeEvents.length === 0) {
+        const emptyEl = document.createElement('p');
+        emptyEl.textContent = 'Nessuna attività pubblica recente trovata.';
+        container.appendChild(emptyEl);
+        return;
+    }
+
+    safeEvents.forEach(event => {
+        if (!event || !event.repo || !event.repo.name || !event.created_at) return;
+
+        const eventEl = document.createElement('div');
+        eventEl.className = 'github-event';
+
+        let action = '';
+        switch (event.type) {
+            case 'PushEvent': action = 'Push su'; break;
+            case 'CreateEvent': action = 'Creato'; break;
+            case 'WatchEvent': action = 'Star su'; break;
+            default: action = 'Attivit? su';
         }
 
-        container.innerHTML = '';
-        recentEvents.forEach(event => {
-            const eventEl = document.createElement('div');
-            eventEl.className = 'github-event';
-            
-            let action = '';
-            switch(event.type) {
-                case 'PushEvent': action = 'Push su'; break;
-                case 'CreateEvent': action = 'Creato'; break;
-                case 'WatchEvent': action = 'Star su'; break;
-                default: action = 'Attività su';
-            }
+        const date = new Date(event.created_at).toLocaleDateString('it-IT');
+        const repoName = event.repo.name.replace('paolopci/', '');
 
-            const date = new Date(event.created_at).toLocaleDateString('it-IT');
-            const repoName = event.repo.name.replace('paolopci/', '');
-
-            eventEl.innerHTML = `
+        eventEl.innerHTML = `
                 <span class="event-date">${date}</span>
                 <span class="event-action">${action}</span>
                 <a href="https://github.com/${event.repo.name}" target="_blank" class="event-repo">${repoName}</a>
             `;
-            container.appendChild(eventEl);
-        });
+        container.appendChild(eventEl);
+    });
+}
+
+async function loadGitHubActivity() {
+    const container = document.getElementById('github-activity-content');
+    if (!container) return;
+
+    const cached = getGitHubCache();
+    const cachedEvents = cached ? cached.events : null;
+
+    try {
+        const response = await fetch('https://api.github.com/users/paolopci/events/public');
+        if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
+
+        const events = await response.json();
+        if (!Array.isArray(events)) throw new Error('GitHub payload non valido');
+
+        renderGitHubEvents(container, events);
+        setGitHubCache(events);
     } catch (error) {
         console.error('Errore GitHub:', error);
-        container.innerHTML = '<p>Impossibile caricare l\'attività di GitHub.</p>';
+        if (cachedEvents && cachedEvents.length > 0) {
+            const lastUpdate = cached && cached.updatedAt
+                ? new Date(cached.updatedAt).toLocaleString('it-IT')
+                : 'data non disponibile';
+            renderGitHubEvents(
+                container,
+                cachedEvents,
+                { note: `Dati offline. Ultimo aggiornamento: ${lastUpdate}.` }
+            );
+            return;
+        }
+        container.innerHTML = "<p>Impossibile caricare l'attività di GitHub.</p>";
     }
 }
 
+window.getGitHubCache = getGitHubCache;
+window.setGitHubCache = setGitHubCache;
+window.renderGitHubEvents = renderGitHubEvents;
+window.loadGitHubActivity = loadGitHubActivity;
 // Initialize components when page is ready
 document.addEventListener('DOMContentLoaded', () => {
     loadCourses();
+    initInfoskillsModal();
     initMagnetButtons();
     initTheme();
     initTimelineScroll();

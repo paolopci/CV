@@ -78,6 +78,35 @@ describe('AI Chat Assistant Logic', () => {
     expect(response).toContain('percettore NASpI');
   });
 
+  test('should return correct responses for additional keywords', () => {
+    const cases = [
+      ['Parlami della tua esperienza', '10+ anni di esperienza in .NET e Angular'],
+      ['Full stack', 'full-stack'],
+      ['Microservizi', 'microservizi'],
+      ['Entity Framework', 'Entity Framework'],
+      ['Docker', 'Docker e containerizzazione'],
+      ['Team remoto', 'team full-remote'],
+      ['CI/CD', 'GitHub Actions'],
+      ['GitHub Actions', 'GitHub Actions'],
+      ['OpenAI', 'OpenAI'],
+      ['Test', 'xUnit, Jest e Cypress'],
+      ['Database', 'SQL Server, PostgreSQL e MongoDB'],
+      ['E-commerce', 'e-commerce'],
+      ['JWT', 'JWT, OAuth'],
+      ['OAuth', 'JWT, OAuth'],
+      ['Azure', 'Azure (livello base)'],
+      ['Open source', 'open-source'],
+      ['Prestazioni', 'performance frontend'],
+      ['Postman', 'Postman/Swagger'],
+      ['Swagger', 'Postman/Swagger'],
+    ];
+
+    cases.forEach(([input, expected]) => {
+      const response = window.getAIResponse(input);
+      expect(response).toContain(expected);
+    });
+  });
+
   test('should return default response for unknown topics', () => {
     const response = window.getAIResponse('Cosa ne pensi della pizza?');
     expect(response).toContain('Interessante!');
