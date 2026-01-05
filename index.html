@@ -477,6 +477,13 @@
                 <use href="#icon-briefcase"></use>
             </svg>
             <span class="section-title-text">Carriera Professionale</span>
+            <button type="button" class="section-title-btn" id="infoPercorsoTrigger"
+                aria-label="Apri infografica percorso professionale" aria-haspopup="dialog"
+                aria-controls="infoPercorsoModal" aria-expanded="false" title="Apri infografica percorso professionale">
+                <svg class="icon" aria-hidden="true">
+                    <use href="#icon-infographic"></use>
+                </svg>
+            </button>
         </h2>
         <div class="timeline">
             <details class="timeline-item" data-related-skills="backend frontend innovation">
@@ -817,6 +824,31 @@
                     </picture>
                     <figcaption class="sr-only">
                         Infografica con dettaglio delle competenze tecniche.
+                    </figcaption>
+                </figure>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Infografica Carriera Professionale -->
+    <div class="modal-overlay infopercorso-modal" id="infoPercorsoModal" style="display:none;" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="infoPercorsoModalTitle"
+            aria-describedby="infoPercorsoModalBody" tabindex="-1">
+            <button class="modal-close" id="closeInfoPercorso" aria-label="Chiudi infografica">&times;</button>
+            <div id="infoPercorsoModalBody">
+                <h2 id="infoPercorsoModalTitle">Infografica Carriera Professionale</h2>
+                <figure class="infopercorso-figure">
+                    <picture>
+                        <source srcset="images/infoPercorsoProf-1200.webp" type="image/webp"
+                            data-light="images/infoPercorsoProf-1200.webp"
+                            data-dark="images/infoPercorsoProf-dark-1200.webp" />
+                        <img src="images/infoPercorsoProf-light-1200.png" width="1200" height="670"
+                            alt="Infografica con il percorso professionale di Paolo Paci" loading="lazy"
+                            decoding="async" data-light="images/infoPercorsoProf-light-1200.png"
+                            data-dark="images/infoPercorsoProf-dark-1200.png" />
+                    </picture>
+                    <figcaption class="sr-only">
+                        Infografica con il percorso professionale di Paolo Paci.
                     </figcaption>
                 </figure>
             </div>
