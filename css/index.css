@@ -1483,11 +1483,17 @@ body.dark-theme .skill-category.highlight {
     max-width: 980px;
 }
 
-.infoskills-figure {
+.infopercorso-modal .modal-content {
+    max-width: 980px;
+}
+
+.infoskills-figure,
+.infopercorso-figure {
     margin: 1rem 0 0;
 }
 
-.infoskills-figure img {
+.infoskills-figure img,
+.infopercorso-figure img {
     width: 100%;
     height: auto;
     display: block;
