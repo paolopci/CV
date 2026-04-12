@@ -27,7 +27,7 @@
 
 ## 4. Struttura del Progetto e Organizzazione dei Moduli
 
-- `index.html`: entry point del sito; include AI UI, GitHub widget, JSON-LD e navbar.
+- `index.html`: entry point del sito; include AI UI, GitHub widget, JSON-LD, navbar, landmark `main`, skip link e modali accessibili.
 - `css/index.css`: stili globali, Glassmorphism, animazioni e tema scuro.
 - `js/main.js`: logica UI core, AI Assistant, knowledge base, GitHub API, cache/retry del widget GitHub e scroll observer.
 - `js/hero-code-bg.js`: iniettore dell'animazione di codice nell'hero.
@@ -45,7 +45,7 @@
 - Server locale: `python -m http.server 8080`, poi apri `http://localhost:8080`.
 - Test automatici: `npm test`.
 - Validazione HTML: usare W3C validator quando si modifica markup significativo.
-- Test rapido manuale: anchor, modale corsi, toggle tema, menu mobile e scroll fluido.
+- Test rapido manuale: anchor, skip link, modale corsi, modali infografiche, toggle tema, menu mobile e scroll fluido.
 - AI Assistant: verifica apertura chat, invio messaggio, chip FAQ cliccabili, risposte basate sulla knowledge base e fallback educato.
 - GitHub Widget: verifica caricamento eventi, cache locale, fallback offline e diagnostica solo in sviluppo.
 - Dati: se modifichi `courses.json`, ricarica la pagina e controlla la console per confermare JSON valido.
@@ -71,7 +71,12 @@
 - Per modifiche al widget GitHub, aggiorna `tests/github.test.js` coprendo cache, retry, payload non valido, fallback e dettagli errore sviluppo/produzione.
 - Se l'informazione e visibile nel sito, mantieni allineati `index.html`, knowledge base AI e JSON-LD.
 - Verifica responsivita, effetto magnetico e chatbot su diversi viewport quando tocchi UI o layout.
-- A11y: mantieni titoli coerenti, `alt` significativi, live region `#a11y-status` e focus trap del modale.
+- A11y: mantieni `main#main-content`, skip link, `nav[aria-label="Navigazione principale"]`, titoli coerenti e ruoli semantici non ridondanti.
+- A11y immagini: usa `alt` significativi per immagini informative e `alt=""` o `aria-hidden="true"` per icone decorative dentro link gia testuali.
+- A11y dinamica: usa `window.a11yAnnounce()` e mantieni `#a11y-status` fuori dalle aree nascoste quando si aprono modali.
+- A11y modali: conserva `openAccessibleModal()`/`closeAccessibleModal()`, `aria-modal`, `aria-labelledby`, `aria-describedby`, ritorno focus al trigger e trap Tab/Shift+Tab/Escape.
+- Contrasto: mantieni conformita WCAG 2.1 AA, almeno 4.5:1 per testo normale e 3:1 per testo grande o componenti UI; verifica tema chiaro e scuro.
+- Test accessibilita: aggiorna `tests/modal-accessibility.test.js` per focus trap/live region dei modali e `tests/theme.test.js` per annunci del toggle tema.
 - Tema: assicurati che trasparenze e contrasti siano leggibili sia in tema chiaro sia in tema scuro.
 
 ## 8. Linee Guida per Commit e Pull Request

@@ -8,7 +8,7 @@ Questo file fornisce indicazioni a Claude Code per lavorare con il codice di que
 3. Controllare l'Intelligenza Artificiale: apre la finestra chat, invio/ricezione messaggi, chip FAQ cliccabili, knowledge base popolata e fallback educato
 4. Verificare il widget GitHub: eventi live, cache locale, fallback offline e diagnostica solo in sviluppo
 5. Eseguire i test: `npm test` passa e la copertura code è ≥ 80 % per la nuova logica JavaScript
-6. Accessibilità: verificare `alt` significativi, live region `#a11y-status`, trap del focus sul modulo modale
+6. Accessibilità: verificare `main#main-content`, skip link, `nav` etichettata, `alt` significativi, live region `#a11y-status`, trap del focus sui modali e contrasto WCAG 2.1 AA
 7. Commit: messaggi brevi e descrittivi in italiano (es. `feat(ai): aggiungi esperienza`)
 
 ## 2. Comandi Comuni
@@ -20,7 +20,7 @@ Questo file fornisce indicazioni a Claude Code per lavorare con il codice di que
 
 ## 3. Architettura del Codice
 1. **Frontend**:
-   - `index.html` – punto di ingresso, include UI AI, widget GitHub e markup JSON‑LD
+   - `index.html` – punto di ingresso, include UI AI, widget GitHub, markup JSON‑LD, landmark `main`, skip link e modali accessibili
    - `js/main.js` – logica core, `aiKnowledgeBase` strutturata, normalizzazione/matching AI, osservatore scroll, gestione API GitHub, cache/retry e fallback del widget
    - `css/index.css` – stili globali, effetti Glassmorphism, variabili tema scuro
 2. **Gestione dati**:
@@ -41,16 +41,23 @@ Questo file fornisce indicazioni a Claude Code per lavorare con il codice di que
 4. I chip FAQ dell'assistente sono in `index.html` dentro `#ai-suggestions`; la gestione click vive in `initAIChat()` e va coperta in `tests/chat.test.js`
 5. Se cambi `js/main.js` o `css/index.css` per funzionalità visibili, valuta di aggiornare il query string cache-buster in `index.html` per evitare asset vecchi in browser
 6. Il widget GitHub deve restare client-side e senza token: usare cache versionata con TTL 6 ore, retry `500/1000/2000 ms`, fallback su repository portfolio e dettagli errore solo per `localhost`, `127.0.0.1`, `::1` o `file:`
-7. Il toggle del tema e gli effetti Glassmorphism utilizzano valori CSS `rgba` e `backdrop-filter`
-8. Non committare mai `node_modules/` o file legacy presenti nella cartella `archive/`
+7. Accessibilità implementata:
+   - Landmark principale `main#main-content`, skip link e `nav` con `aria-label="Navigazione principale"`
+   - `#a11y-status` come live region globale tramite `window.a11yAnnounce()`
+   - Helper `openAccessibleModal()`/`closeAccessibleModal()` per trap Tab/Shift+Tab, Escape, `aria-hidden`, `aria-expanded` e ritorno focus
+   - Immagini informative con `alt` descrittivi e icone decorative con `alt=""` o `aria-hidden="true"`
+   - Contrasto target WCAG 2.1 AA per tema chiaro e scuro
+8. Il toggle del tema e gli effetti Glassmorphism utilizzano valori CSS `rgba` e `backdrop-filter`
+9. Non committare mai `node_modules/` o file legacy presenti nella cartella `archive/`
 
 ## 5. Linee Guida per i Contributi
 1. **Stile del commit**: utilizzo di conventional commit in italiano (es. `feat(ui): aggiungi pulsante`, `fix(ai): correggi enrich di messaggi`)
 2. Ogni nuova funzionalità deve includere test Jest con copertura ≥ 80 %
 3. Le modifiche al chatbot devono aggiornare `tests/ai.test.js`; se toccano chip, focus, live region o invio messaggi, aggiornare anche `tests/chat.test.js`
 4. Le modifiche al widget GitHub devono aggiornare `tests/github.test.js` per cache, retry, payload non valido, fallback offline e visibilità degli errori tra sviluppo e produzione
-5. Dovrà essere compilata la Checklist Rapida prima di aprire una PR
-6. Utilizzare `.gitignore` per file temporanei o generati
+5. Le modifiche a landmark, live region, modali, tema o contrasto devono aggiornare `tests/modal-accessibility.test.js` e/o `tests/theme.test.js`
+6. Dovrà essere compilata la Checklist Rapida prima di aprire una PR
+7. Utilizzare `.gitignore` per file temporanei o generati
 
 ## 6. Gestione delle Versioni
 1. **main** – codice pronto per la produzione
