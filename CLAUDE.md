@@ -5,8 +5,8 @@ Questo file fornisce indicazioni a Claude Code per lavorare con il codice di que
 ## 1. Checklist Rapida
 1. Avviare il server: `python -m http.server 8080` e aprire `http://localhost:8080`
 2. Verificare il funzionamento della UI: navigazione ancorata, modale corsi, toggle tema, menu mobile, scorrimento fluido
-3. Controllare l'Intelligenza Artificiale: apre la finestra chat, invio/ricezione messaggi, knowledge base popolata
-4. Verificare il widget GitHub: vengono visualizzati gli ultimi eventi nel portfolio
+3. Controllare l'Intelligenza Artificiale: apre la finestra chat, invio/ricezione messaggi, chip FAQ cliccabili, knowledge base popolata e fallback educato
+4. Verificare il widget GitHub: eventi live, cache locale, fallback offline e diagnostica solo in sviluppo
 5. Eseguire i test: `npm test` passa e la copertura code è ≥ 80 % per la nuova logica JavaScript
 6. Accessibilità: verificare `alt` significativi, live region `#a11y-status`, trap del focus sul modulo modale
 7. Commit: messaggi brevi e descrittivi in italiano (es. `feat(ai): aggiungi esperienza`)
@@ -14,14 +14,14 @@ Questo file fornisce indicazioni a Claude Code per lavorare con il codice di que
 ## 2. Comandi Comuni
 1. Avviare il server di sviluppo: `python -m http.server 8080`
 2. Eseguire i test: `npm test` (richiede Node.js installato)
-3. Integrare il widget GitHub: dati recuperati da `api.github.com/users/paolopci/events/public` in `js/main.js`
-4. Ricaricare l'Intelligenza Artificiale: aggiornare `aiKnowledgeBase` in `js/main.js` e ricaricare la pagina
+3. Integrare il widget GitHub: dati recuperati da `api.github.com/users/paolopci/events/public` in `js/main.js`, con cache TTL 6 ore, retry exponential backoff e fallback portfolio
+4. Ricaricare l'Intelligenza Artificiale: aggiornare i record di `aiKnowledgeBase` in `js/main.js`, aggiornare il cache-buster in `index.html` se necessario e ricaricare la pagina
 5. Validare il codice HTML con lo strumento W3C validator
 
 ## 3. Architettura del Codice
 1. **Frontend**:
    - `index.html` – punto di ingresso, include UI AI, widget GitHub e markup JSON‑LD
-   - `js/main.js` – logica core, oggetto `aiKnowledgeBase`, osservatore scroll e gestione API GitHub
+   - `js/main.js` – logica core, `aiKnowledgeBase` strutturata, normalizzazione/matching AI, osservatore scroll, gestione API GitHub, cache/retry e fallback del widget
    - `css/index.css` – stili globali, effetti Glassmorphism, variabili tema scuro
 2. **Gestione dati**:
    - `courses.json` – sorgente per la sezione "Certificazioni & Corsi"
@@ -35,16 +35,22 @@ Questo file fornisce indicazioni a Claude Code per lavorare con il codice di que
 1. Tutte le comunicazioni e i messaggi di commit devono essere in **italiano**
 2. Seguire la **metodologia Conductor** per lo sviluppo strutturato e il tracciamento dello stato (`conductor/setup_state.json`)
 3. Aggiornare il knowledge base AI richiede:
-   - Modifica dell'oggetto JSON in `js/main.js`
-   - Aggiunta di un test Jest corrispondente in `tests/ai.test.js`
-4. Il toggle del tema e gli effetti Glassmorphism utilizzano valori CSS `rgba` e `backdrop-filter`
-5. Non committare mai `node_modules/` o file legacy presenti nella cartella `archive/`
+   - Modifica dei record strutturati in `js/main.js` (`id`, `category`, `priority`, `aliases`, `keywords`, `answer`)
+   - Uso di alias specifici e keyword mirate: il matching passa da `normalizeAIInput()` e `findBestAIEntry()` con scoring deterministico
+   - Aggiunta di test Jest corrispondenti in `tests/ai.test.js`
+4. I chip FAQ dell'assistente sono in `index.html` dentro `#ai-suggestions`; la gestione click vive in `initAIChat()` e va coperta in `tests/chat.test.js`
+5. Se cambi `js/main.js` o `css/index.css` per funzionalità visibili, valuta di aggiornare il query string cache-buster in `index.html` per evitare asset vecchi in browser
+6. Il widget GitHub deve restare client-side e senza token: usare cache versionata con TTL 6 ore, retry `500/1000/2000 ms`, fallback su repository portfolio e dettagli errore solo per `localhost`, `127.0.0.1`, `::1` o `file:`
+7. Il toggle del tema e gli effetti Glassmorphism utilizzano valori CSS `rgba` e `backdrop-filter`
+8. Non committare mai `node_modules/` o file legacy presenti nella cartella `archive/`
 
 ## 5. Linee Guida per i Contributi
 1. **Stile del commit**: utilizzo di conventional commit in italiano (es. `feat(ui): aggiungi pulsante`, `fix(ai): correggi enrich di messaggi`)
 2. Ogni nuova funzionalità deve includere test Jest con copertura ≥ 80 %
-3. Dovrà essere compilata la Checklist Rapida prima di aprire una PR
-4. Utilizzare `.gitignore` per file temporanei o generati
+3. Le modifiche al chatbot devono aggiornare `tests/ai.test.js`; se toccano chip, focus, live region o invio messaggi, aggiornare anche `tests/chat.test.js`
+4. Le modifiche al widget GitHub devono aggiornare `tests/github.test.js` per cache, retry, payload non valido, fallback offline e visibilità degli errori tra sviluppo e produzione
+5. Dovrà essere compilata la Checklist Rapida prima di aprire una PR
+6. Utilizzare `.gitignore` per file temporanei o generati
 
 ## 6. Gestione delle Versioni
 1. **main** – codice pronto per la produzione

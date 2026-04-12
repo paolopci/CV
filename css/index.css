@@ -2265,3 +2265,75 @@ body.dark-theme .event-action {
     padding: 1rem;
 }
 
+.github-event-note,
+.github-unavailable {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    padding: 0.75rem;
+    border-radius: 8px;
+    color: #334155;
+    background: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(102, 126, 234, 0.18);
+}
+
+.github-event-note {
+    margin: 0;
+}
+
+.github-event-note--fallback {
+    border-color: rgba(234, 179, 8, 0.35);
+    background: rgba(254, 249, 195, 0.45);
+}
+
+.github-unavailable {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.github-unavailable p {
+    margin: 0;
+}
+
+.github-unavailable a {
+    color: #4338ca;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.github-unavailable a:hover {
+    text-decoration: underline;
+}
+
+.github-error-detail {
+    display: block;
+    margin-top: 0.35rem;
+    padding: 0.45rem;
+    border-radius: 6px;
+    color: #7f1d1d;
+    background: rgba(254, 226, 226, 0.7);
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+body.dark-theme .github-event-note,
+body.dark-theme .github-unavailable {
+    color: #e5e7eb;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(191, 219, 254, 0.18);
+}
+
+body.dark-theme .github-event-note--fallback {
+    background: rgba(113, 63, 18, 0.35);
+    border-color: rgba(250, 204, 21, 0.3);
+}
+
+body.dark-theme .github-unavailable a {
+    color: #bfdbfe;
+}
+
+body.dark-theme .github-error-detail {
+    color: #fecaca;
+    background: rgba(127, 29, 29, 0.35);
+}
+
