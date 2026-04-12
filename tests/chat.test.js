@@ -21,7 +21,11 @@ describe('AI Chat Accessibility', () => {
         <button id="close-chat"></button>
         <input id="ai-user-input" />
         <button id="ai-send-btn"></button>
-        <div id="ai-chat-messages"></div>
+        <div id="ai-chat-messages">
+          <div id="ai-suggestions" class="ai-suggestions">
+            <button type="button" class="ai-suggestion-chip" data-question="Che esperienza ha Paolo?">Che esperienza ha Paolo?</button>
+          </div>
+        </div>
       </div>
     `;
 
@@ -67,5 +71,29 @@ describe('AI Chat Accessibility', () => {
     jest.runAllTimers();
 
     expect(document.activeElement).toBe(fab);
+  });
+
+  test('sends FAQ chip as user message and appends assistant response', () => {
+    const chip = document.querySelector('.ai-suggestion-chip');
+    const input = document.getElementById('ai-user-input');
+    const live = document.getElementById('a11y-status');
+
+    chip.click();
+    let messages = document.querySelectorAll('.ai-message');
+
+    expect(messages).toHaveLength(1);
+    expect(messages[0].classList.contains('user')).toBe(true);
+    expect(messages[0].textContent).toBe('Che esperienza ha Paolo?');
+    expect(document.activeElement).toBe(input);
+
+    jest.advanceTimersByTime(600);
+    messages = document.querySelectorAll('.ai-message');
+
+    expect(messages).toHaveLength(2);
+    expect(messages[1].classList.contains('assistant')).toBe(true);
+    expect(messages[1].textContent).toContain('TIM, Aruba, BKN301');
+
+    jest.advanceTimersByTime(50);
+    expect(live.textContent).toBe('Risposta dell\'assistente AI aggiunta');
   });
 });

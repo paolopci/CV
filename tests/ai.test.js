@@ -81,6 +81,11 @@ describe('AI Chat Assistant Logic', () => {
   test('should return correct responses for additional keywords', () => {
     const cases = [
       ['Parlami della tua esperienza', '10+ anni di esperienza in .NET e Angular'],
+      ['Che esperienza ha Paolo?', 'TIM, Aruba, BKN301'],
+      ['Quali tecnologie usa?', '.NET Core, C#, Angular'],
+      ['Parlami dei progetti', 'Mango.*'],
+      ['Portfolio GitHub', 'progetti open-source'],
+      ['Disponibilità lavorativa', 'Full-Remote o Ibride'],
       ['Full stack', 'full-stack'],
       ['Microservizi', 'microservizi'],
       ['Entity Framework', 'Entity Framework'],
@@ -107,8 +112,24 @@ describe('AI Chat Assistant Logic', () => {
     });
   });
 
+  test('should normalize accents, punctuation and uppercase input', () => {
+    const response = window.getAIResponse('DISPONIBILITÀ LAVORATIVA???');
+    expect(response).toContain('Full-Remote o Ibride');
+
+    const normalized = window.normalizeAIInput('  Qual è l\'ESPERIENZA con Angular??? ');
+    expect(normalized).toBe('qual e l esperienza con angular');
+  });
+
+  test('should expose structured knowledge base records', () => {
+    expect(Array.isArray(window.aiKnowledgeBase)).toBe(true);
+    expect(window.aiKnowledgeBase[0]).toHaveProperty('id');
+    expect(window.aiKnowledgeBase[0]).toHaveProperty('category');
+    expect(window.aiKnowledgeBase[0]).toHaveProperty('keywords');
+  });
+
   test('should return default response for unknown topics', () => {
     const response = window.getAIResponse('Cosa ne pensi della pizza?');
-    expect(response).toContain('Interessante!');
+    expect(response).toContain('Interessante domanda');
+    expect(response).toContain('esperienza, .NET, Angular, AI, progetti');
   });
 });
