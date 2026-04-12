@@ -6,14 +6,21 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "clean": "node scripts/build.js clean",
+    "build:css": "cleancss -o dist/css/index.min.css css/index.css",
+    "build:js": "terser js/main.js js/hero-code-bg.js --compress --mangle --output dist/js/app.min.js",
+    "build:static": "node scripts/build.js static",
+    "build": "npm run clean && npm run build:css && npm run build:js && npm run build:static"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "clean-css-cli": "^5.6.3",
     "jest": "^30.2.0",
-    "jest-environment-jsdom": "^30.2.0"
+    "jest-environment-jsdom": "^30.2.0",
+    "terser": "^5.44.1"
   }
 }
