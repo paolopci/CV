@@ -6,6 +6,149 @@ window.a11yAnnounce = window.a11yAnnounce || function (msg) {
     setTimeout(() => { live.textContent = msg; }, 50);
 };
 
+const MODAL_FOCUSABLE_SELECTORS = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+function getModalFocusableElements(container) {
+    if (!container) return [];
+    return Array.from(container.querySelectorAll(MODAL_FOCUSABLE_SELECTORS))
+        .filter(el => !el.hasAttribute('disabled') && el.getAttribute('aria-hidden') !== 'true');
+}
+
+function hideModalSiblings(modal) {
+    const hiddenSiblings = [];
+    Array.from(document.body.children).forEach((el) => {
+        if (el === modal || el.id === 'a11y-status' || el.id === 'codebg-status') return;
+        if (el.tagName === 'SCRIPT' || el.classList.contains('icon-defs')) return;
+        const prev = el.getAttribute('aria-hidden');
+        hiddenSiblings.push({ el, prev });
+        el.setAttribute('aria-hidden', 'true');
+    });
+    return hiddenSiblings;
+}
+
+function restoreModalSiblings(hiddenSiblings = []) {
+    hiddenSiblings.forEach(({ el, prev }) => {
+        if (prev === null || prev === undefined) {
+            el.removeAttribute('aria-hidden');
+        } else {
+            el.setAttribute('aria-hidden', prev);
+        }
+    });
+}
+
+function closeAccessibleModal(modal, closeMessage) {
+    if (!modal) return;
+
+    const state = modal._accessibleModal || {};
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+
+    if (state.triggerEl) {
+        state.triggerEl.setAttribute('aria-expanded', 'false');
+    }
+
+    document.body.style.overflow = state.previousBodyOverflow || '';
+    restoreModalSiblings(state.hiddenSiblings);
+
+    if (state.keyHandler) document.removeEventListener('keydown', state.keyHandler);
+    if (state.focusHandler) document.removeEventListener('focusin', state.focusHandler);
+
+    const announce = window.a11yAnnounce || function () { };
+    if (closeMessage) announce(closeMessage);
+
+    if (state.returnEl && typeof state.returnEl.focus === 'function' && document.contains(state.returnEl)) {
+        state.returnEl.focus();
+    }
+
+    modal._accessibleModal = null;
+}
+
+function openAccessibleModal({
+    modal,
+    modalContent,
+    openerEl,
+    triggerEl,
+    openMessage,
+    closeMessage
+}) {
+    if (!modal) return null;
+    const content = modalContent || modal.querySelector('.modal-content');
+    if (!content) return null;
+
+    const previouslyFocused = document.activeElement;
+    const previousBodyOverflow = document.body.style.overflow;
+    const returnEl = openerEl || previouslyFocused;
+
+    modal.style.display = 'flex';
+    modal.setAttribute('aria-hidden', 'false');
+    if (triggerEl) {
+        triggerEl.setAttribute('aria-expanded', 'true');
+    }
+    document.body.style.overflow = 'hidden';
+
+    const hiddenSiblings = hideModalSiblings(modal);
+
+    const getFocusable = () => getModalFocusableElements(content);
+
+    function handleKey(e) {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            closeAccessibleModal(modal, closeMessage);
+            return;
+        }
+
+        if (e.key !== 'Tab') return;
+
+        const focusables = getFocusable();
+        const firstEl = focusables[0] || content;
+        const lastEl = focusables[focusables.length - 1] || content;
+
+        if (e.shiftKey && document.activeElement === firstEl) {
+            e.preventDefault();
+            lastEl.focus();
+        } else if (!e.shiftKey && document.activeElement === lastEl) {
+            e.preventDefault();
+            firstEl.focus();
+        }
+    }
+
+    function handleFocusIn(e) {
+        if (!content.contains(e.target)) {
+            const focusables = getFocusable();
+            (focusables[0] || content).focus();
+        }
+    }
+
+    const state = {
+        modalContent: content,
+        triggerEl,
+        returnEl,
+        previousBodyOverflow,
+        hiddenSiblings,
+        keyHandler: handleKey,
+        focusHandler: handleFocusIn
+    };
+
+    modal._accessibleModal = state;
+    modal._close = () => closeAccessibleModal(modal, closeMessage);
+
+    document.addEventListener('keydown', handleKey);
+    document.addEventListener('focusin', handleFocusIn);
+
+    const focusables = getFocusable();
+    const first = focusables[0] || content;
+    setTimeout(() => first.focus(), 0);
+
+    const announce = window.a11yAnnounce || function () { };
+    if (openMessage) announce(openMessage);
+
+    return state;
+}
+
+window.getModalFocusableElements = getModalFocusableElements;
+window.openAccessibleModal = openAccessibleModal;
+window.closeAccessibleModal = closeAccessibleModal;
+
 // Function to load and display courses
 async function loadCourses() {
     try {
@@ -183,90 +326,13 @@ async function loadCourses() {
                 modalBody.appendChild(descriptionEl);
                 modalBody.appendChild(tagsRow);
 
-                modal.style.display = 'flex';
-                modal.setAttribute('aria-hidden', 'false');
-                const previousOverflow = document.body.style.overflow;
-                modal._previousBodyOverflow = previousOverflow;
-                document.body.style.overflow = 'hidden';
-
-                const hiddenSiblings = [];
-                Array.from(document.body.children).forEach((el) => {
-                    if (el === modal || el.id === 'a11y-status' || el.id === 'codebg-status') return;
-                    if (el.tagName === 'SCRIPT' || el.classList.contains('icon-defs')) return;
-                    const prev = el.getAttribute('aria-hidden');
-                    hiddenSiblings.push({ el, prev });
-                    el.setAttribute('aria-hidden', 'true');
+                openAccessibleModal({
+                    modal,
+                    modalContent,
+                    openerEl,
+                    openMessage: `Dettagli corso aperti: ${title}`,
+                    closeMessage: 'Dettagli corso chiusi'
                 });
-                modal._hiddenSiblings = hiddenSiblings;
-
-                // Focus management
-                const previouslyFocused = document.activeElement;
-                modal._returnEl = openerEl || previouslyFocused;
-
-                // Trap focus
-                const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-                const getFocusable = () => Array.from(modalContent.querySelectorAll(focusableSelectors))
-                    .filter(el => !el.hasAttribute('disabled'));
-                const focusables = getFocusable();
-                const first = focusables[0] || modalContent;
-                const last = focusables[focusables.length - 1] || modalContent;
-                setTimeout(() => first.focus(), 0);
-                if (window.a11yAnnounce) {
-                    window.a11yAnnounce(`Dettagli corso aperti: ${course.title}`);
-                }
-
-                function handleKey(e) {
-                    if (e.key === 'Escape') {
-                        e.preventDefault();
-                        closeModal();
-                    } else if (e.key === 'Tab') {
-                        const f = getFocusable();
-                        const firstEl = f[0] || modalContent;
-                        const lastEl = f[f.length - 1] || modalContent;
-                        if (e.shiftKey && document.activeElement === firstEl) {
-                            e.preventDefault();
-                            lastEl.focus();
-                        } else if (!e.shiftKey && document.activeElement === lastEl) {
-                            e.preventDefault();
-                            firstEl.focus();
-                        }
-                    }
-                }
-
-                function handleFocusIn(e) {
-                    if (!modalContent.contains(e.target)) {
-                        const f = getFocusable();
-                        (f[0] || modalContent).focus();
-                    }
-                }
-
-                document.addEventListener('keydown', handleKey);
-                document.addEventListener('focusin', handleFocusIn);
-
-                function closeModal() {
-                    modal.style.display = 'none';
-                    modal.setAttribute('aria-hidden', 'true');
-                    document.body.style.overflow = modal._previousBodyOverflow || '';
-                    if (modal._hiddenSiblings) {
-                        modal._hiddenSiblings.forEach(({ el, prev }) => {
-                            if (prev === null || prev === undefined) {
-                                el.removeAttribute('aria-hidden');
-                            } else {
-                                el.setAttribute('aria-hidden', prev);
-                            }
-                        });
-                    }
-                    document.removeEventListener('keydown', handleKey);
-                    document.removeEventListener('focusin', handleFocusIn);
-                    if (window.a11yAnnounce) {
-                        window.a11yAnnounce('Dettagli corso chiusi');
-                    }
-                    if (modal._returnEl && typeof modal._returnEl.focus === 'function') {
-                        modal._returnEl.focus();
-                    }
-                }
-                modal._close = closeModal;
-
             };
 
             card.addEventListener('click', () => openModal(card));
@@ -287,6 +353,8 @@ async function loadCourses() {
         document.getElementById('coursesGrid').innerHTML = '<div class="error">Errore nel caricamento dei corsi</div>';
     }
 }
+
+window.loadCourses = loadCourses;
 
 // Smooth scrolling enhancement
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -460,89 +528,20 @@ function initInfoskillsModal() {
 
     const modalContent = modal.querySelector('.modal-content');
     const closeBtn = modal.querySelector('.modal-close');
-    const announce = window.a11yAnnounce || function () { };
-    const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
     const openModal = (openerEl) => {
-        modal.style.display = 'flex';
-        modal.setAttribute('aria-hidden', 'false');
-        trigger.setAttribute('aria-expanded', 'true');
-        const previousOverflow = document.body.style.overflow;
-        modal._previousBodyOverflow = previousOverflow;
-        document.body.style.overflow = 'hidden';
-
-        const hiddenSiblings = [];
-        Array.from(document.body.children).forEach((el) => {
-            if (el === modal || el.id === 'a11y-status' || el.id === 'codebg-status') return;
-            if (el.tagName === 'SCRIPT' || el.classList.contains('icon-defs')) return;
-            const prev = el.getAttribute('aria-hidden');
-            hiddenSiblings.push({ el, prev });
-            el.setAttribute('aria-hidden', 'true');
+        openAccessibleModal({
+            modal,
+            modalContent,
+            openerEl,
+            triggerEl: trigger,
+            openMessage: 'Infografica competenze aperta',
+            closeMessage: 'Infografica competenze chiusa'
         });
-        modal._hiddenSiblings = hiddenSiblings;
-
-        const previouslyFocused = document.activeElement;
-        modal._returnEl = openerEl || previouslyFocused;
-
-        const getFocusable = () => Array.from(modalContent.querySelectorAll(focusableSelectors))
-            .filter(el => !el.hasAttribute('disabled'));
-        const focusables = getFocusable();
-        const first = focusables[0] || modalContent;
-        const last = focusables[focusables.length - 1] || modalContent;
-        setTimeout(() => first.focus(), 0);
-        announce('Infografica competenze aperta');
-
-        function handleKey(e) {
-            if (e.key === 'Escape') {
-                e.preventDefault();
-                closeModal();
-            } else if (e.key === 'Tab') {
-                const f = getFocusable();
-                const firstEl = f[0] || modalContent;
-                const lastEl = f[f.length - 1] || modalContent;
-                if (e.shiftKey && document.activeElement === firstEl) {
-                    e.preventDefault();
-                    lastEl.focus();
-                } else if (!e.shiftKey && document.activeElement === lastEl) {
-                    e.preventDefault();
-                    firstEl.focus();
-                }
-            }
-        }
-
-        function handleFocusIn(e) {
-            if (!modalContent.contains(e.target)) {
-                const f = getFocusable();
-                (f[0] || modalContent).focus();
-            }
-        }
-
-        modal._keyHandler = handleKey;
-        modal._focusHandler = handleFocusIn;
-        document.addEventListener('keydown', handleKey);
-        document.addEventListener('focusin', handleFocusIn);
     };
 
     function closeModal() {
-        modal.style.display = 'none';
-        modal.setAttribute('aria-hidden', 'true');
-        trigger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = modal._previousBodyOverflow || '';
-        if (modal._hiddenSiblings) {
-            modal._hiddenSiblings.forEach(({ el, prev }) => {
-                if (prev === null || prev === undefined) {
-                    el.removeAttribute('aria-hidden');
-                } else {
-                    el.setAttribute('aria-hidden', prev);
-                }
-            });
-        }
-        if (modal._keyHandler) document.removeEventListener('keydown', modal._keyHandler);
-        if (modal._focusHandler) document.removeEventListener('focusin', modal._focusHandler);
-        announce('Infografica competenze chiusa');
-        if (modal._returnEl && typeof modal._returnEl.focus === 'function') {
-            modal._returnEl.focus();
-        }
+        closeAccessibleModal(modal, 'Infografica competenze chiusa');
     }
 
     modal._close = closeModal;
@@ -566,6 +565,8 @@ function initInfoskillsModal() {
     });
 }
 
+window.initInfoskillsModal = initInfoskillsModal;
+
 function initInfoPercorsoModal() {
     const trigger = document.getElementById('infoPercorsoTrigger');
     const modal = document.getElementById('infoPercorsoModal');
@@ -573,89 +574,20 @@ function initInfoPercorsoModal() {
 
     const modalContent = modal.querySelector('.modal-content');
     const closeBtn = modal.querySelector('.modal-close');
-    const announce = window.a11yAnnounce || function () { };
-    const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
     const openModal = (openerEl) => {
-        modal.style.display = 'flex';
-        modal.setAttribute('aria-hidden', 'false');
-        trigger.setAttribute('aria-expanded', 'true');
-        const previousOverflow = document.body.style.overflow;
-        modal._previousBodyOverflow = previousOverflow;
-        document.body.style.overflow = 'hidden';
-
-        const hiddenSiblings = [];
-        Array.from(document.body.children).forEach((el) => {
-            if (el === modal || el.id === 'a11y-status' || el.id === 'codebg-status') return;
-            if (el.tagName === 'SCRIPT' || el.classList.contains('icon-defs')) return;
-            const prev = el.getAttribute('aria-hidden');
-            hiddenSiblings.push({ el, prev });
-            el.setAttribute('aria-hidden', 'true');
+        openAccessibleModal({
+            modal,
+            modalContent,
+            openerEl,
+            triggerEl: trigger,
+            openMessage: 'Infografica percorso professionale aperta',
+            closeMessage: 'Infografica percorso professionale chiusa'
         });
-        modal._hiddenSiblings = hiddenSiblings;
-
-        const previouslyFocused = document.activeElement;
-        modal._returnEl = openerEl || previouslyFocused;
-
-        const getFocusable = () => Array.from(modalContent.querySelectorAll(focusableSelectors))
-            .filter(el => !el.hasAttribute('disabled'));
-        const focusables = getFocusable();
-        const first = focusables[0] || modalContent;
-        const last = focusables[focusables.length - 1] || modalContent;
-        setTimeout(() => first.focus(), 0);
-        announce('Infografica percorso professionale aperta');
-
-        function handleKey(e) {
-            if (e.key === 'Escape') {
-                e.preventDefault();
-                closeModal();
-            } else if (e.key === 'Tab') {
-                const f = getFocusable();
-                const firstEl = f[0] || modalContent;
-                const lastEl = f[f.length - 1] || modalContent;
-                if (e.shiftKey && document.activeElement === firstEl) {
-                    e.preventDefault();
-                    lastEl.focus();
-                } else if (!e.shiftKey && document.activeElement === lastEl) {
-                    e.preventDefault();
-                    firstEl.focus();
-                }
-            }
-        }
-
-        function handleFocusIn(e) {
-            if (!modalContent.contains(e.target)) {
-                const f = getFocusable();
-                (f[0] || modalContent).focus();
-            }
-        }
-
-        modal._keyHandler = handleKey;
-        modal._focusHandler = handleFocusIn;
-        document.addEventListener('keydown', handleKey);
-        document.addEventListener('focusin', handleFocusIn);
     };
 
     function closeModal() {
-        modal.style.display = 'none';
-        modal.setAttribute('aria-hidden', 'true');
-        trigger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = modal._previousBodyOverflow || '';
-        if (modal._hiddenSiblings) {
-            modal._hiddenSiblings.forEach(({ el, prev }) => {
-                if (prev === null || prev === undefined) {
-                    el.removeAttribute('aria-hidden');
-                } else {
-                    el.setAttribute('aria-hidden', prev);
-                }
-            });
-        }
-        if (modal._keyHandler) document.removeEventListener('keydown', modal._keyHandler);
-        if (modal._focusHandler) document.removeEventListener('focusin', modal._focusHandler);
-        announce('Infografica percorso professionale chiusa');
-        if (modal._returnEl && typeof modal._returnEl.focus === 'function') {
-            modal._returnEl.focus();
-        }
+        closeAccessibleModal(modal, 'Infografica percorso professionale chiusa');
     }
 
     modal._close = closeModal;
@@ -678,6 +610,8 @@ function initInfoPercorsoModal() {
         }
     });
 }
+
+window.initInfoPercorsoModal = initInfoPercorsoModal;
 
 // Magnet effect for CTA buttons
 function initMagnetButtons() {
