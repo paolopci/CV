@@ -1,10 +1,30 @@
 (function(){
-  const LINE_DELAY = 420; // ms
   const SOURCE_FILE = 'code-demo.js';
+  const DESKTOP_DELAY = 320;
+  const MOBILE_DELAY = 900;
+  const REDUCED_DELAY = 0;
+  const MOBILE_QUERY = '(max-width: 768px)';
+  const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+
   if (window.Prism && Prism.plugins && Prism.plugins.autoloader) {
     Prism.plugins.autoloader.languages_path = 'https://cdn.jsdelivr.net/npm/prismjs@1/components/';
   }
-  const mqMobile = window.matchMedia('(max-width: 768px)');
+
+  function createMediaQuery(query){
+    if (!window.matchMedia) {
+      return {
+        matches: false,
+        addEventListener: function(){},
+        removeEventListener: function(){},
+        addListener: function(){},
+        removeListener: function(){}
+      };
+    }
+    return window.matchMedia(query);
+  }
+
+  const mqMobile = createMediaQuery(MOBILE_QUERY);
+  const mqReducedMotion = createMediaQuery(REDUCED_MOTION_QUERY);
 
   // Debounce utility to limit handler frequency
   function debounce(fn, delay = 120){
@@ -31,6 +51,13 @@
     setTimeout(()=>{ live.textContent = msg; }, 50);
   }
 
+  function clearTimer(){
+    if (window.__codebgTimerId) {
+      clearTimeout(window.__codebgTimerId);
+      window.__codebgTimerId = 0;
+    }
+  }
+
   function mountLayer(){
     const host = document.getElementById('hero-cta');
     if (!host) return null;
@@ -43,19 +70,39 @@
     }
     // Pulisci eventuali residui per evitare duplicazioni dopo resize
     if (bg) bg.innerHTML = '';
+    bg.style.display = '';
+    bg.dataset.mode = mqMobile.matches ? 'mobile' : 'desktop';
+    bg.dataset.motion = mqReducedMotion.matches ? 'reduced' : 'animated';
+
     const win = document.createElement('div');
     win.className = 'codebg-window';
+
+    const grid = document.createElement('div');
+    grid.className = 'codebg-grid';
+    grid.setAttribute('aria-hidden','true');
+
+    const scanline = document.createElement('div');
+    scanline.className = 'codebg-scanline';
+    scanline.setAttribute('aria-hidden','true');
+
+    const accent = document.createElement('div');
+    accent.className = 'codebg-accent';
+    accent.setAttribute('aria-hidden','true');
+
     const pre = document.createElement('pre');
     pre.className = 'codebg-body';
     const code = document.createElement('code');
     code.className = 'language-javascript';
     pre.appendChild(code);
+    win.appendChild(grid);
+    win.appendChild(scanline);
+    win.appendChild(accent);
     win.appendChild(pre);
     bg.appendChild(win);
     if (!host.style.position) host.style.position = 'relative';
     host.style.overflow = 'hidden';
     host.style.isolation = 'isolate';
-    Object.assign(bg.style, { position:'absolute', inset:'0', zIndex:'1', pointerEvents:'none', opacity:'.65' });
+    Object.assign(bg.style, { position:'absolute', inset:'0', zIndex:'1', pointerEvents:'none' });
     const card = host.querySelector('.hero-card');
     if (card){ if (!card.style.position) card.style.position = 'relative'; card.style.zIndex = '2'; }
     return { host, code };
@@ -68,48 +115,59 @@
     return Number.isFinite(lh) && lh > 0 ? lh : 22;
   }
 
+  function getDelay(){
+    if (mqReducedMotion.matches) return REDUCED_DELAY;
+    return mqMobile.matches ? MOBILE_DELAY : DESKTOP_DELAY;
+  }
+
   function start(){
-    if (mqMobile.matches) { // non avviare su mobile
-      const bg = document.getElementById('code-bg');
-      if (bg) bg.style.display = 'none';
-      return;
-    }
+    clearTimer();
     const ctx = mountLayer();
     if (!ctx) return;
     const { host, code } = ctx;
+    const runId = (window.__codebgRunId || 0) + 1;
+    window.__codebgRunId = runId;
     window.__codebgInit = true;
     let src = [];
     const visible = [];
     let nextIndex = 0;
     let capacity = 8;
     let written = 0;
-    let timerId = 0;
 
     const calcCapacity = () => {
       const h = host.clientHeight || parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hero-h')) || 420;
-      return Math.max(6, Math.floor(h / getLineHeight(code)));
+      const base = Math.floor(h / getLineHeight(code));
+      if (mqReducedMotion.matches) return Math.max(5, Math.min(9, base));
+      if (mqMobile.matches) return Math.max(5, Math.min(10, base - 3));
+      return Math.max(10, base + 4);
     };
 
     function render(){
+      if (window.__codebgRunId !== runId) return;
       code.textContent = visible.join('\n');
       if (window.Prism && Prism.highlightElement) Prism.highlightElement(code);
     }
 
     function step(){
+      if (window.__codebgRunId !== runId) return;
+      if (!src.length) return;
       const line = src[nextIndex];
       visible.push(line); written++;
       nextIndex = (nextIndex + 1) % src.length;
       if (visible.length > capacity) visible.shift();
       render();
-      timerId = window.setTimeout(step, LINE_DELAY);
+      const delay = getDelay();
+      if (delay > 0) window.__codebgTimerId = window.setTimeout(step, delay);
     }
 
     function prefill(){
+      if (window.__codebgRunId !== runId) return;
       const preload = Math.min(capacity, src.length);
       for (let i=0;i<preload;i++){ visible.push(src[(nextIndex + i) % src.length]); written++; }
       nextIndex = (nextIndex + preload) % src.length;
       render();
-      timerId = window.setTimeout(step, LINE_DELAY);
+      const delay = getDelay();
+      if (delay > 0) window.__codebgTimerId = window.setTimeout(step, delay);
     }
 
     async function load(){
@@ -131,18 +189,17 @@
         ];
         notify('Animazione in modalità demo: code-demo.js non disponibile.');
       }
+      if (window.__codebgRunId !== runId) return;
       capacity = calcCapacity();
       prefill();
     }
 
     function onResize(){
-      if (mqMobile.matches) { // pausa animazione su mobile
-        clearTimeout(timerId);
-        const bg = document.getElementById('code-bg');
-        if (bg) bg.style.display = 'none';
-        // consenti un riavvio pulito quando si torna a desktop
-        window.__codebgInit = false;
-        return;
+      if (window.__codebgRunId !== runId) return;
+      const bg = document.getElementById('code-bg');
+      if (bg) {
+        bg.dataset.mode = mqMobile.matches ? 'mobile' : 'desktop';
+        bg.dataset.motion = mqReducedMotion.matches ? 'reduced' : 'animated';
       }
       const newCap = calcCapacity();
       if (newCap !== capacity){
@@ -160,8 +217,9 @@
     window.addEventListener('resize', debouncedResize);
 
     const visHandler = () => {
-      if (document.hidden) clearTimeout(timerId);
-      else { clearTimeout(timerId); timerId = setTimeout(step, LINE_DELAY); }
+      if (window.__codebgRunId !== runId) return;
+      clearTimer();
+      if (!document.hidden && getDelay() > 0) window.__codebgTimerId = setTimeout(step, getDelay());
     };
     if (window.__codebgVisHandler) document.removeEventListener('visibilitychange', window.__codebgVisHandler);
     window.__codebgVisHandler = visHandler;
@@ -170,20 +228,16 @@
     load();
   }
 
-  // Reagisci ai cambi di viewport mobile/desktop
-  if (mqMobile.addEventListener) {
-    mqMobile.addEventListener('change', e => {
-      if (!e.matches) { // da mobile -> desktop
-        const bg = document.getElementById('code-bg');
-        if (bg) bg.style.display = '';
-        start(); // riavvia sempre: mountLayer pulisce i residui
-      } else if (e.matches) { // desktop -> mobile
-        const bg = document.getElementById('code-bg');
-        if (bg) bg.style.display = 'none';
-        window.__codebgInit = false;
-      }
-    });
+  function onMediaChange(){
+    window.__codebgInit = false;
+    start();
   }
+
+  // Reagisci ai cambi di viewport e preferenze di movimento.
+  [mqMobile, mqReducedMotion].forEach(mq => {
+    if (mq.addEventListener) mq.addEventListener('change', onMediaChange);
+    else if (mq.addListener) mq.addListener(onMediaChange);
+  });
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
