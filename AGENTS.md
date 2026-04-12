@@ -45,7 +45,7 @@
 - Server locale: `python -m http.server 8080`, poi apri `http://localhost:8080`.
 - Test automatici: `npm test`.
 - Validazione HTML: usare W3C validator quando si modifica markup significativo.
-- Test rapido manuale: anchor, skip link, modale corsi, modali infografiche, toggle tema, menu mobile e scroll fluido.
+- Test rapido manuale: anchor, skip link, modale corsi, modali infografiche, toggle tema persistente, menu mobile e scroll fluido.
 - AI Assistant: verifica apertura chat, invio messaggio, chip FAQ cliccabili, risposte basate sulla knowledge base e fallback educato.
 - GitHub Widget: verifica caricamento eventi, cache locale, fallback offline e diagnostica solo in sviluppo.
 - Dati: se modifichi `courses.json`, ricarica la pagina e controlla la console per confermare JSON valido.
@@ -77,6 +77,9 @@
 - A11y modali: conserva `openAccessibleModal()`/`closeAccessibleModal()`, `aria-modal`, `aria-labelledby`, `aria-describedby`, ritorno focus al trigger e trap Tab/Shift+Tab/Escape.
 - Contrasto: mantieni conformita WCAG 2.1 AA, almeno 4.5:1 per testo normale e 3:1 per testo grande o componenti UI; verifica tema chiaro e scuro.
 - Test accessibilita: aggiorna `tests/modal-accessibility.test.js` per focus trap/live region dei modali e `tests/theme.test.js` per annunci del toggle tema.
+- Tema: il toggle in `js/main.js` deve persistere la scelta in `localStorage.theme` con valori `dark`/`light`, leggere la preferenza salvata all'avvio e usare `prefers-color-scheme` solo come fallback iniziale.
+- Tema: gli accessi a `localStorage` devono essere tolleranti a errori, mantenendo il toggle funzionante anche se la preferenza non puo essere letta o salvata.
+- Tema: aggiorna sempre `data-mode`, `aria-pressed`, `aria-label`, `title`, infografiche `data-dark`/`data-light` e annunci accessibili quando cambia lo stato.
 - Tema: assicurati che trasparenze e contrasti siano leggibili sia in tema chiaro sia in tema scuro.
 
 ## 8. Linee Guida per Commit e Pull Request

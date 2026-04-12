@@ -4,7 +4,7 @@ Questo file fornisce indicazioni a Claude Code per lavorare con il codice di que
 
 ## 1. Checklist Rapida
 1. Avviare il server: `python -m http.server 8080` e aprire `http://localhost:8080`
-2. Verificare il funzionamento della UI: navigazione ancorata, modale corsi, toggle tema, menu mobile, scorrimento fluido
+2. Verificare il funzionamento della UI: navigazione ancorata, modale corsi, toggle tema persistente, menu mobile, scorrimento fluido
 3. Controllare l'Intelligenza Artificiale: apre la finestra chat, invio/ricezione messaggi, chip FAQ cliccabili, knowledge base popolata e fallback educato
 4. Verificare il widget GitHub: eventi live, cache locale, fallback offline e diagnostica solo in sviluppo
 5. Eseguire i test: `npm test` passa e la copertura code è ≥ 80 % per la nuova logica JavaScript
@@ -47,8 +47,10 @@ Questo file fornisce indicazioni a Claude Code per lavorare con il codice di que
    - Helper `openAccessibleModal()`/`closeAccessibleModal()` per trap Tab/Shift+Tab, Escape, `aria-hidden`, `aria-expanded` e ritorno focus
    - Immagini informative con `alt` descrittivi e icone decorative con `alt=""` o `aria-hidden="true"`
    - Contrasto target WCAG 2.1 AA per tema chiaro e scuro
-8. Il toggle del tema e gli effetti Glassmorphism utilizzano valori CSS `rgba` e `backdrop-filter`
-9. Non committare mai `node_modules/` o file legacy presenti nella cartella `archive/`
+8. Il toggle del tema persiste la scelta in `localStorage.theme` (`dark`/`light`), legge la preferenza salvata all'avvio, usa `prefers-color-scheme` solo come fallback iniziale e deve restare funzionante anche se `localStorage` non e disponibile
+9. Il toggle del tema deve aggiornare `data-mode`, `aria-pressed`, `aria-label`, `title`, infografiche `data-dark`/`data-light` e annunci tramite `window.a11yAnnounce()` o `#a11y-status`
+10. Il toggle del tema e gli effetti Glassmorphism utilizzano valori CSS `rgba` e `backdrop-filter`
+11. Non committare mai `node_modules/` o file legacy presenti nella cartella `archive/`
 
 ## 5. Linee Guida per i Contributi
 1. **Stile del commit**: utilizzo di conventional commit in italiano (es. `feat(ui): aggiungi pulsante`, `fix(ai): correggi enrich di messaggi`)
@@ -56,8 +58,9 @@ Questo file fornisce indicazioni a Claude Code per lavorare con il codice di que
 3. Le modifiche al chatbot devono aggiornare `tests/ai.test.js`; se toccano chip, focus, live region o invio messaggi, aggiornare anche `tests/chat.test.js`
 4. Le modifiche al widget GitHub devono aggiornare `tests/github.test.js` per cache, retry, payload non valido, fallback offline e visibilità degli errori tra sviluppo e produzione
 5. Le modifiche a landmark, live region, modali, tema o contrasto devono aggiornare `tests/modal-accessibility.test.js` e/o `tests/theme.test.js`
-6. Dovrà essere compilata la Checklist Rapida prima di aprire una PR
-7. Utilizzare `.gitignore` per file temporanei o generati
+6. Le modifiche al tema devono coprire in `tests/theme.test.js` preferenza salvata, fallback `prefers-color-scheme`, assenza di `matchMedia`, stato ARIA/label e errori di `localStorage`
+7. Dovrà essere compilata la Checklist Rapida prima di aprire una PR
+8. Utilizzare `.gitignore` per file temporanei o generati
 
 ## 6. Gestione delle Versioni
 1. **main** – codice pronto per la produzione

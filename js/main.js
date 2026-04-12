@@ -447,12 +447,29 @@ if (mobileMenu && navLinks) {
 function initTheme() {
     const icon = document.getElementById('themeToggleIcon');
     if (!icon) return;
+    const themeStorageKey = 'theme';
+    const validThemes = new Set(['dark', 'light']);
     icon.setAttribute('aria-pressed', 'false');
     const announce = window.a11yAnnounce || function (msg) {
         const live = document.getElementById('a11y-status');
         if (!live) return;
         live.textContent = '';
         setTimeout(() => { live.textContent = msg; }, 50);
+    };
+    const getStoredTheme = () => {
+        try {
+            const value = localStorage.getItem(themeStorageKey);
+            return validThemes.has(value) ? value : null;
+        } catch (_) {
+            return null;
+        }
+    };
+    const persistTheme = (makeDark) => {
+        try {
+            localStorage.setItem(themeStorageKey, makeDark ? 'dark' : 'light');
+        } catch (_) {
+            /* Preferenza non persistibile: il toggle resta funzionante nella sessione corrente. */
+        }
     };
     const updateIcon = () => {
         const isDark = document.body.classList.contains('dark-theme');
@@ -479,31 +496,33 @@ function initTheme() {
             }
         });
     };
-    const applyTheme = (makeDark, persist = true) => {
+    const applyTheme = (makeDark, persist = true, notify = true) => {
         document.body.classList.toggle('dark-theme', makeDark);
         if (persist) {
-            localStorage.setItem('theme', makeDark ? 'dark' : 'light');
+            persistTheme(makeDark);
         }
         updateIcon();
         updateInfographicTheme();
-        announce(makeDark ? 'Tema scuro attivato' : 'Tema chiaro attivato');
+        if (notify) {
+            announce(makeDark ? 'Tema scuro attivato' : 'Tema chiaro attivato');
+        }
     };
     icon.addEventListener('click', () => {
         const isDark = document.body.classList.contains('dark-theme');
         applyTheme(!isDark);
     });
     // Preferenza salvata o tema di sistema come default
-    const saved = localStorage.getItem('theme');
+    const saved = getStoredTheme();
     const mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
     if (saved === 'dark' || saved === 'light') {
-        applyTheme(saved === 'dark', false);
+        applyTheme(saved === 'dark', false, false);
     } else if (mq && typeof mq.matches === 'boolean') {
-        applyTheme(mq.matches, false);
+        applyTheme(mq.matches, false, false);
         // Aggiorna automaticamente al cambio del sistema se non c'è preferenza utente
         try {
             const onSystemChange = (e) => {
-                if (!localStorage.getItem('theme')) {
-                    applyTheme(e.matches, false);
+                if (!getStoredTheme()) {
+                    applyTheme(e.matches, false, false);
                 }
             };
             if (mq.addEventListener) {
@@ -515,7 +534,7 @@ function initTheme() {
             /* no-op */
         }
     } else {
-        applyTheme(false, false); // fallback: light
+        applyTheme(false, false, false); // fallback: light
     }
 }
 
