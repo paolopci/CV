@@ -65,6 +65,15 @@ describe('Modal accessibility helper', () => {
     expect(opener.getAttribute('aria-expanded')).toBe('true');
     expect(document.body.style.overflow).toBe('hidden');
     expect(document.getElementById('page-content').getAttribute('aria-hidden')).toBe('true');
+    expect(document.getElementById('a11y-status').getAttribute('aria-hidden')).toBeNull();
+    expect(document.activeElement).toBe(first);
+    expect(document.getElementById('a11y-status').textContent).toBe('Modale aperta');
+
+    last.focus();
+    document.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'Tab',
+      bubbles: true,
+    }));
     expect(document.activeElement).toBe(first);
 
     first.focus();
@@ -80,6 +89,7 @@ describe('Modal accessibility helper', () => {
     expect(document.activeElement).toBe(first);
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    jest.runOnlyPendingTimers();
 
     expect(modal.style.display).toBe('none');
     expect(modal.getAttribute('aria-hidden')).toBe('true');
@@ -87,6 +97,7 @@ describe('Modal accessibility helper', () => {
     expect(document.body.style.overflow).toBe('');
     expect(document.getElementById('page-content').getAttribute('aria-hidden')).toBe('false');
     expect(document.activeElement).toBe(opener);
+    expect(document.getElementById('a11y-status').textContent).toBe('Modale chiusa');
   });
 });
 
@@ -105,6 +116,7 @@ describe('Static infographic modals', () => {
       <div id="a11y-status"></div>
       <main>
         <button id="infoskillsTrigger" aria-expanded="false">Competenze</button>
+        <button id="infoPercorsoTrigger" aria-expanded="false">Percorso</button>
       </main>
       <div class="modal-overlay" id="infoskillsModal" style="display:none;" aria-hidden="true">
         <div class="modal-content" tabindex="-1">
@@ -112,11 +124,18 @@ describe('Static infographic modals', () => {
           <a href="#dettaglio" id="detailsLink">Dettaglio</a>
         </div>
       </div>
+      <div class="modal-overlay" id="infoPercorsoModal" style="display:none;" aria-hidden="true">
+        <div class="modal-content" tabindex="-1">
+          <button class="modal-close" id="closeInfoPercorso">Chiudi</button>
+          <a href="#percorso" id="careerLink">Percorso</a>
+        </div>
+      </div>
     `;
 
     jest.resetModules();
     require('../js/main.js');
     window.initInfoskillsModal();
+    window.initInfoPercorsoModal();
   });
 
   afterEach(() => {
@@ -135,13 +154,54 @@ describe('Static infographic modals', () => {
     expect(modal.style.display).toBe('flex');
     expect(modal.getAttribute('aria-hidden')).toBe('false');
     expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect(document.getElementById('a11y-status').textContent).toBe('Infografica competenze aperta');
 
     modal.click();
+    jest.runOnlyPendingTimers();
 
     expect(modal.style.display).toBe('none');
     expect(modal.getAttribute('aria-hidden')).toBe('true');
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
     expect(document.activeElement).toBe(trigger);
+    expect(document.getElementById('a11y-status').textContent).toBe('Infografica competenze chiusa');
+  });
+
+  test('modale percorso gestisce Tab, Shift+Tab, Escape e ritorno focus', () => {
+    const trigger = document.getElementById('infoPercorsoTrigger');
+    const modal = document.getElementById('infoPercorsoModal');
+    const closeBtn = document.getElementById('closeInfoPercorso');
+    const link = document.getElementById('careerLink');
+
+    trigger.focus();
+    trigger.click();
+    jest.runOnlyPendingTimers();
+
+    expect(modal.style.display).toBe('flex');
+    expect(modal.getAttribute('aria-hidden')).toBe('false');
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect(document.activeElement).toBe(closeBtn);
+    expect(document.getElementById('a11y-status').textContent).toBe('Infografica percorso professionale aperta');
+
+    closeBtn.focus();
+    document.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'Tab',
+      shiftKey: true,
+      bubbles: true,
+    }));
+    expect(document.activeElement).toBe(link);
+
+    link.focus();
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
+    expect(document.activeElement).toBe(closeBtn);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    jest.runOnlyPendingTimers();
+
+    expect(modal.style.display).toBe('none');
+    expect(modal.getAttribute('aria-hidden')).toBe('true');
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    expect(document.activeElement).toBe(trigger);
+    expect(document.getElementById('a11y-status').textContent).toBe('Infografica percorso professionale chiusa');
   });
 });
 
@@ -213,11 +273,14 @@ describe('Course modal accessibility', () => {
     expect(modal.getAttribute('aria-hidden')).toBe('false');
     expect(modal._accessibleModal).not.toBeNull();
     expect(document.activeElement).toBe(closeBtn);
+    expect(document.getElementById('a11y-status').textContent).toBe('Dettagli corso aperti: Corso Test');
 
     closeBtn.click();
+    jest.runOnlyPendingTimers();
 
     expect(modal.style.display).toBe('none');
     expect(modal.getAttribute('aria-hidden')).toBe('true');
     expect(document.activeElement).toBe(card);
+    expect(document.getElementById('a11y-status').textContent).toBe('Dettagli corso chiusi');
   });
 });

@@ -44,6 +44,7 @@
 
 <body>
     <div id="a11y-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+    <a class="skip-link" href="#main-content">Salta al contenuto principale</a>
     <svg aria-hidden="true" class="icon-defs" xmlns="http://www.w3.org/2000/svg"
         style="position:absolute;width:0;height:0;overflow:hidden;">
         <symbol id="icon-user" viewBox="0 0 24 24">
@@ -156,7 +157,7 @@
         </symbol>
     </svg>
     <!-- Navigation -->
-    <nav class="nav" id="navbar">
+    <nav class="nav" id="navbar" aria-label="Navigazione principale">
         <div class="nav-container">
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
@@ -198,6 +199,7 @@
         </div>
     </nav>
 
+    <main id="main-content">
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
@@ -271,7 +273,7 @@
                 </div>
             </div>
 
-            <div class="availability-notice">
+            <aside class="availability-notice" aria-label="Disponibilità professionale">
                 <div class="notice-item">
                     <span class="notice-icon" aria-hidden="true">
                         <svg class="icon icon-remote">
@@ -288,7 +290,7 @@
                     </span>
                     <span>Incentivi assunzione per over 50 senza RdC</span>
                 </div>
-            </div>
+            </aside>
         </div>
     </section>
 
@@ -326,7 +328,8 @@
         <div class="profile-grid">
             <div class="profile-image slide-in-left">
                 <div class="profile-avatar">
-                    <img src="./images/Paolo%20Paci%20Img.jpg" alt="Paolo Paci" />
+                    <img src="./images/Paolo%20Paci%20Img.jpg"
+                        alt="Ritratto professionale di Paolo Paci" />
                 </div>
             </div>
             <div class="profile-content slide-in-right">
@@ -702,7 +705,7 @@
             <!-- GitHub Activity Widget -->
             <article class="portfolio-card github-widget fade-in-up" data-category="all">
                 <h3>
-                    <svg class="icon"><use href="#icon-globe"></use></svg>
+                    <svg class="icon" aria-hidden="true"><use href="#icon-globe"></use></svg>
                     Attività GitHub Recente
                 </h3>
                 <div id="github-activity-content" class="github-activity-list">
@@ -771,16 +774,18 @@
         </div>
     </section>
 
+    </main>
+
     <!-- Footer -->
     <footer class="footer" id="contact">
         <div class="footer-links">
             <a class="footer-link" href="https://github.com/paolopci" target="_blank" rel="noopener noreferrer">
-                <img alt="GitHub"
+                <img alt=""
                     src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" />GitHub
             </a>
             <a class="footer-link" href="https://www.linkedin.com/in/paolo-paci-a89b7438/" target="_blank"
                 rel="noopener noreferrer">
-                <img alt="LinkedIn"
+                <img alt=""
                     src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" />LinkedIn
             </a>
             <a class="footer-link" href="https://paolopci.github.io/CV/" target="_blank">
@@ -810,7 +815,7 @@
     <div class="modal-overlay infoskills-modal" id="infoskillsModal" style="display:none;" aria-hidden="true">
         <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="infoskillsModalTitle"
             aria-describedby="infoskillsModalBody" tabindex="-1">
-            <button class="modal-close" id="closeInfoSkills" aria-label="Chiudi infografica">&times;</button>
+            <button type="button" class="modal-close" id="closeInfoSkills" aria-label="Chiudi infografica">&times;</button>
             <div id="infoskillsModalBody">
                 <h2 id="infoskillsModalTitle">Infografica Competenze</h2>
                 <figure class="infoskills-figure">
@@ -834,7 +839,7 @@
     <div class="modal-overlay infopercorso-modal" id="infoPercorsoModal" style="display:none;" aria-hidden="true">
         <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="infoPercorsoModalTitle"
             aria-describedby="infoPercorsoModalBody" tabindex="-1">
-            <button class="modal-close" id="closeInfoPercorso" aria-label="Chiudi infografica">&times;</button>
+            <button type="button" class="modal-close" id="closeInfoPercorso" aria-label="Chiudi infografica">&times;</button>
             <div id="infoPercorsoModalBody">
                 <h2 id="infoPercorsoModalTitle">Infografica Carriera Professionale</h2>
                 <figure class="infopercorso-figure">
@@ -859,7 +864,7 @@
     <div class="modal-overlay" id="courseModal" style="display:none;" aria-hidden="true">
         <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="courseModalTitle"
             aria-describedby="modalBody" tabindex="-1">
-            <button class="modal-close" id="closeModal" aria-label="Chiudi modale">&times;</button>
+            <button type="button" class="modal-close" id="closeModal" aria-label="Chiudi modale">&times;</button>
             <div id="modalBody"></div>
         </div>
     </div>
@@ -870,10 +875,10 @@
             aria-labelledby="ai-chat-title" aria-describedby="ai-chat-messages" aria-hidden="true">
             <div class="ai-chat-header">
                 <div class="ai-chat-title">
-                    <svg class="icon"><use href="#icon-ai"></use></svg>
+                    <svg class="icon" aria-hidden="true"><use href="#icon-ai"></use></svg>
                     <span id="ai-chat-title">AI Assistant - Paolo Paci</span>
                 </div>
-                <button id="close-chat" class="ai-close-btn" aria-label="Chiudi assistente AI">&times;</button>
+                <button type="button" id="close-chat" class="ai-close-btn" aria-label="Chiudi assistente AI">&times;</button>
             </div>
             <div id="ai-chat-messages" class="ai-chat-messages" role="log" aria-live="polite"
                 aria-relevant="additions text" aria-atomic="false">
@@ -883,14 +888,14 @@
             </div>
             <div class="ai-chat-input-area">
                 <input type="text" id="ai-user-input" placeholder="Scrivi un messaggio..." aria-label="Messaggio per l'assistente AI">
-                <button id="ai-send-btn" aria-label="Invia messaggio">
-                    <svg class="icon"><use href="#icon-mail"></use></svg>
+                <button type="button" id="ai-send-btn" aria-label="Invia messaggio">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-mail"></use></svg>
                 </button>
             </div>
         </div>
-        <button id="ai-fab" class="ai-fab" aria-label="Apri assistente AI" title="Chiedi all'AI"
+        <button type="button" id="ai-fab" class="ai-fab" aria-label="Apri assistente AI" title="Chiedi all'AI"
             aria-controls="ai-chat-window" aria-expanded="false" aria-haspopup="dialog">
-            <svg class="icon"><use href="#icon-ai"></use></svg>
+            <svg class="icon" aria-hidden="true"><use href="#icon-ai"></use></svg>
         </button>
     </div>
 
