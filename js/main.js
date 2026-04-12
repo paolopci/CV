@@ -670,69 +670,192 @@ function highlightRelatedSkills(skillsString) {
     });
 }
 
-    const aiKnowledgeBase = {
-        "email": "Puoi scrivere a Paolo all'indirizzo paolopci@yahoo.it.",
-        "telefono": "Il numero di telefono di Paolo è +39 328 3834012.",
-        "cellulare": "Puoi contattare Paolo al numero +39 328 3834012.",
-        "recapito": "Il numero di Paolo è +39 328 3834012 e la sua email è paolopci@yahoo.it.",
-        "linkedin": "Trovi il profilo LinkedIn di Paolo qui: https://www.linkedin.com/in/paolo-paci-a89b7438/",
-        "partita iva": "No, Paolo non ha la Partita IVA. È interessato a collaborazioni come lavoratore dipendente o tramite altre forme contrattuali previste per i professionisti.",
-        "p.iva": "Paolo non possiede una Partita IVA.",
-        "piva": "Paolo non possiede una Partita IVA.",
-        "lavoro": "Paolo è disponibile per collaborazioni Full-Remote o Ibride. Predilige l'assunzione diretta in azienda con contratto Full-Time.",
-        "team remoto": "Paolo ha lavorato in team full-remote e ambienti enterprise strutturati.",
-        "remoto": "Sì, Paolo è disponibile per posizioni Full-Remote o Ibride.",
-        "ibrido": "Paolo valuta opportunità in modalità ibrida o full-remote.",
-        "sede": "Paolo è disponibile per lavoro Full-Remote o Ibrido.",
-        "contratto": "Paolo predilige l'assunzione diretta in azienda a tempo pieno (Full-Time).",
-        "assunzione": "Paolo cerca preferibilmente un'assunzione diretta in azienda.",
-        "naspi": "Sì, Paolo è attualmente percettore NASpI, il che può comportare significativi incentivi contributivi per l'azienda che assume.",
-        "percettore": "Paolo è percettore NASpI (incentivi assunzione disponibili).",
-        "laurea": "Paolo è laureato in Ingegneria Elettronica presso l'Università di Bologna (1991), con una tesi sul controllo in tempo reale in ambiente Matlab/Simulink.",
-        "laureato": "Sì, Paolo è laureato in Ingegneria Elettronica presso l'Università di Bologna.",
-        "studi": "Paolo ha conseguito la laurea in Ingegneria Elettronica all'Università di Bologna e continua a formarsi costantemente con corsi specialistici su .NET e Angular.",
-        ".net": "Paolo ha oltre 10 anni di esperienza con l'ecosistema Microsoft. È esperto di .NET Core 6/8, ASP.NET Core MVC e Web API.",
-        "angular": "Paolo utilizza Angular (attualmente v18+) per lo sviluppo frontend, con forte competenza in TypeScript, RxJS e Signals.",
-        "ai": "Recentemente Paolo ha integrato modelli OpenAI in applicazioni enterprise, occupandosi di prompt engineering e integrazione API.",
-        "soft skills": "Oltre alle competenze tecniche, Paolo possiede ottime doti di problem solving, attitudine al team working, proattività e una naturale curiosità verso l'innovazione.",
-        "carattere": "Paolo è una persona equilibrata, proattiva e con ottime capacità comunicative e relazionali.",
-        "skills": "Le competenze principali di Paolo includono: .NET Core, C#, Angular, SQL Server, Entity Framework, Microservizi, Docker e Integrazione AI.",
-        "competenze": "Le competenze principali di Paolo includono: .NET Core, C#, Angular, SQL Server, Entity Framework, Microservizi, Docker e Integrazione AI.",
-        "chi sei": "Sono l'assistente virtuale di Paolo Paci. Posso darti informazioni sulla sua carriera, competenze e progetti.",
-        "contatti": "Puoi contattare Paolo via email (paolopci@yahoo.it), telefono (+39 328 3834012) o su LinkedIn.",
-        "github actions": "Paolo ha esperienza con CI/CD e workflow GitHub Actions.",
-        "ci/cd": "Paolo ha esperienza con CI/CD e workflow GitHub Actions.",
-        "full stack": "Paolo lavora principalmente in ambito full-stack: backend .NET e frontend Angular/Blazor.",
-        "microservizi": "Paolo ha esperienza con microservizi, REST API e architetture moderne.",
-        "entity framework": "Paolo usa Entity Framework (anche Code First) e Dapper per l'accesso ai dati.",
-        "open source": "Paolo ha sviluppato progetti open-source su GitHub con README tecnici.",
-        "openai": "Paolo ha integrato modelli AI (OpenAI) in applicazioni enterprise.",
-        "prestazioni": "Paolo ha competenze su RxJS, Signals e performance frontend.",
-        "docker": "Paolo ha esperienza con Docker e containerizzazione di servizi.",
-        "postman": "Paolo usa strumenti di API testing (Postman/Swagger).",
-        "swagger": "Paolo usa strumenti di API testing (Postman/Swagger).",
-        "jwt": "Paolo ha esperienza con JWT, OAuth e sicurezza applicativa.",
-        "oauth": "Paolo ha esperienza con JWT, OAuth e sicurezza applicativa.",
-        "azure": "Paolo ha lavorato con Azure (livello base) e servizi cloud.",
-        "database": "Paolo ha esperienza con SQL Server, PostgreSQL e MongoDB.",
-        "e-commerce": "Paolo ha lavorato su progetti per e-commerce e servizi digitali regolati.",
-        "test": "Paolo usa strumenti di testing come xUnit, Jest e Cypress.",
-        "esperienza": "Paolo è un Software Engineer con 10+ anni di esperienza in .NET e Angular.",
-        "default": "Interessante! Paolo ha molta esperienza in quell'ambito. Vuoi sapere di più sulla sua carriera o sulle sue competenze tecniche?"
-    };
+const aiKnowledgeBase = [
+    {
+        id: 'profilo',
+        category: 'profilo',
+        priority: 85,
+        aliases: ['chi sei', 'profilo professionale', 'presentami paolo', 'paolo paci'],
+        keywords: ['profilo', 'software engineer', 'ingegnere', 'sviluppatore', 'full stack'],
+        answer: 'Sono l\'assistente virtuale di Paolo Paci. Paolo è un Software Engineer full-stack con 10+ anni di esperienza in .NET e Angular, specializzato in backend Microsoft, API RESTful, frontend moderno e integrazione AI.',
+    },
+    {
+        id: 'esperienza',
+        category: 'esperienza',
+        priority: 100,
+        aliases: ['parlami della tua esperienza', 'che esperienza ha paolo', 'esperienza lavorativa', 'carriera professionale', 'team remoto'],
+        keywords: ['esperienza', 'carriera', 'lavorato', 'tim', 'aruba', 'qbitsoft', 'global sistemi', 'lasersoft', 'bkn301'],
+        answer: 'Paolo ha 10+ anni di esperienza in .NET e Angular. Ha lavorato su progetti full-stack e backend per TIM, Aruba, BKN301, LaserSoft e altri contesti enterprise, con focus su Web API, JWT, data access, e-commerce, servizi digitali e team full-remote.',
+    },
+    {
+        id: 'competenze',
+        category: 'profilo',
+        priority: 94,
+        aliases: ['quali tecnologie usa', 'quali sono le tue skills', 'quali sono le competenze', 'competenze tecniche'],
+        keywords: ['skills', 'competenze', 'tecnologie', 'stack tecnico'],
+        answer: 'Le competenze principali di Paolo includono: .NET Core, C#, Angular, SQL Server, Entity Framework, Microservizi, Docker e Integrazione AI.',
+    },
+    {
+        id: 'backend',
+        category: 'tecnologie-backend',
+        priority: 95,
+        aliases: ['parlami di .net', 'cosa sa fare con dotnet', 'esperienza backend', 'asp.net core'],
+        keywords: ['.net', 'dotnet', 'net', 'c#', 'asp.net', 'aspnet', 'backend', 'web api', 'api rest', 'restful', 'mvc', 'linq', 'automapper', 'microservizi'],
+        answer: 'Paolo ha oltre 10 anni di esperienza con l\'ecosistema Microsoft. È esperto di .NET Core 6/8, ASP.NET Core MVC e Web API, C#, LINQ, AutoMapper, architetture RESTful e microservizi.',
+    },
+    {
+        id: 'frontend',
+        category: 'frontend',
+        priority: 90,
+        aliases: ['cosa sa fare con angular', 'esperienza frontend', 'angular e typescript', 'performance frontend'],
+        keywords: ['angular', 'typescript', 'javascript', 'rxjs', 'signals', 'html', 'css', 'bootstrap', 'frontend', 'prestazioni'],
+        answer: 'Paolo utilizza Angular (attualmente v18+) per lo sviluppo frontend, con forte competenza in TypeScript, RxJS, Signals, HTML5, CSS3 e Bootstrap 5. Cura componenti responsive, accessibilità e performance frontend.',
+    },
+    {
+        id: 'ai',
+        category: 'ai',
+        priority: 88,
+        aliases: ['esperienza con ai', 'esperienza con ia', 'esperienza con intelligenza artificiale', 'openai integration'],
+        keywords: ['ai', 'ia', 'openai', 'chatgpt', 'copilot', 'claude', 'codex', 'intelligenza artificiale', 'prompt engineering', 'modelli generativi'],
+        answer: 'Paolo ha integrato modelli AI (OpenAI) in applicazioni enterprise e lavora con strumenti come ChatGPT, GitHub Copilot, Claude AI e OpenAI Codex. Il focus è su integrazione API, prompt engineering e automazioni utili allo sviluppo software.',
+    },
+    {
+        id: 'database-cloud',
+        category: 'database-cloud',
+        priority: 78,
+        aliases: ['esperienza database', 'database e cloud', 'sql server'],
+        keywords: ['database', 'sql server', 'postgresql', 'mysql', 'mongodb', 'dapper', 'entity framework', 'ef core', 'azure', 'docker', 'containerizzazione'],
+        answer: 'Paolo ha esperienza con SQL Server, PostgreSQL e MongoDB, oltre a MySQL. Usa Entity Framework, EF Core e Dapper per il data access, Docker e containerizzazione per i servizi, e Azure (livello base).',
+    },
+    {
+        id: 'testing-devops',
+        category: 'testing-devops',
+        priority: 75,
+        aliases: ['come testa il codice', 'esperienza con test', 'ci cd', 'github actions'],
+        keywords: ['test', 'testing', 'xunit', 'jest', 'cypress', 'postman', 'swagger', 'ci/cd', 'github actions', 'pipeline', 'devops', 'serilog', 'seq'],
+        answer: 'Paolo usa strumenti di testing come xUnit, Jest e Cypress, oltre a Postman/Swagger per API testing. Nei progetti pubblici cura README tecnici, workflow GitHub Actions e checklist di qualità.',
+    },
+    {
+        id: 'sicurezza',
+        category: 'sicurezza',
+        priority: 76,
+        aliases: ['esperienza sicurezza', 'autenticazione jwt', 'oauth'],
+        keywords: ['sicurezza', 'jwt', 'oauth', 'identity', 'cors', 'autenticazione', 'autorizzazione', 'hardening'],
+        answer: 'Paolo ha esperienza con JWT, OAuth, ASP.NET Core Identity, configurazioni CORS e hardening di flussi applicativi, in particolare su Web API e contesti e-commerce o servizi digitali regolati.',
+    },
+    {
+        id: 'progetti',
+        category: 'progetti',
+        priority: 86,
+        aliases: ['parlami dei progetti', 'portfolio github', 'progetti github', 'repository principali'],
+        keywords: ['progetti', 'portfolio', 'github', 'repository', 'open source', 'mango', 'bookstore', 'dashboard', 'e-commerce'],
+        answer: 'Nel portfolio Paolo presenta progetti open-source e repository pubblici full-stack: una serie Mango.* con microservizi ASP.NET Core 8, JWT, Docker e Azure Service Bus; BlazorBookStoreApp, applicazione e-commerce con Blazor WASM e backend ASP.NET Core; una dashboard Angular 18+ orientata ad AI, Signals e RxJS.',
+    },
+    {
+        id: 'formazione',
+        category: 'formazione',
+        priority: 72,
+        aliases: ['sei laureato', 'titolo di studio', 'che studi ha fatto'],
+        keywords: ['laurea', 'laureato', 'studi', 'formazione', 'universita', 'bologna', 'ingegneria elettronica', 'matlab', 'simulink', 'corsi'],
+        answer: 'Paolo è laureato in Ingegneria Elettronica presso l\'Università di Bologna (1991), con tesi sul controllo in tempo reale in ambiente Matlab/Simulink. Continua ad aggiornarsi con corsi specialistici su .NET, Angular e tecnologie moderne.',
+    },
+    {
+        id: 'disponibilita',
+        category: 'disponibilita-contratto',
+        priority: 92,
+        aliases: ['disponibilita lavorativa', 'lavori in remoto', 'tipo di contratto', 'che contratto cerchi', 'partita iva', 'p.iva', 'piva'],
+        keywords: ['disponibilita', 'lavoro', 'remoto', 'full remote', 'ibrido', 'sede', 'contratto', 'assunzione', 'full-time', 'partita iva', 'p.iva', 'piva', 'naspi', 'percettore'],
+        answer: 'Paolo è disponibile per collaborazioni Full-Remote o Ibride e predilige l\'assunzione diretta in azienda con contratto Full-Time. Paolo non ha la Partita IVA ed è attualmente percettore NASpI, informazione utile per eventuali incentivi all\'assunzione.',
+    },
+    {
+        id: 'contatti',
+        category: 'contatti',
+        priority: 98,
+        aliases: ['come posso contattarlo', 'contatti', 'email', 'telefono', 'cellulare', 'linkedin', 'recapito'],
+        keywords: ['contatto', 'contatti', 'email', 'mail', 'telefono', 'cellulare', 'recapito', 'linkedin', 'scrivere'],
+        answer: 'Puoi contattare Paolo via email a paolopci@yahoo.it, al telefono +39 328 3834012 oppure tramite LinkedIn: https://www.linkedin.com/in/paolo-paci-a89b7438/',
+    },
+    {
+        id: 'soft-skills',
+        category: 'profilo',
+        priority: 70,
+        aliases: ['soft skills', 'carattere', 'come lavora paolo'],
+        keywords: ['soft skill', 'problem solving', 'team working', 'proattivita', 'comunicazione', 'curiosita'],
+        answer: 'Oltre alle competenze tecniche, Paolo evidenzia problem solving, team working, proattività, curiosità verso l\'innovazione e buone capacità comunicative e relazionali.',
+    },
+];
 
+const aiFallbackResponse = 'Interessante domanda. Posso rispondere con precisione su esperienza, .NET, Angular, AI, progetti, formazione, disponibilità lavorativa e contatti di Paolo. Prova a chiedermi, ad esempio: "Che esperienza ha Paolo?" oppure "Parlami dei progetti".';
 
-
-
-function getAIResponse(input) {
-    if (!input) return aiKnowledgeBase.default;
-    const lowerInput = input.toLowerCase();
-    for (const key in aiKnowledgeBase) {
-        if (lowerInput.includes(key)) return aiKnowledgeBase[key];
-    }
-    return aiKnowledgeBase.default;
+function normalizeAIInput(input) {
+    return String(input || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^\w\s+#./-]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
 }
 
+function escapeRegExp(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, (char) => `\\${char}`);
+}
+
+function aiInputContainsTerm(input, term) {
+    const normalizedTerm = normalizeAIInput(term);
+    if (!normalizedTerm) return false;
+
+    const hasOnlyWordChars = /^[\w\s]+$/.test(normalizedTerm);
+    if (!hasOnlyWordChars || normalizedTerm.includes(' ')) {
+        return input.includes(normalizedTerm);
+    }
+
+    const termRegex = new RegExp(`(^|\\s)${escapeRegExp(normalizedTerm)}($|\\s)`);
+    return termRegex.test(input);
+}
+
+function scoreAIEntry(normalizedInput, entry) {
+    let score = 0;
+    const aliases = entry.aliases || [];
+    const keywords = entry.keywords || [];
+
+    aliases.forEach((alias) => {
+        if (aiInputContainsTerm(normalizedInput, alias)) {
+            score += normalizeAIInput(alias) === normalizedInput ? 130 : 95;
+        }
+    });
+
+    keywords.forEach((keyword) => {
+        if (aiInputContainsTerm(normalizedInput, keyword)) {
+            score += 28;
+        }
+    });
+
+    return score > 0 ? score + (entry.priority || 0) / 100 : 0;
+}
+
+function findBestAIEntry(input) {
+    const normalizedInput = normalizeAIInput(input);
+    if (!normalizedInput) return null;
+
+    return aiKnowledgeBase.reduce((best, entry) => {
+        const score = scoreAIEntry(normalizedInput, entry);
+        if (score < 28) return best;
+        if (!best || score > best.score || (score === best.score && entry.priority > best.entry.priority)) {
+            return { entry, score };
+        }
+        return best;
+    }, null);
+}
+
+function getAIResponse(input) {
+    const match = findBestAIEntry(input);
+    return match ? match.entry.answer : aiFallbackResponse;
+}
+
+window.aiKnowledgeBase = aiKnowledgeBase;
+window.normalizeAIInput = normalizeAIInput;
+window.findBestAIEntry = findBestAIEntry;
 window.getAIResponse = getAIResponse;
 
 // AI Chat Assistant UI Logic
@@ -743,6 +866,7 @@ function initAIChat() {
     const sendBtn = document.getElementById('ai-send-btn');
     const userInput = document.getElementById('ai-user-input');
     const messagesContainer = document.getElementById('ai-chat-messages');
+    const suggestionsContainer = document.getElementById('ai-suggestions');
 
     if (!fab || !chatWindow || !closeBtn || !sendBtn || !userInput || !messagesContainer) return;
 
@@ -752,10 +876,13 @@ function initAIChat() {
         msg.textContent = text;
         messagesContainer.appendChild(msg);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        if (sender === 'assistant' && window.a11yAnnounce) {
+            window.a11yAnnounce('Risposta dell\'assistente AI aggiunta');
+        }
     };
 
-    const handleSend = () => {
-        const text = userInput.value.trim();
+    const handleSend = (presetText = '') => {
+        const text = String(presetText || userInput.value).trim();
         if (!text) return;
 
         addMessage(text, 'user');
@@ -816,7 +943,20 @@ function initAIChat() {
         }
     });
 
-    sendBtn.addEventListener('click', handleSend);
+    if (suggestionsContainer) {
+        suggestionsContainer.addEventListener('click', (e) => {
+            const chip = e.target.closest('.ai-suggestion-chip');
+            if (!chip) return;
+            const question = chip.dataset.question || chip.textContent;
+            if (window.a11yAnnounce) {
+                window.a11yAnnounce(`Domanda rapida inviata: ${question}`);
+            }
+            handleSend(question);
+            userInput.focus();
+        });
+    }
+
+    sendBtn.addEventListener('click', () => handleSend());
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleSend();
     });
