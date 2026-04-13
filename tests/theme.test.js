@@ -3,10 +3,80 @@
  */
 
 describe('Theme Toggle Logic', () => {
-  beforeEach(() => {
+  let store;
+
+  const installLocalStorage = ({ storedTheme, getItemThrows = false, setItemThrows = false } = {}) => {
+    store = {};
+    if (storedTheme) {
+      store.theme = storedTheme;
+    }
+
+    const storageMock = {
+      getItem: jest.fn((key) => {
+        if (getItemThrows) {
+          throw new Error('localStorage getItem unavailable');
+        }
+        return Object.prototype.hasOwnProperty.call(store, key) ? store[key] : null;
+      }),
+      setItem: jest.fn((key, value) => {
+        if (setItemThrows) {
+          throw new Error('localStorage setItem unavailable');
+        }
+        store[key] = value.toString();
+      }),
+      clear: jest.fn(() => {
+        store = {};
+      })
+    };
+
+    Object.defineProperty(window, 'localStorage', {
+      value: storageMock,
+      configurable: true
+    });
+    Object.defineProperty(global, 'localStorage', {
+      value: storageMock,
+      configurable: true
+    });
+
+    return storageMock;
+  };
+
+  const installMatchMedia = ({ systemDark = false, available = true } = {}) => {
+    if (!available) {
+      Object.defineProperty(window, 'matchMedia', {
+        value: undefined,
+        configurable: true
+      });
+      return null;
+    }
+
+    const mediaQuery = {
+      matches: systemDark,
+      media: '(prefers-color-scheme: dark)',
+      onchange: null,
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      addListener: jest.fn(),
+      dispatchEvent: jest.fn()
+    };
+
+    Object.defineProperty(window, 'matchMedia', {
+      value: jest.fn().mockReturnValue(mediaQuery),
+      configurable: true
+    });
+
+    return mediaQuery;
+  };
+
+  const setupTheme = ({
+    storedTheme,
+    systemDark = false,
+    matchMediaAvailable = true,
+    getItemThrows = false,
+    setItemThrows = false
+  } = {}) => {
     jest.useFakeTimers();
 
-    // Mock IntersectionObserver
     global.IntersectionObserver = class IntersectionObserver {
       constructor() {}
       observe() { return null; }
@@ -14,79 +84,137 @@ describe('Theme Toggle Logic', () => {
       disconnect() { return null; }
     };
 
-    // Mock local storage
-    let store = {};
-    global.localStorage = {
-      getItem: (key) => store[key] || null,
-      setItem: (key, value) => { store[key] = value.toString(); },
-      clear: () => { store = {}; }
-    };
+    const storageMock = installLocalStorage({ storedTheme, getItemThrows, setItemThrows });
+    const mediaQuery = installMatchMedia({ systemDark, available: matchMediaAvailable });
 
-    // Mock matchMedia
-    global.window.matchMedia = jest.fn().mockImplementation(query => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    }));
-
+    document.body.className = '';
     document.body.innerHTML = `
       <button id="themeToggleIcon" data-mode="light"></button>
       <div id="a11y-status"></div>
     `;
-    
-    // Clear modules to re-require main.js
+
     jest.resetModules();
     require('../js/main.js');
-    
-    // Call initTheme directly (since it's a global function in main.js)
-    if (typeof window.initTheme === 'function') {
-      window.initTheme();
-    } else if (typeof global.initTheme === 'function') {
-      global.initTheme();
-    }
-  });
+
+    window.initTheme();
+
+    return {
+      btn: document.getElementById('themeToggleIcon'),
+      body: document.body,
+      live: document.getElementById('a11y-status'),
+      mediaQuery,
+      storageMock
+    };
+  };
 
   afterEach(() => {
     jest.runOnlyPendingTimers();
     jest.useRealTimers();
+    jest.restoreAllMocks();
   });
 
   test('should toggle dark-theme class on click', () => {
-    const btn = document.getElementById('themeToggleIcon');
-    const body = document.body;
+    const { btn, body, live } = setupTheme();
 
-    // Initially light
     expect(body.classList.contains('dark-theme')).toBe(false);
     jest.runOnlyPendingTimers();
 
-    // First click
     btn.click();
     expect(body.classList.contains('dark-theme')).toBe(true);
     expect(localStorage.getItem('theme')).toBe('dark');
     jest.runOnlyPendingTimers();
-    expect(document.getElementById('a11y-status').textContent).toBe('Tema scuro attivato');
+    expect(live.textContent).toBe('Tema scuro attivato');
 
-    // Second click
     btn.click();
     expect(body.classList.contains('dark-theme')).toBe(false);
     expect(localStorage.getItem('theme')).toBe('light');
     jest.runOnlyPendingTimers();
-    expect(document.getElementById('a11y-status').textContent).toBe('Tema chiaro attivato');
+    expect(live.textContent).toBe('Tema chiaro attivato');
   });
 
-  test('should update ARIA attributes and data-mode', () => {
-    const btn = document.getElementById('themeToggleIcon');
-    jest.runOnlyPendingTimers();
-    
-    btn.click(); // Switch to dark
+  test('should apply saved dark theme on load without rewriting preference', () => {
+    const { body, btn, storageMock } = setupTheme({ storedTheme: 'dark' });
+
+    expect(body.classList.contains('dark-theme')).toBe(true);
     expect(btn.dataset.mode).toBe('dark');
     expect(btn.getAttribute('aria-pressed')).toBe('true');
-    
-    btn.click(); // Switch to light
+    expect(btn.getAttribute('aria-label')).toBe('Passa al tema chiaro');
+    expect(btn.getAttribute('title')).toBe('Passa al tema chiaro');
+    expect(storageMock.setItem).not.toHaveBeenCalled();
+  });
+
+  test('should apply saved light theme on load without rewriting preference', () => {
+    const { body, btn, storageMock } = setupTheme({ storedTheme: 'light', systemDark: true });
+
+    expect(body.classList.contains('dark-theme')).toBe(false);
     expect(btn.dataset.mode).toBe('light');
     expect(btn.getAttribute('aria-pressed')).toBe('false');
+    expect(btn.getAttribute('aria-label')).toBe('Passa al tema scuro');
+    expect(btn.getAttribute('title')).toBe('Passa al tema scuro');
+    expect(storageMock.setItem).not.toHaveBeenCalled();
+  });
+
+  test('should use prefers-color-scheme dark as fallback when no saved preference exists', () => {
+    const { body, btn, storageMock } = setupTheme({ systemDark: true });
+
+    expect(body.classList.contains('dark-theme')).toBe(true);
+    expect(btn.dataset.mode).toBe('dark');
+    expect(btn.getAttribute('aria-pressed')).toBe('true');
+    expect(btn.getAttribute('aria-label')).toBe('Passa al tema chiaro');
+    expect(storageMock.setItem).not.toHaveBeenCalled();
+  });
+
+  test('should fall back to light theme when matchMedia is unavailable', () => {
+    const { body, btn, storageMock } = setupTheme({ matchMediaAvailable: false });
+
+    expect(body.classList.contains('dark-theme')).toBe(false);
+    expect(btn.dataset.mode).toBe('light');
+    expect(btn.getAttribute('aria-pressed')).toBe('false');
+    expect(btn.getAttribute('aria-label')).toBe('Passa al tema scuro');
+    expect(storageMock.setItem).not.toHaveBeenCalled();
+  });
+
+  test('should update ARIA attributes, labels and data-mode', () => {
+    const { btn } = setupTheme();
+
+    expect(btn.dataset.mode).toBe('light');
+    expect(btn.getAttribute('aria-pressed')).toBe('false');
+    expect(btn.getAttribute('aria-label')).toBe('Passa al tema scuro');
+    expect(btn.getAttribute('title')).toBe('Passa al tema scuro');
+
+    btn.click();
+    expect(btn.dataset.mode).toBe('dark');
+    expect(btn.getAttribute('aria-pressed')).toBe('true');
+    expect(btn.getAttribute('aria-label')).toBe('Passa al tema chiaro');
+    expect(btn.getAttribute('title')).toBe('Passa al tema chiaro');
+
+    btn.click();
+    expect(btn.dataset.mode).toBe('light');
+    expect(btn.getAttribute('aria-pressed')).toBe('false');
+    expect(btn.getAttribute('aria-label')).toBe('Passa al tema scuro');
+    expect(btn.getAttribute('title')).toBe('Passa al tema scuro');
+  });
+
+  test('should keep toggle working when localStorage getItem throws', () => {
+    const { btn, body } = setupTheme({ getItemThrows: true, systemDark: true });
+
+    expect(body.classList.contains('dark-theme')).toBe(true);
+
+    btn.click();
+    expect(body.classList.contains('dark-theme')).toBe(false);
+    expect(btn.dataset.mode).toBe('light');
+    expect(btn.getAttribute('aria-label')).toBe('Passa al tema scuro');
+  });
+
+  test('should keep toggle working when localStorage setItem throws', () => {
+    const { btn, body, live } = setupTheme({ setItemThrows: true });
+
+    btn.click();
+
+    expect(body.classList.contains('dark-theme')).toBe(true);
+    expect(btn.dataset.mode).toBe('dark');
+    expect(btn.getAttribute('aria-label')).toBe('Passa al tema chiaro');
+    jest.runOnlyPendingTimers();
+    expect(live.textContent).toBe('Tema scuro attivato');
   });
 });

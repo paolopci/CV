@@ -27,12 +27,15 @@
 
 ## 4. Struttura del Progetto e Organizzazione dei Moduli
 
-- `index.html`: entry point del sito; include AI UI, GitHub widget, JSON-LD e navbar.
+- `index.html`: entry point del sito; include AI UI, GitHub widget, Twitter Card, JSON-LD schema.org, navbar, landmark `main`, skip link e modali accessibili.
 - `css/index.css`: stili globali, Glassmorphism, animazioni e tema scuro.
-- `js/main.js`: logica UI core, AI Assistant, knowledge base, GitHub API e scroll observer.
+- `js/main.js`: logica UI core, AI Assistant, knowledge base, GitHub API, cache/retry del widget GitHub e scroll observer.
 - `js/hero-code-bg.js`: iniettore dell'animazione di codice nell'hero.
+- `scripts/build.js`: script Node per generare `dist/`, copiare asset statici e riscrivere l'HTML di produzione con asset minificati e cache-buster hash.
+- `dist/`: output di produzione generato da `npm run build`, con CSS/JS minificati e asset statici copiati.
+- `docs/cache-headers.md`: note operative sugli header HTTP di caching per GitHub Pages e hosting alternativi.
 - `tests/`: suite Jest per validare la logica JavaScript.
-- `package.json`: dipendenze e script dell'ambiente di test.
+- `package.json`: dipendenze e script per test, audit e build leggero di produzione.
 - `courses.json`: sorgente dati per la sezione `Certificazioni & Corsi`.
 - `images/`: asset immagine, inclusi foto profilo e infografiche WebP/PNG.
 - `Paolo Paci.pdf`: CV scaricabile.
@@ -44,10 +47,14 @@
 
 - Server locale: `python -m http.server 8080`, poi apri `http://localhost:8080`.
 - Test automatici: `npm test`.
+- Build produzione: `npm run build`, genera `dist/css/index.min.css`, `dist/js/app.min.js` e `dist/index.html` con cache-buster hash.
+- Step build separati: `npm run clean`, `npm run build:css`, `npm run build:js`, `npm run build:static`.
+- Audit dipendenze: `npm audit --audit-level=moderate`; usare `npm audit fix` solo senza `--force`, salvo richiesta esplicita.
+- Verifica produzione locale: dopo `npm run build`, apri `http://localhost:8080/dist/` dal server locale.
 - Validazione HTML: usare W3C validator quando si modifica markup significativo.
-- Test rapido manuale: anchor, modale corsi, toggle tema, menu mobile e scroll fluido.
-- AI Assistant: verifica apertura chat, invio messaggio e risposte basate sulla knowledge base.
-- GitHub Widget: verifica il caricamento degli ultimi eventi nel portfolio.
+- Test rapido manuale: anchor, skip link, modale corsi, modali infografiche, toggle tema persistente, menu mobile e scroll fluido.
+- AI Assistant: verifica apertura chat, invio messaggio, chip FAQ cliccabili, risposte basate sulla knowledge base e fallback educato.
+- GitHub Widget: verifica caricamento eventi, cache locale, fallback offline e diagnostica solo in sviluppo.
 - Dati: se modifichi `courses.json`, ricarica la pagina e controlla la console per confermare JSON valido.
 
 ## 6. Stile del Codice e Convenzioni di Naming
@@ -57,16 +64,35 @@
 - JavaScript: preferire funzioni globali per testabilita, esponendole su `window` quando necessario per Jest.
 - CSS: usare classi descrittive o BEM-like.
 - CSS: mantenere l'uso di variabili custom, `rgba` e `backdrop-filter` coerente con il Glassmorphism esistente.
-- AI Knowledge Base: mantenere le chiavi ordinate per specificita per evitare conflitti di parsing.
+- Build: non modificare direttamente i file minificati in `dist/`; aggiorna i sorgenti (`index.html`, `css/`, `js/`, `scripts/`) e rigenera con `npm run build`.
+- Build: mantenere Prism CDN prima del bundle locale `js/app.min.js` nella versione generata, per non rompere `hero-code-bg.js`.
+- AI Knowledge Base: usare record strutturati in `aiKnowledgeBase` con `id`, `category`, `priority`, `aliases`, `keywords` e `answer`.
 - Per modifiche UI, intervenire principalmente su `css/index.css` seguendo lo stile esistente.
+- GitHub Widget: mantenere cache versionata con TTL 6 ore, retry con exponential backoff e dati di esempio coerenti con il portfolio.
 
 ## 7. Linee Guida per i Test e Accessibilita
 
 - Mantieni copertura Jest maggiore dell'80% per nuove logiche JavaScript.
-- Per nuove informazioni nel chatbot, aggiorna `aiKnowledgeBase` in `js/main.js` e aggiungi o aggiorna test in `tests/ai.test.js`.
+- Per nuove informazioni nel chatbot, aggiorna i record di `aiKnowledgeBase` in `js/main.js` e aggiungi o aggiorna test in `tests/ai.test.js`.
+- Il matching AI usa `normalizeAIInput()`, `findBestAIEntry()` e scoring deterministico: preferisci alias specifici e keyword mirate per evitare risposte ambigue.
+- I chip FAQ dell'assistente sono in `index.html` dentro `#ai-suggestions`; se li modifichi, aggiorna la gestione in `initAIChat()` e i test in `tests/chat.test.js`.
+- Quando cambi `css/index.css` o `js/main.js` per funzionalita visibili, aggiorna il query string cache-buster in `index.html` se serve forzare il refresh browser.
+- Quando cambi asset serviti in produzione, esegui `npm run build` e verifica che `dist/index.html` punti a `css/index.min.css?v=<hash>` e `js/app.min.js?v=<hash>`.
+- SEO: mantieni allineati `title`, `description`, Open Graph, Twitter Card e JSON-LD quando cambiano ruolo, descrizione, immagine social o URL canonico del sito.
+- Structured data: non usare `JobPosting` per esperienze lavorative storiche; usare `Person`, `Occupation` e `OrganizationRole` coerenti con schema.org.
+- Performance immagini: tutte le immagini non critiche devono avere `loading="lazy"` e `decoding="async"`; le immagini informative devono avere `width`, `height` e `alt` significativi.
+- Per modifiche al widget GitHub, aggiorna `tests/github.test.js` coprendo cache, retry, payload non valido, fallback e dettagli errore sviluppo/produzione.
 - Se l'informazione e visibile nel sito, mantieni allineati `index.html`, knowledge base AI e JSON-LD.
 - Verifica responsivita, effetto magnetico e chatbot su diversi viewport quando tocchi UI o layout.
-- A11y: mantieni titoli coerenti, `alt` significativi, live region `#a11y-status` e focus trap del modale.
+- A11y: mantieni `main#main-content`, skip link, `nav[aria-label="Navigazione principale"]`, titoli coerenti e ruoli semantici non ridondanti.
+- A11y immagini: usa `alt` significativi per immagini informative e `alt=""` o `aria-hidden="true"` per icone decorative dentro link gia testuali.
+- A11y dinamica: usa `window.a11yAnnounce()` e mantieni `#a11y-status` fuori dalle aree nascoste quando si aprono modali.
+- A11y modali: conserva `openAccessibleModal()`/`closeAccessibleModal()`, `aria-modal`, `aria-labelledby`, `aria-describedby`, ritorno focus al trigger e trap Tab/Shift+Tab/Escape.
+- Contrasto: mantieni conformita WCAG 2.1 AA, almeno 4.5:1 per testo normale e 3:1 per testo grande o componenti UI; verifica tema chiaro e scuro.
+- Test accessibilita: aggiorna `tests/modal-accessibility.test.js` per focus trap/live region dei modali e `tests/theme.test.js` per annunci del toggle tema.
+- Tema: il toggle in `js/main.js` deve persistere la scelta in `localStorage.theme` con valori `dark`/`light`, leggere la preferenza salvata all'avvio e usare `prefers-color-scheme` solo come fallback iniziale.
+- Tema: gli accessi a `localStorage` devono essere tolleranti a errori, mantenendo il toggle funzionante anche se la preferenza non puo essere letta o salvata.
+- Tema: aggiorna sempre `data-mode`, `aria-pressed`, `aria-label`, `title`, infografiche `data-dark`/`data-light` e annunci accessibili quando cambia lo stato.
 - Tema: assicurati che trasparenze e contrasti siano leggibili sia in tema chiaro sia in tema scuro.
 
 ## 8. Linee Guida per Commit e Pull Request
@@ -82,7 +108,9 @@
 - Applica le regole comuni definite in [_shared/sicurezza-configurazione.md](./_shared/sicurezza-configurazione.md).
 - Il sito e solo client-side: non introdurre backend, segreti o chiavi API lato client.
 - Il widget GitHub usa dati pubblici da `api.github.com/users/paolopci/events/public`.
-- `index.html` include JSON-LD `Person`: mantieni le informazioni di contatto allineate con la knowledge base dell'AI.
+- Non introdurre token GitHub, segreti o chiavi API: il widget deve restare resiliente tramite cache locale, retry e fallback client-side.
+- GitHub Pages non applica `.htaccess`: per il caching usare cache-buster/fingerprint degli asset generati e aggiornare `docs/cache-headers.md` solo per hosting alternativi.
+- `index.html` include JSON-LD `Person` con `Occupation` e `OrganizationRole`: mantieni contatti, competenze ed esperienze allineati con contenuti visibili e knowledge base AI.
 - Conductor: aggiorna `conductor/setup_state.json` durante i setup quando il flusso Conductor lo richiede.
 
 ## 10. Flusso di Collaborazione
