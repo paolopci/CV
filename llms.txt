@@ -1,0 +1,18 @@
+# CV Paolo Paci
+
+Sito ufficiale: https://paolopci.github.io/CV/
+
+Paolo Paci è un Software Engineer italiano con esperienza in .NET, ASP.NET Core, Angular, API REST, microservizi e integrazioni AI. È disponibile per collaborazioni full remote o ibride.
+
+## Pagine e risorse principali
+
+- Profilo professionale: https://paolopci.github.io/CV/#profile
+- Competenze tecniche: https://paolopci.github.io/CV/#skills
+- Carriera professionale: https://paolopci.github.io/CV/#experience
+- Portfolio e GitHub: https://paolopci.github.io/CV/#portfolio
+- Contatti: https://paolopci.github.io/CV/#contact
+- CV PDF: https://paolopci.github.io/CV/Paolo%20Paci.pdf
+
+## Argomenti principali
+
+.NET, ASP.NET Core, C#, Angular, TypeScript, API REST, microservizi, Entity Framework, SQL Server, Docker, OpenAI API, AI agents, testing, xUnit, Cypress, Postman, Swagger.

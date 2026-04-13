@@ -2263,6 +2263,65 @@ body.dark-theme .nav-links a:hover {
 }
 
 
+/* SEO/GEO quick answers */
+.quick-answers-section {
+    background: rgba(255, 255, 255, 0.96);
+}
+
+body.dark-theme .quick-answers-section {
+    background: #111827;
+}
+
+.quick-answers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.quick-answer {
+    padding: 1.4rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.84);
+    border: 1px solid rgba(67, 56, 202, 0.16);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.quick-answer h3 {
+    margin-bottom: 0.65rem;
+    color: #1f2937;
+    font-size: 1.05rem;
+}
+
+.quick-answer p {
+    color: #374151;
+    line-height: 1.7;
+}
+
+body.dark-theme .quick-answer {
+    background: rgba(31, 41, 55, 0.86);
+    border-color: rgba(191, 219, 254, 0.18);
+}
+
+body.dark-theme .quick-answer h3 {
+    color: #f9fafb;
+}
+
+body.dark-theme .quick-answer p {
+    color: #e5e7eb;
+}
+
+.seo-course-card p {
+    margin: 0.75rem 0 1rem;
+    color: #4b5563;
+    line-height: 1.65;
+}
+
+body.dark-theme .seo-course-card p {
+    color: #e5e7eb;
+}
+
 /* Footer icons */
 .footer-link img {
     height: 20px;

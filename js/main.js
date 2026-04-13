@@ -350,7 +350,10 @@ async function loadCourses() {
         document.querySelectorAll('.course-card.fade-in-up').forEach(el => observer.observe(el));
     } catch (error) {
         console.error('Errore nel caricamento dei corsi:', error);
-        document.getElementById('coursesGrid').innerHTML = '<div class="error">Errore nel caricamento dei corsi</div>';
+        const coursesGrid = document.getElementById('coursesGrid');
+        if (coursesGrid && coursesGrid.children.length === 0) {
+            coursesGrid.innerHTML = '<div class="error">Errore nel caricamento dei corsi</div>';
+        }
     }
 }
 
@@ -1402,10 +1405,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const txtElement = document.getElementById('typewriter-text');
     if (txtElement) {
         const words = [
-            "Software Engineer",
-            ".NET Core Specialist",
+            "Software Engineer .NET",
+            "ASP.NET Core Specialist",
             "Angular Developer",
-            "Solution Architect"
+            "API REST e Microservizi",
+            "AI Integration Engineer"
         ];
         new TypeWriter(txtElement, words);
     }

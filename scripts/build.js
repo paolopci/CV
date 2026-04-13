@@ -6,11 +6,30 @@ const rootDir = path.resolve(__dirname, '..');
 const distDir = path.join(rootDir, 'dist');
 
 const staticEntries = [
-    'images',
     'courses.json',
     'favicon.ico',
     'Paolo Paci.pdf',
-    'code-demo.js'
+    'code-demo.js',
+    'robots.txt',
+    'sitemap.xml',
+    '404.html',
+    'llms.txt'
+];
+
+const staticImageEntries = [
+    'Paolo Paci Img.jpg',
+    'infoCV-1200.webp',
+    'infoCV-dark-1200.webp',
+    'infoCV-light-1200.png',
+    'infoCV-dark-1200.png',
+    'infoskills-1200.webp',
+    'infoskills-dark-1200.webp',
+    'infoskills-light-1200.png',
+    'infoskills-dark-1200.png',
+    'infoPercorsoProf-1200.webp',
+    'infoPercorsoProf-dark-1200.webp',
+    'infoPercorsoProf-light-1200.png',
+    'infoPercorsoProf-dark-1200.png'
 ];
 
 function ensureDir(dir) {
@@ -68,6 +87,20 @@ function rewriteHtml() {
     fs.writeFileSync(path.join(distDir, 'index.html'), html, 'utf8');
 }
 
+function copyStaticImages() {
+    const imagesSourceDir = path.join(rootDir, 'images');
+    const imagesDistDir = path.join(distDir, 'images');
+    ensureDir(imagesDistDir);
+
+    staticImageEntries.forEach((entry) => {
+        const source = path.join(imagesSourceDir, entry);
+        if (!fs.existsSync(source)) {
+            throw new Error(`Static image not found: ${entry}`);
+        }
+        copyRecursive(source, path.join(imagesDistDir, entry));
+    });
+}
+
 function copyStatic() {
     ensureDir(distDir);
     staticEntries.forEach((entry) => {
@@ -77,6 +110,7 @@ function copyStatic() {
         }
         copyRecursive(source, path.join(distDir, entry));
     });
+    copyStaticImages();
     rewriteHtml();
 }
 
