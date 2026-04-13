@@ -13,7 +13,8 @@ const staticEntries = [
     'robots.txt',
     'sitemap.xml',
     '404.html',
-    'llms.txt'
+    'llms.txt',
+    'google4c78e69bd5788aea.html'
 ];
 
 const staticImageEntries = [
