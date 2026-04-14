@@ -12,6 +12,7 @@ const staticEntries = [
     'code-demo.js',
     'robots.txt',
     'sitemap.xml',
+    'sitemap.txt',
     '404.html',
     'llms.txt',
     'google4c78e69bd5788aea.html'
