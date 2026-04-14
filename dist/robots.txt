@@ -8,3 +8,4 @@ User-agent: GPTBot
 Allow: /
 
 Sitemap: https://paolopci.github.io/CV/sitemap.xml
+Sitemap: https://paolopci.github.io/CV/sitemap.txt
