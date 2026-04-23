@@ -79,8 +79,8 @@ function rewriteHtml() {
         `<link rel="stylesheet" href="css/index.min.css?v=${cssVersion}" />`
     );
 
-    html = html.replace(/\n\s*<script src="js\/main\.js[^\"]*" defer><\/script>/, '');
-    html = html.replace(/\n\s*<!-- Code background injector -->\n\s*<script src="js\/hero-code-bg\.js[^\"]*" defer><\/script>/, '');
+    html = html.replace(/\r?\n\s*<script src="js\/main\.js[^\"]*" defer><\/script>/, '');
+    html = html.replace(/\r?\n\s*<!-- Code background injector -->\r?\n\s*<script src="js\/hero-code-bg\.js[^\"]*" defer><\/script>/, '');
     html = html.replace(
         /(<script src="https:\/\/cdn\.jsdelivr\.net\/npm\/prismjs@1\/plugins\/autoloader\/prism-autoloader\.min\.js"><\/script>)/,
         `$1\n    <script src="js/app.min.js?v=${jsVersion}" defer></script>`
