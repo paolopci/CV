@@ -101,7 +101,7 @@ describe('Modal accessibility helper', () => {
   });
 });
 
-describe('Static infographic modals', () => {
+describe('Infographic gallery modal', () => {
   beforeEach(() => {
     jest.useFakeTimers();
 
@@ -115,27 +115,41 @@ describe('Static infographic modals', () => {
     document.body.innerHTML = `
       <div id="a11y-status"></div>
       <main>
-        <button id="infoskillsTrigger" aria-expanded="false">Competenze</button>
-        <button id="infoPercorsoTrigger" aria-expanded="false">Percorso</button>
+        <button id="infoskillsTrigger" data-infographic-target="0" aria-expanded="false">Competenze</button>
+        <button id="infoPercorsoTrigger" data-infographic-target="1" aria-expanded="false">Percorso</button>
       </main>
-      <div class="modal-overlay" id="infoskillsModal" style="display:none;" aria-hidden="true">
+      <div class="modal-overlay" id="infographicModal" style="display:none;" aria-hidden="true">
         <div class="modal-content" tabindex="-1">
-          <button class="modal-close" id="closeInfoSkills">Chiudi</button>
-          <a href="#dettaglio" id="detailsLink">Dettaglio</a>
-        </div>
-      </div>
-      <div class="modal-overlay" id="infoPercorsoModal" style="display:none;" aria-hidden="true">
-        <div class="modal-content" tabindex="-1">
-          <button class="modal-close" id="closeInfoPercorso">Chiudi</button>
-          <a href="#percorso" id="careerLink">Percorso</a>
+          <button class="modal-close" id="closeInfographicModal">Chiudi</button>
+          <div id="infographicModalGallery">
+            <div class="infographic-gallery-header">
+              <h2 class="infographic-heading" id="infographicModalTitle">Figura 1</h2>
+              <p class="infographic-counter">1 / 2</p>
+            </div>
+            <button type="button" data-infographic-action="prev">Prev</button>
+            <figure class="infographic-figure">
+              <picture>
+                <source id="infographicModalSource" srcset="images/infoCV-1200.webp" type="image/webp"
+                  data-light="images/infoCV-1200.webp" data-dark="images/infoCV-dark-1200.webp" />
+                <img id="infographicModalImage" src="images/infoCV-light-1200.png"
+                  data-light="images/infoCV-light-1200.png" data-dark="images/infoCV-dark-1200.png"
+                  alt="Infografica" />
+              </picture>
+              <figcaption class="infographic-caption" id="infographicModalCaption">Caption</figcaption>
+            </figure>
+            <button type="button" data-infographic-action="next">Next</button>
+            <button class="infographic-indicator is-active" data-infographic-index="0" aria-selected="true" aria-current="true">Figura 1</button>
+            <button class="infographic-indicator" data-infographic-index="1" aria-selected="false" aria-current="false">Figura 2</button>
+            <a id="infographicModalDownloadCurrent" href="images/infoCV-light-1200.png" download="Paolo-Paci-figura-1.png">Scarica corrente</a>
+            <button id="infographicModalDownloadAll" type="button">Scarica tutto</button>
+          </div>
         </div>
       </div>
     `;
 
     jest.resetModules();
     require('../js/main.js');
-    window.initInfoskillsModal();
-    window.initInfoPercorsoModal();
+    window.initInfographicModal();
   });
 
   afterEach(() => {
@@ -143,9 +157,9 @@ describe('Static infographic modals', () => {
     jest.useRealTimers();
   });
 
-  test('apre dal trigger e chiude dal backdrop restituendo il focus', () => {
+  test('apre dal trigger corretto e chiude dal backdrop restituendo il focus', () => {
     const trigger = document.getElementById('infoskillsTrigger');
-    const modal = document.getElementById('infoskillsModal');
+    const modal = document.getElementById('infographicModal');
 
     trigger.focus();
     trigger.click();
@@ -154,7 +168,7 @@ describe('Static infographic modals', () => {
     expect(modal.style.display).toBe('flex');
     expect(modal.getAttribute('aria-hidden')).toBe('false');
     expect(trigger.getAttribute('aria-expanded')).toBe('true');
-    expect(document.getElementById('a11y-status').textContent).toBe('Infografica competenze aperta');
+    expect(document.getElementById('a11y-status').textContent).toBe('Galleria infografiche aperta su Figura 1');
 
     modal.click();
     jest.runOnlyPendingTimers();
@@ -163,14 +177,19 @@ describe('Static infographic modals', () => {
     expect(modal.getAttribute('aria-hidden')).toBe('true');
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
     expect(document.activeElement).toBe(trigger);
-    expect(document.getElementById('a11y-status').textContent).toBe('Infografica competenze chiusa');
+    expect(document.getElementById('a11y-status').textContent).toBe('Galleria infografiche chiusa');
   });
 
-  test('modale percorso gestisce Tab, Shift+Tab, Escape e ritorno focus', () => {
+  test('apre sulla seconda figura, gestisce navigazione e ritorno focus', () => {
     const trigger = document.getElementById('infoPercorsoTrigger');
-    const modal = document.getElementById('infoPercorsoModal');
-    const closeBtn = document.getElementById('closeInfoPercorso');
-    const link = document.getElementById('careerLink');
+    const modal = document.getElementById('infographicModal');
+    const closeBtn = document.getElementById('closeInfographicModal');
+    const prevBtn = modal.querySelector('[data-infographic-action="prev"]');
+    const nextBtn = modal.querySelector('[data-infographic-action="next"]');
+    const indicators = modal.querySelectorAll('.infographic-indicator');
+    const downloadCurrent = document.getElementById('infographicModalDownloadCurrent');
+    const downloadAll = document.getElementById('infographicModalDownloadAll');
+    const modalImage = document.getElementById('infographicModalImage');
 
     trigger.focus();
     trigger.click();
@@ -180,7 +199,16 @@ describe('Static infographic modals', () => {
     expect(modal.getAttribute('aria-hidden')).toBe('false');
     expect(trigger.getAttribute('aria-expanded')).toBe('true');
     expect(document.activeElement).toBe(closeBtn);
-    expect(document.getElementById('a11y-status').textContent).toBe('Infografica percorso professionale aperta');
+    expect(document.getElementById('a11y-status').textContent).toBe('Galleria infografiche aperta su Figura 2');
+    expect(downloadCurrent.getAttribute('download')).toBe('Paolo-Paci-figura-2.png');
+    expect(modalImage.getAttribute('src')).toBe('images/Infografica_CV.png');
+    expect(indicators[1].getAttribute('aria-selected')).toBe('true');
+
+    nextBtn.click();
+    jest.runOnlyPendingTimers();
+    expect(document.getElementById('a11y-status').textContent).toBe('Figura 1 selezionata: Sintesi professionale');
+    expect(downloadCurrent.getAttribute('download')).toBe('Paolo-Paci-figura-1.png');
+    expect(indicators[0].getAttribute('aria-selected')).toBe('true');
 
     closeBtn.focus();
     document.dispatchEvent(new KeyboardEvent('keydown', {
@@ -188,11 +216,12 @@ describe('Static infographic modals', () => {
       shiftKey: true,
       bubbles: true,
     }));
-    expect(document.activeElement).toBe(link);
+    expect(document.activeElement).toBe(downloadAll);
 
-    link.focus();
-    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }));
-    expect(document.activeElement).toBe(closeBtn);
+    prevBtn.focus();
+    modal.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+    jest.runOnlyPendingTimers();
+    expect(document.getElementById('a11y-status').textContent).toBe('Figura 2 selezionata: CV infografico completo');
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     jest.runOnlyPendingTimers();
@@ -201,7 +230,25 @@ describe('Static infographic modals', () => {
     expect(modal.getAttribute('aria-hidden')).toBe('true');
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
     expect(document.activeElement).toBe(trigger);
-    expect(document.getElementById('a11y-status').textContent).toBe('Infografica percorso professionale chiusa');
+    expect(document.getElementById('a11y-status').textContent).toBe('Galleria infografiche chiusa');
+  });
+
+  test('download entrambe avvia due download client-side', () => {
+    const trigger = document.getElementById('infoskillsTrigger');
+    const downloadAll = document.getElementById('infographicModalDownloadAll');
+    const clickSpy = jest.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+
+    trigger.click();
+    jest.runOnlyPendingTimers();
+
+    downloadAll.click();
+    jest.advanceTimersByTime(350);
+    jest.runOnlyPendingTimers();
+
+    expect(clickSpy).toHaveBeenCalledTimes(2);
+    expect(document.getElementById('a11y-status').textContent).toBe('Download di entrambe le infografiche avviato');
+
+    clickSpy.mockRestore();
   });
 });
 

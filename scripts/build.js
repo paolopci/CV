@@ -24,6 +24,7 @@ const staticImageEntries = [
     'infoCV-dark-1200.webp',
     'infoCV-light-1200.png',
     'infoCV-dark-1200.png',
+    'Infografica_CV.png',
     'infoskills-1200.webp',
     'infoskills-dark-1200.webp',
     'infoskills-light-1200.png',

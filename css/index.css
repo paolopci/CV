@@ -797,11 +797,201 @@ body.dark-theme .hero-card {
     margin: 0 auto;
 }
 
-.infographic-card img {
+.infographic-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.infographic-gallery-header,
+.infographic-toolbar,
+.infographic-actions,
+.infographic-indicators {
+    display: flex;
+    align-items: center;
+}
+
+.infographic-gallery-header,
+.infographic-toolbar {
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.infographic-eyebrow {
+    margin: 0 0 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #667eea;
+}
+
+.infographic-heading {
+    margin: 0;
+    font-size: 1.45rem;
+    color: #1f2937;
+}
+
+.infographic-counter {
+    margin: 0;
+    font-weight: 700;
+    color: #475569;
+}
+
+.infographic-stage {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+}
+
+.infographic-nav {
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid rgba(102, 126, 234, 0.25);
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.12));
+    color: #334155;
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.infographic-nav:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.18);
+}
+
+.infographic-nav:focus-visible,
+.infographic-indicator:focus-visible,
+.infographic-download-link:focus-visible {
+    outline: 3px solid rgba(102, 126, 234, 0.38);
+    outline-offset: 3px;
+}
+
+.infographic-figure {
+    margin: 0;
+    padding: 1rem;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(243, 244, 246, 0.92));
+    border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.infographic-card img,
+.infographic-figure img {
     width: 100%;
     height: auto;
     display: block;
     border-radius: 12px;
+}
+
+.infographic-caption {
+    margin: 1rem 0 0;
+    color: #475569;
+    line-height: 1.6;
+}
+
+.infographic-indicators,
+.infographic-actions {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.infographic-indicator,
+.infographic-download-link {
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.infographic-indicator {
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.infographic-indicator.is-active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(102, 126, 234, 0.28);
+}
+
+.infographic-download-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.85rem 1.2rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.infographic-download-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+}
+
+.infographic-download-link.secondary {
+    background: rgba(248, 250, 252, 0.96);
+}
+
+.infographic-modal-content {
+    width: min(1120px, calc(100vw - 2rem));
+}
+
+.infographic-gallery-modal .infographic-figure {
+    background: transparent;
+    border: 0;
+    padding: 0;
+}
+
+@media (max-width: 768px) {
+    .infographic-card {
+        padding: 1rem;
+    }
+
+    .infographic-gallery-header,
+    .infographic-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .infographic-stage {
+        grid-template-columns: 1fr;
+    }
+
+    .infographic-nav {
+        width: 100%;
+        height: auto;
+        min-height: 2.75rem;
+        border-radius: 14px;
+    }
+
+    .infographic-nav-prev {
+        order: 2;
+    }
+
+    .infographic-figure {
+        order: 1;
+    }
+
+    .infographic-nav-next {
+        order: 3;
+    }
+
+    .infographic-actions,
+    .infographic-indicators {
+        width: 100%;
+    }
+
+    .infographic-actions > *,
+    .infographic-indicators > * {
+        flex: 1 1 100%;
+    }
 }
 
 /* Profile Section */
@@ -1698,6 +1888,40 @@ body.dark-theme .section-title-btn {
 body.dark-theme .section-title-btn:hover {
     background: rgba(30, 30, 30, 0.85);
     box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45);
+}
+
+body.dark-theme .infographic-card,
+body.dark-theme .infographic-figure,
+body.dark-theme .infographic-indicator,
+body.dark-theme .infographic-download-link.secondary {
+    background: rgba(24, 24, 27, 0.95);
+    border-color: rgba(129, 140, 248, 0.26);
+}
+
+body.dark-theme .infographic-heading,
+body.dark-theme .infographic-indicator,
+body.dark-theme .infographic-download-link {
+    color: #f8fafc;
+}
+
+body.dark-theme .infographic-caption,
+body.dark-theme .infographic-counter {
+    color: #cbd5e1;
+}
+
+body.dark-theme .infographic-nav {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(59, 130, 246, 0.18));
+    color: #e2e8f0;
+    border-color: rgba(129, 140, 248, 0.3);
+}
+
+body.dark-theme .infographic-download-link {
+    background: rgba(31, 41, 55, 0.94);
+    border-color: rgba(129, 140, 248, 0.32);
+}
+
+body.dark-theme .infographic-indicator.is-active {
+    color: #fff;
 }
 
 body.dark-theme a {

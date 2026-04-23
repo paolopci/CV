@@ -25,7 +25,7 @@
     <meta name="twitter:image" content="https://paolopci.github.io/CV/images/infoCV-1200.webp" />
     <meta name="twitter:image:alt" content="Sintesi professionale di Paolo Paci, Software Engineer .NET e Angular" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="css/index.css?v=seo-geo-20260413" />
+    <link rel="stylesheet" href="css/index.css?v=infocarousel-20260423" />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -537,19 +537,69 @@
             </svg>
             <span class="section-title-text">Sintesi Professionale</span>
         </h2>
-        <figure class="infographic-card fade-in-up">
-            <picture>
-                <source srcset="images/infoCV-1200.webp" type="image/webp"
-                    data-light="images/infoCV-1200.webp" data-dark="images/infoCV-dark-1200.webp" />
-                <img src="images/infoCV-light-1200.png" width="1200" height="670"
-                    alt="Infografica con sintesi delle competenze e del profilo di Paolo Paci"
-                    loading="lazy" decoding="async" data-light="images/infoCV-light-1200.png"
-                    data-dark="images/infoCV-dark-1200.png" />
-            </picture>
-            <figcaption class="infographic-caption sr-only">
-                Sintesi visiva del profilo professionale e delle competenze principali.
-            </figcaption>
-        </figure>
+        <div class="infographic-card fade-in-up">
+            <div class="infographic-gallery" id="infographicGallery" data-gallery="inline">
+                <div class="infographic-gallery-header">
+                    <div>
+                        <p class="infographic-eyebrow">Galleria infografica</p>
+                        <h3 class="infographic-heading" id="infographicGalleryTitle">Figura 1</h3>
+                    </div>
+                    <p class="infographic-counter" id="infographicGalleryCounter" aria-live="polite">1 / 2</p>
+                </div>
+                <div class="infographic-stage">
+                    <button type="button" class="infographic-nav infographic-nav-prev"
+                        data-infographic-action="prev" aria-label="Visualizza infografica precedente">
+                        <span aria-hidden="true">&lsaquo;</span>
+                    </button>
+                    <figure class="infographic-figure">
+                        <picture>
+                            <source id="infographicGallerySource" srcset="images/infoCV-1200.webp" type="image/webp"
+                                data-light="images/infoCV-1200.webp" data-dark="images/infoCV-dark-1200.webp" />
+                            <img id="infographicGalleryImage" src="images/infoCV-light-1200.png" width="1200"
+                                height="670" alt="Infografica con sintesi delle competenze e del profilo di Paolo Paci"
+                                loading="lazy" decoding="async" data-light="images/infoCV-light-1200.png"
+                                data-dark="images/infoCV-dark-1200.png" />
+                        </picture>
+                        <figcaption class="infographic-caption" id="infographicGalleryCaption">
+                            Sintesi visiva del profilo professionale e delle competenze principali.
+                        </figcaption>
+                    </figure>
+                    <button type="button" class="infographic-nav infographic-nav-next"
+                        data-infographic-action="next" aria-label="Visualizza infografica successiva">
+                        <span aria-hidden="true">&rsaquo;</span>
+                    </button>
+                </div>
+                <div class="infographic-toolbar">
+                    <div class="infographic-indicators" role="tablist" aria-label="Seleziona un'infografica">
+                        <button type="button" class="infographic-indicator is-active" data-infographic-index="0"
+                            role="tab" aria-selected="true" aria-current="true"
+                            aria-label="Vai a figura 1: sintesi professionale">
+                            <span>Figura 1</span>
+                        </button>
+                        <button type="button" class="infographic-indicator" data-infographic-index="1" role="tab"
+                            aria-selected="false" aria-current="false"
+                            aria-label="Vai a figura 2: CV infografico completo">
+                            <span>Figura 2</span>
+                        </button>
+                    </div>
+                    <div class="infographic-actions">
+                        <a id="infographicGalleryDownloadCurrent" class="infographic-download-link"
+                            href="images/infoCV-light-1200.png" download="Paolo-Paci-figura-1.png">
+                            <svg class="icon" aria-hidden="true">
+                                <use href="#icon-download"></use>
+                            </svg>
+                            <span>Scarica figura corrente</span>
+                        </a>
+                        <button type="button" id="infographicGalleryDownloadAll" class="infographic-download-link secondary">
+                            <svg class="icon" aria-hidden="true">
+                                <use href="#icon-download"></use>
+                            </svg>
+                            <span>Scarica entrambe</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Profile Section -->
@@ -634,8 +684,9 @@
             </svg>
             <span class="section-title-text">Competenze Tecniche</span>
             <button type="button" class="section-title-btn" id="infoskillsTrigger"
-                aria-label="Apri infografica competenze" aria-haspopup="dialog" aria-controls="infoskillsModal"
-                aria-expanded="false" title="Apri infografica competenze">
+                aria-label="Apri galleria infografiche sulla figura 1" aria-haspopup="dialog"
+                aria-controls="infographicModal" aria-expanded="false" title="Apri infografica competenze"
+                data-infographic-target="0">
                 <svg class="icon" aria-hidden="true">
                     <use href="#icon-infographic"></use>
                 </svg>
@@ -756,8 +807,9 @@
             </svg>
             <span class="section-title-text">Carriera Professionale</span>
             <button type="button" class="section-title-btn" id="infoPercorsoTrigger"
-                aria-label="Apri infografica percorso professionale" aria-haspopup="dialog"
-                aria-controls="infoPercorsoModal" aria-expanded="false" title="Apri infografica percorso professionale">
+                aria-label="Apri galleria infografiche sulla figura 2" aria-haspopup="dialog"
+                aria-controls="infographicModal" aria-expanded="false" title="Apri infografica percorso professionale"
+                data-infographic-target="1">
                 <svg class="icon" aria-hidden="true">
                     <use href="#icon-infographic"></use>
                 </svg>
@@ -1129,51 +1181,73 @@
         </a>
     </footer>
 
-    <!-- Modal Infografica Competenze -->
-    <div class="modal-overlay infoskills-modal" id="infoskillsModal" style="display:none;" aria-hidden="true">
-        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="infoskillsModalTitle"
-            aria-describedby="infoskillsModalBody" tabindex="-1">
-            <button type="button" class="modal-close" id="closeInfoSkills" aria-label="Chiudi infografica">&times;</button>
-            <div id="infoskillsModalBody">
-                <h2 id="infoskillsModalTitle">Infografica Competenze</h2>
-                <figure class="infoskills-figure">
-                    <picture>
-                        <source srcset="images/infoskills-1200.webp" type="image/webp"
-                            data-light="images/infoskills-1200.webp" data-dark="images/infoskills-dark-1200.webp" />
-                        <img src="images/infoskills-light-1200.png" width="1200" height="669"
-                            alt="Infografica delle competenze tecniche di Paolo Paci" loading="lazy" decoding="async"
-                            data-light="images/infoskills-light-1200.png"
-                            data-dark="images/infoskills-dark-1200.png" />
-                    </picture>
-                    <figcaption class="sr-only">
-                        Infografica con dettaglio delle competenze tecniche.
-                    </figcaption>
-                </figure>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Infografica Carriera Professionale -->
-    <div class="modal-overlay infopercorso-modal" id="infoPercorsoModal" style="display:none;" aria-hidden="true">
-        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="infoPercorsoModalTitle"
-            aria-describedby="infoPercorsoModalBody" tabindex="-1">
-            <button type="button" class="modal-close" id="closeInfoPercorso" aria-label="Chiudi infografica">&times;</button>
-            <div id="infoPercorsoModalBody">
-                <h2 id="infoPercorsoModalTitle">Infografica Carriera Professionale</h2>
-                <figure class="infopercorso-figure">
-                    <picture>
-                        <source srcset="images/infoPercorsoProf-1200.webp" type="image/webp"
-                            data-light="images/infoPercorsoProf-1200.webp"
-                            data-dark="images/infoPercorsoProf-dark-1200.webp" />
-                        <img src="images/infoPercorsoProf-light-1200.png" width="1200" height="670"
-                            alt="Infografica con il percorso professionale di Paolo Paci" loading="lazy"
-                            decoding="async" data-light="images/infoPercorsoProf-light-1200.png"
-                            data-dark="images/infoPercorsoProf-dark-1200.png" />
-                    </picture>
-                    <figcaption class="sr-only">
-                        Infografica con il percorso professionale di Paolo Paci.
-                    </figcaption>
-                </figure>
+    <!-- Modal Galleria Infografiche -->
+    <div class="modal-overlay infographic-modal" id="infographicModal" style="display:none;" aria-hidden="true">
+        <div class="modal-content infographic-modal-content" role="dialog" aria-modal="true"
+            aria-labelledby="infographicModalTitle" aria-describedby="infographicModalBody" tabindex="-1">
+            <button type="button" class="modal-close" id="closeInfographicModal" aria-label="Chiudi galleria infografiche">&times;</button>
+            <div id="infographicModalBody">
+                <div class="infographic-gallery infographic-gallery-modal" id="infographicModalGallery" data-gallery="modal">
+                    <div class="infographic-gallery-header">
+                        <div>
+                            <p class="infographic-eyebrow">Galleria infografica</p>
+                            <h2 class="infographic-heading" id="infographicModalTitle">Figura 1</h2>
+                        </div>
+                        <p class="infographic-counter" id="infographicModalCounter" aria-live="polite">1 / 2</p>
+                    </div>
+                    <div class="infographic-stage">
+                        <button type="button" class="infographic-nav infographic-nav-prev"
+                            data-infographic-action="prev" aria-label="Visualizza infografica precedente">
+                            <span aria-hidden="true">&lsaquo;</span>
+                        </button>
+                        <figure class="infographic-figure">
+                            <picture>
+                                <source id="infographicModalSource" srcset="images/infoCV-1200.webp" type="image/webp"
+                                    data-light="images/infoCV-1200.webp" data-dark="images/infoCV-dark-1200.webp" />
+                                <img id="infographicModalImage" src="images/infoCV-light-1200.png" width="1200"
+                                    height="670" alt="Infografica con sintesi delle competenze e del profilo di Paolo Paci"
+                                    loading="lazy" decoding="async" data-light="images/infoCV-light-1200.png"
+                                    data-dark="images/infoCV-dark-1200.png" />
+                            </picture>
+                            <figcaption class="infographic-caption" id="infographicModalCaption">
+                                Sintesi visiva del profilo professionale e delle competenze principali.
+                            </figcaption>
+                        </figure>
+                        <button type="button" class="infographic-nav infographic-nav-next"
+                            data-infographic-action="next" aria-label="Visualizza infografica successiva">
+                            <span aria-hidden="true">&rsaquo;</span>
+                        </button>
+                    </div>
+                    <div class="infographic-toolbar">
+                        <div class="infographic-indicators" role="tablist" aria-label="Seleziona un'infografica">
+                            <button type="button" class="infographic-indicator is-active" data-infographic-index="0"
+                                role="tab" aria-selected="true" aria-current="true"
+                                aria-label="Vai a figura 1: sintesi professionale">
+                                <span>Figura 1</span>
+                            </button>
+                            <button type="button" class="infographic-indicator" data-infographic-index="1" role="tab"
+                                aria-selected="false" aria-current="false"
+                                aria-label="Vai a figura 2: CV infografico completo">
+                                <span>Figura 2</span>
+                            </button>
+                        </div>
+                        <div class="infographic-actions">
+                            <a id="infographicModalDownloadCurrent" class="infographic-download-link"
+                                href="images/infoCV-light-1200.png" download="Paolo-Paci-figura-1.png">
+                                <svg class="icon" aria-hidden="true">
+                                    <use href="#icon-download"></use>
+                                </svg>
+                                <span>Scarica figura corrente</span>
+                            </a>
+                            <button type="button" id="infographicModalDownloadAll" class="infographic-download-link secondary">
+                                <svg class="icon" aria-hidden="true">
+                                    <use href="#icon-download"></use>
+                                </svg>
+                                <span>Scarica entrambe</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1237,7 +1311,7 @@
         </button>
     </div>
 
-    <script src="js/main.js?v=seo-geo-20260413" defer></script>
+    <script src="js/main.js?v=infocarousel-20260423" defer></script>
     <!-- Live region discreta per fallback del code background -->
     <div id="codebg-status" class="codebg-sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
     <!-- Prism.js (core + autoloader) -->

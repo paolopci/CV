@@ -543,37 +543,228 @@ function initTheme() {
 
 window.initTheme = initTheme;
 
-function initInfoskillsModal() {
-    const trigger = document.getElementById('infoskillsTrigger');
-    const modal = document.getElementById('infoskillsModal');
-    if (!trigger || !modal) return;
+const infographicItems = [
+    {
+        label: 'Figura 1',
+        title: 'Figura 1',
+        name: 'Sintesi professionale',
+        caption: 'Sintesi visiva del profilo professionale e delle competenze principali.',
+        alt: 'Infografica con sintesi delle competenze e del profilo di Paolo Paci',
+        sourceLight: 'images/infoCV-1200.webp',
+        sourceDark: 'images/infoCV-dark-1200.webp',
+        imageLight: 'images/infoCV-light-1200.png',
+        imageDark: 'images/infoCV-dark-1200.png',
+        width: 1200,
+        height: 670,
+        downloadName: 'Paolo-Paci-figura-1.png'
+    },
+    {
+        label: 'Figura 2',
+        title: 'Figura 2',
+        name: 'CV infografico completo',
+        caption: 'CV infografico completo di Paolo Paci con profilo, competenze, attivita e percorso professionale.',
+        alt: 'CV infografico completo di Paolo Paci con profilo, competenze e percorso professionale',
+        sourceLight: '',
+        sourceDark: '',
+        imageLight: 'images/Infografica_CV.png',
+        imageDark: 'images/Infografica_CV.png',
+        width: 1055,
+        height: 1491,
+        downloadName: 'Paolo-Paci-figura-2.png'
+    }
+];
+
+function getInfographicItem(index) {
+    return infographicItems[index] || infographicItems[0];
+}
+
+function getCurrentInfographicImage(item) {
+    const isDark = document.body.classList.contains('dark-theme');
+    return isDark ? (item.imageDark || item.imageLight) : item.imageLight;
+}
+
+function setInfographicSource(sourceEl, item) {
+    if (!sourceEl) return;
+    const light = item.sourceLight || '';
+    const dark = item.sourceDark || '';
+    if (light || dark) {
+        sourceEl.setAttribute('type', 'image/webp');
+        sourceEl.setAttribute('data-light', light || dark);
+        sourceEl.setAttribute('data-dark', dark || light);
+        sourceEl.setAttribute('srcset', document.body.classList.contains('dark-theme') ? (dark || light) : (light || dark));
+    } else {
+        sourceEl.removeAttribute('srcset');
+        sourceEl.removeAttribute('type');
+        sourceEl.removeAttribute('data-light');
+        sourceEl.removeAttribute('data-dark');
+    }
+}
+
+function triggerInfographicDownload(href, downloadName) {
+    if (!href) return;
+    const anchor = document.createElement('a');
+    anchor.href = href;
+    anchor.download = downloadName || '';
+    anchor.style.display = 'none';
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+}
+
+function initInfographicGallery(root, options = {}) {
+    if (!root || root.dataset.initialized === 'true') return root && root._galleryApi;
+
+    const sourceEl = root.querySelector('source');
+    const imageEl = root.querySelector('img');
+    const titleEl = root.querySelector('.infographic-heading');
+    const captionEl = root.querySelector('.infographic-caption');
+    const counterEl = root.querySelector('.infographic-counter');
+    const indicatorEls = Array.from(root.querySelectorAll('.infographic-indicator'));
+    const prevBtn = root.querySelector('[data-infographic-action="prev"]');
+    const nextBtn = root.querySelector('[data-infographic-action="next"]');
+    const downloadCurrentEl = root.querySelector('[id$="DownloadCurrent"]');
+    const downloadAllEl = root.querySelector('[id$="DownloadAll"]');
+    const announce = window.a11yAnnounce || function () { };
+    const total = infographicItems.length;
+
+    if (!imageEl || !titleEl || !captionEl || !counterEl) return null;
+
+    const state = {
+        index: Math.min(Math.max(Number(options.startIndex) || 0, 0), total - 1)
+    };
+
+    function render(index, opts = {}) {
+        state.index = ((index % total) + total) % total;
+        const item = getInfographicItem(state.index);
+
+        setInfographicSource(sourceEl, item);
+        imageEl.setAttribute('src', getCurrentInfographicImage(item));
+        imageEl.setAttribute('alt', item.alt);
+        imageEl.setAttribute('width', String(item.width));
+        imageEl.setAttribute('height', String(item.height));
+        imageEl.setAttribute('data-light', item.imageLight);
+        imageEl.setAttribute('data-dark', item.imageDark || item.imageLight);
+
+        titleEl.textContent = item.title;
+        captionEl.textContent = item.caption;
+        counterEl.textContent = `${state.index + 1} / ${total}`;
+
+        indicatorEls.forEach((indicatorEl, indicatorIndex) => {
+            const isActive = indicatorIndex === state.index;
+            indicatorEl.classList.toggle('is-active', isActive);
+            indicatorEl.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            indicatorEl.setAttribute('aria-current', isActive ? 'true' : 'false');
+            indicatorEl.tabIndex = isActive ? 0 : -1;
+        });
+
+        if (downloadCurrentEl) {
+            const href = getCurrentInfographicImage(item);
+            downloadCurrentEl.setAttribute('href', href);
+            downloadCurrentEl.setAttribute('download', item.downloadName);
+            downloadCurrentEl.setAttribute('aria-label', `Scarica ${item.label.toLowerCase()}`);
+        }
+
+        if (opts.announce) {
+            announce(`${item.label} selezionata: ${item.name}`);
+        }
+
+        return item;
+    }
+
+    function next(opts = {}) {
+        return render(state.index + 1, opts);
+    }
+
+    function prev(opts = {}) {
+        return render(state.index - 1, opts);
+    }
+
+    function setIndex(index, opts = {}) {
+        return render(index, opts);
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => prev({ announce: true }));
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => next({ announce: true }));
+    }
+
+    indicatorEls.forEach((indicatorEl) => {
+        indicatorEl.addEventListener('click', () => {
+            setIndex(Number(indicatorEl.dataset.infographicIndex || 0), { announce: true });
+        });
+    });
+
+    if (downloadAllEl) {
+        downloadAllEl.addEventListener('click', () => {
+            infographicItems.forEach((item, index) => {
+                window.setTimeout(() => {
+                    triggerInfographicDownload(item.imageLight, item.downloadName);
+                }, index * 150);
+            });
+            announce('Download di entrambe le infografiche avviato');
+        });
+    }
+
+    const api = {
+        getIndex: () => state.index,
+        setIndex,
+        next,
+        prev,
+        refresh: () => render(state.index)
+    };
+
+    root._galleryApi = api;
+    root.dataset.initialized = 'true';
+    render(state.index);
+    return api;
+}
+
+function initInfographicSection() {
+    const galleryRoot = document.getElementById('infographicGallery');
+    if (!galleryRoot) return null;
+    return initInfographicGallery(galleryRoot, { startIndex: 0 });
+}
+
+function initInfographicModal() {
+    const modal = document.getElementById('infographicModal');
+    if (!modal || modal.dataset.initialized === 'true') return modal && modal._galleryModalApi;
 
     const modalContent = modal.querySelector('.modal-content');
     const closeBtn = modal.querySelector('.modal-close');
+    const galleryRoot = document.getElementById('infographicModalGallery');
+    const galleryApi = initInfographicGallery(galleryRoot, { startIndex: 0 });
+    const triggers = Array.from(document.querySelectorAll('[data-infographic-target]'));
 
-    const openModal = (openerEl) => {
+    if (!galleryApi) return null;
+
+    function openModal(triggerEl) {
+        const startIndex = Number(triggerEl && triggerEl.dataset.infographicTarget ? triggerEl.dataset.infographicTarget : 0);
+        const item = galleryApi.setIndex(startIndex);
         openAccessibleModal({
             modal,
             modalContent,
-            openerEl,
-            triggerEl: trigger,
-            openMessage: 'Infografica competenze aperta',
-            closeMessage: 'Infografica competenze chiusa'
+            openerEl: triggerEl,
+            triggerEl,
+            openMessage: `Galleria infografiche aperta su ${item.label}`,
+            closeMessage: 'Galleria infografiche chiusa'
         });
-    };
-
-    function closeModal() {
-        closeAccessibleModal(modal, 'Infografica competenze chiusa');
     }
 
-    modal._close = closeModal;
+    function closeModal() {
+        closeAccessibleModal(modal, 'Galleria infografiche chiusa');
+    }
 
-    trigger.addEventListener('click', () => openModal(trigger));
-    trigger.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openModal(trigger);
-        }
+    triggers.forEach((triggerEl) => {
+        triggerEl.addEventListener('click', () => openModal(triggerEl));
+        triggerEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openModal(triggerEl);
+            }
+        });
     });
 
     if (closeBtn) {
@@ -581,59 +772,33 @@ function initInfoskillsModal() {
     }
 
     modal.addEventListener('click', (e) => {
-        if (e.target.id === 'infoskillsModal') {
+        if (e.target === modal) {
             closeModal();
         }
     });
-}
 
-window.initInfoskillsModal = initInfoskillsModal;
-
-function initInfoPercorsoModal() {
-    const trigger = document.getElementById('infoPercorsoTrigger');
-    const modal = document.getElementById('infoPercorsoModal');
-    if (!trigger || !modal) return;
-
-    const modalContent = modal.querySelector('.modal-content');
-    const closeBtn = modal.querySelector('.modal-close');
-
-    const openModal = (openerEl) => {
-        openAccessibleModal({
-            modal,
-            modalContent,
-            openerEl,
-            triggerEl: trigger,
-            openMessage: 'Infografica percorso professionale aperta',
-            closeMessage: 'Infografica percorso professionale chiusa'
-        });
-    };
-
-    function closeModal() {
-        closeAccessibleModal(modal, 'Infografica percorso professionale chiusa');
-    }
+    modal.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            galleryApi.next({ announce: true });
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            galleryApi.prev({ announce: true });
+        }
+    });
 
     modal._close = closeModal;
-
-    trigger.addEventListener('click', () => openModal(trigger));
-    trigger.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openModal(trigger);
-        }
-    });
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => closeModal());
-    }
-
-    modal.addEventListener('click', (e) => {
-        if (e.target.id === 'infoPercorsoModal') {
-            closeModal();
-        }
-    });
+    modal._galleryModalApi = galleryApi;
+    modal.dataset.initialized = 'true';
+    return galleryApi;
 }
 
-window.initInfoPercorsoModal = initInfoPercorsoModal;
+window.initInfographicGallery = initInfographicGallery;
+window.initInfographicSection = initInfographicSection;
+window.initInfographicModal = initInfographicModal;
+window.initInfoskillsModal = initInfographicModal;
+window.initInfoPercorsoModal = initInfographicModal;
+window.infographicItems = infographicItems;
 
 // Magnet effect for CTA buttons
 function initMagnetButtons() {
@@ -1303,10 +1468,10 @@ window.isGitHubDevelopmentEnvironment = isGitHubDevelopmentEnvironment;
 // Initialize components when page is ready
 document.addEventListener('DOMContentLoaded', () => {
     loadCourses();
-    initInfoskillsModal();
-    initInfoPercorsoModal();
-    initMagnetButtons();
     initTheme();
+    initInfographicSection();
+    initInfographicModal();
+    initMagnetButtons();
     initTimelineScroll();
     initAIChat();
     loadGitHubActivity();
