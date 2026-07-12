@@ -22,6 +22,13 @@ describe('AI Chat Assistant Logic', () => {
     expect(response).toContain('.NET Core 6/8');
   });
 
+  test('should return the Senior .NET and Angular positioning for identity questions', () => {
+    const response = window.getAIResponse('Chi sei?');
+
+    expect(response).toContain('Senior Software Engineer .NET & Angular');
+    expect(response).toContain('applicazioni enterprise');
+  });
+
   test('should return correct response for angular keyword', () => {
     const response = window.getAIResponse('Cosa sa fare con angular?');
     expect(response).toContain('Angular (attualmente v18+)');

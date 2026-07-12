@@ -864,7 +864,7 @@ const aiKnowledgeBase = [
         priority: 85,
         aliases: ['chi sei', 'profilo professionale', 'presentami paolo', 'paolo paci'],
         keywords: ['profilo', 'software engineer', 'ingegnere', 'sviluppatore', 'full stack'],
-        answer: 'Sono l\'assistente virtuale di Paolo Paci. Paolo è un Software Engineer full-stack con 10+ anni di esperienza in .NET e Angular, specializzato in backend Microsoft, API RESTful, frontend moderno e integrazione AI.',
+        answer: 'Sono l\'assistente virtuale di Paolo Paci. Paolo è un Senior Software Engineer .NET & Angular con 10+ anni di esperienza. Il suo profilo è full-stack, con focus su applicazioni enterprise, API RESTful, frontend Angular e integrazioni AI.',
     },
     {
         id: 'esperienza',
@@ -1509,76 +1509,6 @@ if (dynamicDateEl) {
 
 
 
-
-// Typewriter Effect
-class TypeWriter {
-    constructor(txtElement, words, wait = 3000) {
-        this.txtElement = txtElement;
-        this.words = words;
-        this.txt = '';
-        this.wordIndex = 0;
-        this.wait = parseInt(wait, 10);
-        this.type();
-        this.isDeleting = false;
-    }
-
-    type() {
-        // Current index of word
-        const current = this.wordIndex % this.words.length;
-        // Get full text of current word
-        const fullTxt = this.words[current];
-
-        // Check if deleting
-        if (this.isDeleting) {
-            // Remove char
-            this.txt = fullTxt.substring(0, this.txt.length - 1);
-        } else {
-            // Add char
-            this.txt = fullTxt.substring(0, this.txt.length + 1);
-        }
-
-        // Insert txt into element
-        this.txtElement.textContent = this.txt;
-
-        // Initial Type Speed
-        let typeSpeed = 100;
-
-        if (this.isDeleting) {
-            typeSpeed /= 2;
-        }
-
-        // If word is complete
-        if (!this.isDeleting && this.txt === fullTxt) {
-            // Make pause at end
-            typeSpeed = this.wait;
-            // Set delete to true
-            this.isDeleting = true;
-        } else if (this.isDeleting && this.txt === '') {
-            this.isDeleting = false;
-            // Move to next word
-            this.wordIndex++;
-            // Pause before start typing
-            typeSpeed = 500;
-        }
-
-        setTimeout(() => this.type(), typeSpeed);
-    }
-}
-
-// Init TypeWriter
-document.addEventListener('DOMContentLoaded', () => {
-    const txtElement = document.getElementById('typewriter-text');
-    if (txtElement) {
-        const words = [
-            "Software Engineer .NET",
-            "ASP.NET Core Specialist",
-            "Angular Developer",
-            "API REST e Microservizi",
-            "AI Integration Engineer"
-        ];
-        new TypeWriter(txtElement, words);
-    }
-});
 
 // Portfolio Filtering
 document.addEventListener('DOMContentLoaded', () => {
