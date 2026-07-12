@@ -92,6 +92,7 @@ describe('AI Chat Accessibility', () => {
     expect(messages).toHaveLength(2);
     expect(messages[1].classList.contains('assistant')).toBe(true);
     expect(messages[1].textContent).toContain('TIM, Aruba, BKN301');
+    expect(messages[1].textContent).toContain('PHP ad ASP.NET Core');
 
     jest.advanceTimersByTime(50);
     expect(live.textContent).toBe('Risposta dell\'assistente AI aggiunta');

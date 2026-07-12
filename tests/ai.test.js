@@ -112,6 +112,16 @@ describe('AI Chat Assistant Logic', () => {
     });
   });
 
+  test('should summarize verified outcomes from recent roles', () => {
+    const response = window.getAIResponse('Che esperienza ha Paolo?');
+
+    expect(response).toContain('codebase legacy');
+    expect(response).toContain('Cypress');
+    expect(response).toContain('stored procedure');
+    expect(response).toContain('PHP ad ASP.NET Core');
+    expect(response).toContain('presa delle comande');
+  });
+
   test('should normalize accents, punctuation and uppercase input', () => {
     const response = window.getAIResponse('DISPONIBILITÀ LAVORATIVA???');
     expect(response).toContain('Full-Remote o Ibride');

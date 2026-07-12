@@ -872,7 +872,7 @@ const aiKnowledgeBase = [
         priority: 100,
         aliases: ['parlami della tua esperienza', 'che esperienza ha paolo', 'esperienza lavorativa', 'carriera professionale', 'team remoto'],
         keywords: ['esperienza', 'carriera', 'lavorato', 'tim', 'aruba', 'qbitsoft', 'global sistemi', 'lasersoft', 'bkn301'],
-        answer: 'Paolo ha 10+ anni di esperienza in .NET e Angular. Ha lavorato su progetti full-stack e backend per TIM, Aruba, BKN301, LaserSoft e altri contesti enterprise, con focus su Web API, JWT, data access, e-commerce, servizi digitali e team full-remote.',
+        answer: 'Paolo ha 10+ anni di esperienza in .NET e Angular. In TIM è intervenuto su una codebase legacy; in Aruba ha mantenuto i test Cypress e corretto una stored procedure con risultati intermittenti errati; in BKN301 ha contribuito, con un team internazionale, alla migrazione da PHP ad ASP.NET Core e alla reimplementazione degli endpoint; in LaserSoft ha sviluppato API per la presa delle comande. Ha lavorato in team full-remote per TIM, Aruba, BKN301 e LaserSoft.',
     },
     {
         id: 'competenze',
