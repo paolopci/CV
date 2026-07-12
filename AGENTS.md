@@ -1,121 +1,180 @@
-# AGENTS.md - CV Paolo Paci
+# AGENTS.md
 
 ## 1. Scopo e Ambito
 
-- Questo file definisce le istruzioni operative per agenti e contributor che lavorano in questo repository.
-- Ambito: l'intero repository radicato nella cartella corrente.
-- Progetto: sito statico del CV di Paolo Paci, in lingua italiana.
-- Architettura: frontend client-side, senza backend e senza segreti.
-- Eventuali `AGENTS.md` annidati hanno precedenza nella propria sottostruttura.
+Questo file contiene solo istruzioni sulla struttura del progetto e richiami ai moduli condivisi in shared/.
 
 ## 2. Regole di Collaborazione
 
-- Applica le regole comuni definite in [_shared/regole-collaborazione.md](./_shared/regole-collaborazione.md).
-- Chat, aggiornamenti e interazioni di progetto devono essere rigorosamente in italiano.
-- Il progetto usa la metodologia Conductor, documentata nella cartella `conductor/`, per sviluppo guidato da specifiche e track.
+Vedi shared/regole-collaborazione.md
 
 ## 3. Workflow Operativo
 
-- Applica il workflow comune definito in [_shared/workflow-operativo.md](./_shared/workflow-operativo.md).
-- Prima di modificare file, analizza il task e presenta una checklist di 1-7 punti.
-- Usa `🟩` per i punti aperti e `🟨 ~~testo~~` per quelli completati.
-- Alla fine della checklist chiedi: `Confermi lo step X? oppure si step all`.
-- Se l'utente conferma un singolo step, esegui solo quello step e valida l'esito in 1-2 frasi.
-- Se l'utente scrive `si step all`, esegui tutti gli step rimanenti senza ulteriori richieste di conferma.
-- In chiusura, testa, riformatta il codice quando applicabile e proponi eventuali refactoring solo alla fine.
-- Se per test o operazioni necessarie servono permessi piu elevati, usa permessi piu elevati secondo il flusso autorizzativo disponibile.
+Vedi shared/workflow-operativo.md
 
 ## 4. Struttura del Progetto e Organizzazione dei Moduli
 
-- `index.html`: entry point del sito; include AI UI, GitHub widget, Twitter Card, JSON-LD schema.org, navbar, landmark `main`, skip link e modali accessibili.
-- `css/index.css`: stili globali, Glassmorphism, animazioni e tema scuro.
-- `js/main.js`: logica UI core, AI Assistant, knowledge base, GitHub API, cache/retry del widget GitHub e scroll observer.
-- `js/hero-code-bg.js`: iniettore dell'animazione di codice nell'hero.
-- `scripts/build.js`: script Node per generare `dist/`, copiare asset statici e riscrivere l'HTML di produzione con asset minificati e cache-buster hash.
-- `dist/`: output di produzione generato da `npm run build`, con CSS/JS minificati e asset statici copiati.
-- `docs/cache-headers.md`: note operative sugli header HTTP di caching per GitHub Pages e hosting alternativi.
-- `tests/`: suite Jest per validare la logica JavaScript.
-- `package.json`: dipendenze e script per test, audit e build leggero di produzione.
-- `courses.json`: sorgente dati per la sezione `Certificazioni & Corsi`.
-- `images/`: asset immagine, inclusi foto profilo e infografiche WebP/PNG.
+- Il repository contiene il sito statico, in lingua italiana, del CV di Paolo Paci.
+- L'architettura è frontend client-side, senza backend.
+- `index.html`: punto di ingresso del sito; include interfaccia AI, widget GitHub, Twitter Card,
+  JSON-LD schema.org, barra di navigazione, landmark `main`, skip link e modali accessibili.
+- `css/index.css`: stili globali, Glassmorphism, animazioni e temi chiaro e scuro.
+- `js/main.js`: logica principale dell'interfaccia, assistente AI, knowledge base, API GitHub,
+  cache e retry del widget GitHub e osservatore dello scorrimento.
+- `js/hero-code-bg.js`: iniettore dell'animazione di codice nella sezione hero.
+- `scripts/build.js`: script Node che genera `dist/`, copia gli asset statici e riscrive l'HTML
+  di produzione con asset minificati e hash cache-buster.
+- `dist/`: output di produzione generato da `npm run build`, con CSS e JavaScript minificati
+  e asset statici copiati.
+- `docs/cache-headers.md`: note sugli header HTTP di caching per GitHub Pages e hosting alternativi.
+- `tests/`: suite Jest per la logica JavaScript.
+- `package.json`: dipendenze e script per test, audit e build di produzione.
+- `courses.json`: sorgente dati della sezione `Certificazioni & Corsi`.
+- `images/`: immagini, foto profilo e infografiche WebP e PNG.
 - `Paolo Paci.pdf`: CV scaricabile.
-- `conductor/`: documentazione di progetto, product guide, tech stack, guidelines e track.
+- `conductor/`: documentazione di progetto, guida prodotto, stack tecnologico, linee guida e track.
 - `archive/`: track completati e file legacy.
-- `_shared/`: moduli condivisi richiamati da questo file.
 
 ## 5. Comandi di Build, Test e Sviluppo
 
-- Server locale: `python -m http.server 8080`, poi apri `http://localhost:8080`.
+- Server locale: `python -m http.server 8080`; il sito è disponibile su `http://localhost:8080`.
 - Test automatici: `npm test`.
-- Build produzione: `npm run build`, genera `dist/css/index.min.css`, `dist/js/app.min.js` e `dist/index.html` con cache-buster hash.
-- Step build separati: `npm run clean`, `npm run build:css`, `npm run build:js`, `npm run build:static`.
-- Audit dipendenze: `npm audit --audit-level=moderate`; usare `npm audit fix` solo senza `--force`, salvo richiesta esplicita.
-- Verifica produzione locale: dopo `npm run build`, apri `http://localhost:8080/dist/` dal server locale.
-- Validazione HTML: usare W3C validator quando si modifica markup significativo.
-- Test rapido manuale: anchor, skip link, modale corsi, modali infografiche, toggle tema persistente, menu mobile e scroll fluido.
-- AI Assistant: verifica apertura chat, invio messaggio, chip FAQ cliccabili, risposte basate sulla knowledge base e fallback educato.
-- GitHub Widget: verifica caricamento eventi, cache locale, fallback offline e diagnostica solo in sviluppo.
-- Dati: se modifichi `courses.json`, ricarica la pagina e controlla la console per confermare JSON valido.
+- Build di produzione: `npm run build`; genera `dist/css/index.min.css`,
+  `dist/js/app.min.js` e `dist/index.html` con hash cache-buster.
+- Passaggi di build separati: `npm run clean`, `npm run build:css`, `npm run build:js` e
+  `npm run build:static`.
+- Audit delle dipendenze: `npm audit --audit-level=moderate`.
+- Verifica locale della produzione: eseguire `npm run build` e aprire
+  `http://localhost:8080/dist/` tramite il server locale.
+- Per modifiche significative al markup, la validazione HTML prevista usa il validatore W3C.
 
 ## 6. Stile del Codice e Convenzioni di Naming
 
-- Indentazione: 4 spazi per HTML e CSS.
-- Wrapping consigliato: circa 100 caratteri quando migliora leggibilita.
-- JavaScript: preferire funzioni globali per testabilita, esponendole su `window` quando necessario per Jest.
-- CSS: usare classi descrittive o BEM-like.
-- CSS: mantenere l'uso di variabili custom, `rgba` e `backdrop-filter` coerente con il Glassmorphism esistente.
-- Build: non modificare direttamente i file minificati in `dist/`; aggiorna i sorgenti (`index.html`, `css/`, `js/`, `scripts/`) e rigenera con `npm run build`.
-- Build: mantenere Prism CDN prima del bundle locale `js/app.min.js` nella versione generata, per non rompere `hero-code-bg.js`.
-- AI Knowledge Base: usare record strutturati in `aiKnowledgeBase` con `id`, `category`, `priority`, `aliases`, `keywords` e `answer`.
-- Per modifiche UI, intervenire principalmente su `css/index.css` seguendo lo stile esistente.
-- GitHub Widget: mantenere cache versionata con TTL 6 ore, retry con exponential backoff e dati di esempio coerenti con il portfolio.
+- HTML e CSS usano un'indentazione di 4 spazi.
+- Il wrapping consigliato è di circa 100 caratteri quando migliora la leggibilità.
+- JavaScript preferisce funzioni globali testabili, esposte su `window` quando richiesto da Jest.
+- Le classi CSS usano nomi descrittivi o uno stile simile a BEM.
+- Le variabili CSS personalizzate, `rgba` e `backdrop-filter` restano coerenti con il
+  Glassmorphism esistente.
+- I file minificati in `dist/` sono generati: le sorgenti sono `index.html`, `css/`, `js/` e
+  `scripts/`.
+- Nella build generata, Prism CDN precede il bundle locale `js/app.min.js`, necessario per
+  `hero-code-bg.js`.
+- I record di `aiKnowledgeBase` usano `id`, `category`, `priority`, `aliases`, `keywords` e
+  `answer`.
+- Le modifiche dell'interfaccia interessano principalmente `css/index.css` e mantengono lo stile
+  esistente.
+- La cache del widget GitHub è versionata, usa un TTL di 6 ore, retry con backoff esponenziale e
+  dati di esempio coerenti con il portfolio.
+- I commit sono in italiano, brevi e orientati all'azione; esempi:
+  `feat(ai): add info laurea` e `fix(ui): modal close button`.
 
-## 7. Linee Guida per i Test e Accessibilita
+## 7. Linee Guida per i Test
 
-- Mantieni copertura Jest maggiore dell'80% per nuove logiche JavaScript.
-- Per nuove informazioni nel chatbot, aggiorna i record di `aiKnowledgeBase` in `js/main.js` e aggiungi o aggiorna test in `tests/ai.test.js`.
-- Il matching AI usa `normalizeAIInput()`, `findBestAIEntry()` e scoring deterministico: preferisci alias specifici e keyword mirate per evitare risposte ambigue.
-- I chip FAQ dell'assistente sono in `index.html` dentro `#ai-suggestions`; se li modifichi, aggiorna la gestione in `initAIChat()` e i test in `tests/chat.test.js`.
-- Quando cambi `css/index.css` o `js/main.js` per funzionalita visibili, aggiorna il query string cache-buster in `index.html` se serve forzare il refresh browser.
-- Quando cambi asset serviti in produzione, esegui `npm run build` e verifica che `dist/index.html` punti a `css/index.min.css?v=<hash>` e `js/app.min.js?v=<hash>`.
-- SEO: mantieni allineati `title`, `description`, Open Graph, Twitter Card e JSON-LD quando cambiano ruolo, descrizione, immagine social o URL canonico del sito.
-- Structured data: non usare `JobPosting` per esperienze lavorative storiche; usare `Person`, `Occupation` e `OrganizationRole` coerenti con schema.org.
-- Performance immagini: tutte le immagini non critiche devono avere `loading="lazy"` e `decoding="async"`; le immagini informative devono avere `width`, `height` e `alt` significativi.
-- Per modifiche al widget GitHub, aggiorna `tests/github.test.js` coprendo cache, retry, payload non valido, fallback e dettagli errore sviluppo/produzione.
-- Se l'informazione e visibile nel sito, mantieni allineati `index.html`, knowledge base AI e JSON-LD.
-- Verifica responsivita, effetto magnetico e chatbot su diversi viewport quando tocchi UI o layout.
-- A11y: mantieni `main#main-content`, skip link, `nav[aria-label="Navigazione principale"]`, titoli coerenti e ruoli semantici non ridondanti.
-- A11y immagini: usa `alt` significativi per immagini informative e `alt=""` o `aria-hidden="true"` per icone decorative dentro link gia testuali.
-- A11y dinamica: usa `window.a11yAnnounce()` e mantieni `#a11y-status` fuori dalle aree nascoste quando si aprono modali.
-- A11y modali: conserva `openAccessibleModal()`/`closeAccessibleModal()`, `aria-modal`, `aria-labelledby`, `aria-describedby`, ritorno focus al trigger e trap Tab/Shift+Tab/Escape.
-- Contrasto: mantieni conformita WCAG 2.1 AA, almeno 4.5:1 per testo normale e 3:1 per testo grande o componenti UI; verifica tema chiaro e scuro.
-- Test accessibilita: aggiorna `tests/modal-accessibility.test.js` per focus trap/live region dei modali e `tests/theme.test.js` per annunci del toggle tema.
-- Tema: il toggle in `js/main.js` deve persistere la scelta in `localStorage.theme` con valori `dark`/`light`, leggere la preferenza salvata all'avvio e usare `prefers-color-scheme` solo come fallback iniziale.
-- Tema: gli accessi a `localStorage` devono essere tolleranti a errori, mantenendo il toggle funzionante anche se la preferenza non puo essere letta o salvata.
-- Tema: aggiorna sempre `data-mode`, `aria-pressed`, `aria-label`, `title`, infografiche `data-dark`/`data-light` e annunci accessibili quando cambia lo stato.
-- Tema: assicurati che trasparenze e contrasti siano leggibili sia in tema chiaro sia in tema scuro.
+- Le nuove logiche JavaScript mantengono una copertura Jest superiore all'80%.
+- Le nuove informazioni del chatbot richiedono record coerenti in `aiKnowledgeBase` dentro
+  `js/main.js` e test in `tests/ai.test.js`.
+- Il matching AI usa `normalizeAIInput()`, `findBestAIEntry()` e uno scoring deterministico;
+  alias specifici e parole chiave mirate evitano risposte ambigue.
+- I chip FAQ sono in `index.html` dentro `#ai-suggestions`; i relativi test sono in
+  `tests/chat.test.js`.
+- Le modifiche a `css/index.css` o `js/main.js` possono richiedere l'aggiornamento del parametro
+  cache-buster in `index.html`.
+- Dopo modifiche agli asset di produzione, `npm run build` deve generare riferimenti in
+  `dist/index.html` a `css/index.min.css?v=<hash>` e `js/app.min.js?v=<hash>`.
+- Il test manuale rapido copre anchor, skip link, modale corsi, modali infografiche, persistenza
+  del tema, menu mobile e scorrimento fluido.
+- I test manuali dell'assistente AI coprono apertura, invio, chip FAQ, knowledge base e fallback.
+- I test manuali del widget GitHub coprono caricamento, cache locale, fallback offline e
+  diagnostica in sviluppo.
+- Le modifiche a `courses.json` richiedono la verifica del caricamento e dell'assenza di errori
+  JSON nella console.
+- I metadati `title`, `description`, Open Graph, Twitter Card e JSON-LD restano allineati quando
+  cambiano ruolo, descrizione, immagine social o URL canonico.
+- I dati strutturati delle esperienze storiche usano `Person`, `Occupation` e
+  `OrganizationRole`, non `JobPosting`.
+- Le immagini non critiche usano `loading="lazy"` e `decoding="async"`; le immagini informative
+  includono `width`, `height` e testo `alt` significativo.
+- I test del widget GitHub in `tests/github.test.js` coprono cache, retry, payload non valido,
+  fallback e dettagli degli errori in sviluppo e produzione.
+- Le informazioni visibili restano allineate tra `index.html`, knowledge base AI e JSON-LD.
+- Le verifiche dell'interfaccia coprono più viewport, effetto magnetico e chatbot.
+- L'accessibilità mantiene `main#main-content`, skip link,
+  `nav[aria-label="Navigazione principale"]`, gerarchia dei titoli e ruoli semantici corretti.
+- Le immagini informative hanno testi `alt` significativi; le icone decorative usano `alt=""`
+  o `aria-hidden="true"` quando inserite in collegamenti già testuali.
+- Le funzionalità dinamiche usano `window.a11yAnnounce()` e mantengono `#a11y-status` fuori dalle
+  aree nascoste durante l'apertura delle modali.
+- Le modali mantengono `openAccessibleModal()` e `closeAccessibleModal()`, gli attributi ARIA,
+  il ritorno del focus e il focus trap per Tab, Shift+Tab ed Escape.
+- Il contrasto rispetta WCAG 2.1 AA nei temi chiaro e scuro: almeno 4,5:1 per testo normale e
+  3:1 per testo grande o componenti dell'interfaccia.
+- `tests/modal-accessibility.test.js` copre focus trap e live region;
+  `tests/theme.test.js` copre gli annunci del selettore del tema.
+- Il tema persiste in `localStorage.theme` con i valori `dark` e `light`; usa
+  `prefers-color-scheme` solo come fallback iniziale e tollera errori di accesso a `localStorage`.
+- Il cambio tema aggiorna `data-mode`, `aria-pressed`, `aria-label`, `title`, gli attributi
+  `data-dark` e `data-light` delle infografiche e gli annunci accessibili.
 
 ## 8. Linee Guida per Commit e Pull Request
 
-- Commit in italiano, brevi e orientati all'azione.
-- Esempi: `feat(ai): add info laurea`, `fix(ui): modal close button`.
-- Mantieni cambi mirati e coerenti con il task.
-- Non committare mai `node_modules/`.
-- Prima di proporre commit, verifica lo stato Git e separa eventuali modifiche non correlate.
+- Le modifiche di ogni commit sono mirate e coerenti con il task.
+- `node_modules/` non deve essere incluso nei commit.
+- Prima di proporre un commit, lo stato Git permette di distinguere modifiche non correlate.
 
 ## 9. Suggerimenti su Sicurezza e Configurazione
 
-- Applica le regole comuni definite in [_shared/sicurezza-configurazione.md](./_shared/sicurezza-configurazione.md).
-- Il sito e solo client-side: non introdurre backend, segreti o chiavi API lato client.
-- Il widget GitHub usa dati pubblici da `api.github.com/users/paolopci/events/public`.
-- Non introdurre token GitHub, segreti o chiavi API: il widget deve restare resiliente tramite cache locale, retry e fallback client-side.
-- GitHub Pages non applica `.htaccess`: per il caching usare cache-buster/fingerprint degli asset generati e aggiornare `docs/cache-headers.md` solo per hosting alternativi.
-- `index.html` include JSON-LD `Person` con `Occupation` e `OrganizationRole`: mantieni contatti, competenze ed esperienze allineati con contenuti visibili e knowledge base AI.
-- Conductor: aggiorna `conductor/setup_state.json` durante i setup quando il flusso Conductor lo richiede.
+Vedi shared/sicurezza-configurazione.md
 
 ## 10. Flusso di Collaborazione
 
-- Applica il flusso comune definito in [_shared/flusso-collaborazione.md](./_shared/flusso-collaborazione.md).
-- Le istruzioni dirette dell'utente e del sistema hanno sempre priorita su questo file.
-- Le regole locali di questo `AGENTS.md` prevalgono sui moduli `_shared` quando specificano dettagli propri del repository.
-- In caso di conflitto tra moduli `_shared`, prevale [_shared/workflow-operativo.md](./_shared/workflow-operativo.md).
+Vedi shared/flusso-collaborazione.md
+
+## 11. Decisione Iniziale per Task Non Banali
+
+All'inizio di ogni task non banale, l'agente deve:
+
+1. analizzare il prompt dell'utente;
+2. classificare il task per complessità, numero di layer coinvolti, rischio tecnico, durata
+   stimata e necessità di lavoro per fasi;
+3. scegliere una sola opzione tra `A`, `B`, `C` e `D`;
+4. presentare sempre all'utente la domanda decisionale iniziale;
+5. contrassegnare con `(raccomandata)` una sola opzione, determinata caso per caso;
+6. fermarsi e attendere che l'utente risponda con `A`, `B`, `C` oppure `D`.
+
+La domanda deve contenere sempre queste opzioni:
+
+- `A. Applica Modalità piano`
+- `B. Applica Modalità piano e la skill [dotnet-task-decomposition](C:\Users\Paolo\.codex\skills\custom\dotnet-task-decomposition\SKILL.md)`
+- `C. Applica la skill [dotnet-task-decomposition](C:\Users\Paolo\.codex\skills\custom\dotnet-task-decomposition\SKILL.md)`
+- `D. Nessuna delle due`
+
+La raccomandazione deve rispettare questi criteri:
+
+- raccomandare `A` se il task è ampio o ambiguo e richiede soprattutto pianificazione
+  conversazionale, ma non richiede ancora necessariamente `PRD` e `PLAN` nel repository;
+- raccomandare `B` se il task è grande, rischioso, multifase, multilayer o multisessione e
+  richiede sia governance conversazionale sia disciplina documentale ed esecutiva nel repository;
+- raccomandare `C` se il task è complesso ma sufficientemente definito per iniziare con `PRD`,
+  `PLAN`, esecuzione per fasi e regole della skill;
+- raccomandare `D` se il task è piccolo, locale e chiaro e non richiede pianificazione strutturata
+  o decomposizione documentale.
+
+Se l'utente sceglie `A` o `B`, l'agente deve fermarsi, chiedere all'utente di attivare il toggle
+UI `Modalità piano` di Codex e attendere che prema Invio prima di procedere. Se sceglie `C`,
+l'agente applica `dotnet-task-decomposition` senza richiedere `Modalità piano`. Se sceglie `D`,
+l'agente non usa né `Modalità piano` né `dotnet-task-decomposition`.
+
+È vietato:
+
+- saltare la domanda iniziale nei task non banali;
+- attivare implicitamente `Modalità piano`;
+- applicare implicitamente `dotnet-task-decomposition` quando la domanda iniziale è obbligatoria;
+- continuare dopo `A` o `B` senza la conferma dell'utente successiva all'attivazione del toggle;
+- reinterpretare la scelta dell'utente diversamente da `A`, `B`, `C` o `D`.
+
+## Precedenza delle Istruzioni
+
+1. `shared/workflow-operativo.md` prevale per aspetti operativi.
+2. Gli altri file `shared/*.md` prevalgono per le regole condivise non operative.
+3. `AGENTS.md` contiene solo istruzioni sulla struttura del progetto che non contraddicono i moduli condivisi.

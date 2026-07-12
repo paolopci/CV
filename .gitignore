@@ -6,4 +6,4 @@ Thumbs.db
 
 # Repository-local agent instructions
 AGENTS.md
-_shared/*.md
+shared/*.md
